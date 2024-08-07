@@ -2,7 +2,7 @@ import { type Cv, LEVELS } from '~/types/cvfy'
 
 export const cvSettingTemplate: Cv = {
   layout: 'two-column',
-  profileImageDataUri: '/knope_campaign_rect.webp',
+  profileImageDataUri: '/resume/knope_campaign_rect.webp',
   jobTitle: 'Deputy Director of Parks and Recreations',
   name: 'Leslie',
   lastName: 'Knope',
@@ -10,7 +10,7 @@ export const cvSettingTemplate: Cv = {
   location: 'Pawnee, Indiana',
   phoneNumber: '317-660-2160',
   aboutme:
-    'My name is patrixia. I am a passionate, over-achieving government employee who believes the government\'s #1 job is serving the people. By pairing the right people with the right messaging at the right time, the parks department and your local government can make the world a better place for everyone! I have met Joe Biden, and one day I will become the first female President of the United States.',
+    'My name is Anna. I am a passionate, over-achieving government employee who believes the government\'s #1 job is serving the people. By pairing the right people with the right messaging at the right time, the parks department and your local government can make the world a better place for everyone! I have met Joe Biden, and one day I will become the first female President of the United States.',
   jobSkills: ['Microsoft', 'Word', 'Excel', 'PerfectMind'],
   softSkills: ['Positivity', 'Leadership', 'Public Speaking'],
   languages: [{ lang: 'English', level: LEVELS[4] }],

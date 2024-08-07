@@ -3,13 +3,13 @@ import en from './lang/en.json'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  ssr: false,
+
   site: {
     url:
       // eslint-disable-next-line node/prefer-global/process
       process.env.NODE_ENV === 'dev'
         ? 'http://localhost:3000'
-        : 'https://www.hojadevida.digital',
+        : 'https://www.hojadevida.digital/resume',
   },
 
   imports: {
@@ -17,6 +17,7 @@ export default defineNuxtConfig({
   },
 
   app: {
+    baseURL: '/resume/',
     // Global page headers (https://go.nuxtjs.dev/config-head)
     head: {
       meta: [
@@ -40,7 +41,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxtjs/sitemap',
     '@nuxtjs/tailwindcss',
-    '@vite-pwa/nuxt',
+    // '@vite-pwa/nuxt',
     '@nuxt/fonts',
     '@nuxt/image',
   ],
@@ -120,22 +121,22 @@ export default defineNuxtConfig({
     },
   },
 
-  pwa: {
-    devOptions: {
-      enabled: true,
-    },
-    registerType: 'autoUpdate',
-    pwaAssets: {
-      config: true,
-    },
-    manifest: {
-      name: en['title-tag'],
-      short_name: 'CvFy',
-      description: en.description,
-      theme_color: '#f3f4f6',
-      start_url: '/resume/',
-    },
-  },
+  // pwa: {
+  //   devOptions: {
+  //     enabled: true,
+  //   },
+  //   registerType: 'autoUpdate',
+  //   pwaAssets: {
+  //     config: true,
+  //   },
+  //   manifest: {
+  //     name: en['title-tag'],
+  //     short_name: 'CvFy',
+  //     description: en.description,
+  //     theme_color: '#f3f4f6',
+  //     start_url: '/resume/',
+  //   },
+  // },
 
   sitemap: {
     autoI18n: true,

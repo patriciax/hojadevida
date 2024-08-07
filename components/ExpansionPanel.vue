@@ -157,4 +157,8 @@ export default defineComponent({
   flex-direction: initial!important;
   gap: 10px!important;
 }
+
+.form__legend{
+  font-size: 16px!important;
+}
 </style>

@@ -542,4 +542,8 @@ function getCurrentColor(colorValue: string): {
     font-size: 0.5rem;
   }
 }
+
+.form__legend{
+  font-size: 16px!important;
+}
 </style>
