@@ -2,7 +2,7 @@ import { type Cv, LEVELS } from '~/types/cvfy'
 
 export const cvSettingTemplate: Cv = {
   layout: 'two-column',
-  profileImageDataUri: '/resume/knope_campaign_rect.webp',
+  profileImageDataUri: '/knope_campaign_rect.webp',
   jobTitle: 'Deputy Director of Parks and Recreations',
   name: 'Leslie',
   lastName: 'Knope',
