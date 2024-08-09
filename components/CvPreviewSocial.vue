@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { UserGroupIcon } from '@heroicons/vue/24/solid'
 import { useCvState } from '~/data/useCvState'
 
 const { formSettings } = useCvState()
@@ -11,13 +12,16 @@ const { formSettings } = useCvState()
   >
     <h4
       class="cv__section-title"
-      :class="formSettings.layout === 'one-column' && 'sr-only'"
+      :class="[formSettings.layout === 'one-column' && 'sr-only', { 'flex gap-2': formSettings.layout === 'two-column' }]"
     >
+      <div v-if="formSettings.layout === 'two-column'" class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+        <UserGroupIcon class="icon-style" />
+      </div>
       {{ $t("social") }}
     </h4>
     <div
-      class="flex"
-      :class="formSettings.layout === 'one-column' ? 'flex-row flex-wrap gap-2' : 'flex-col'"
+      class="flex "
+      :class="formSettings.layout === 'one-column' ? 'flex-row flex-wrap gap-2' : 'flex-col gap-2'"
     >
       <div
         v-if="formSettings.linkedin"
@@ -56,7 +60,7 @@ const { formSettings } = useCvState()
         <a
           target="_blank"
           rel="noopener"
-          :href="`https://linkedin.com/in/${formSettings.facebook}`"
+          :href="`https://www.facebook.com/${formSettings.facebook}`"
         >{{ formSettings.facebook }}</a>
       </div>
       <div
@@ -82,7 +86,7 @@ const { formSettings } = useCvState()
         <a
           target="_blank"
           rel="noopener"
-          :href="`https://github.com/${formSettings.instagram}`"
+          :href="`https://www.instagram.com/${formSettings.instagram}`"
         >{{ formSettings.instagram }}</a>
       </div>
       <div

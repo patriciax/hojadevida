@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { AcademicCapIcon, BriefcaseIcon, LightBulbIcon } from '@heroicons/vue/24/solid'
 import { useCvState } from '~/data/useCvState'
 import type { OptionalSection, SectionName, SectionNameList } from '~/types/cvfy'
 
@@ -16,6 +17,11 @@ const displaySection = computed(() => `display${props.section[0].toLocaleUpperCa
 <template>
   <fieldset class="form__section grid gap-3">
     <expansion-panel :panel-name="$t(name)">
+      <template #icon>
+        <BriefcaseIcon v-if="section === 'work'" class="icon-style" />
+        <AcademicCapIcon v-if="section === 'education'" class="icon-style" />
+        <LightBulbIcon v-if="section === 'projects'" class="icon-style" />
+      </template>
       <template #title>
         <legend class="form__legend">
           {{ $t(name) }}
@@ -38,3 +44,13 @@ const displaySection = computed(() => `display${props.section[0].toLocaleUpperCa
     </expansion-panel>
   </fieldset>
 </template>
+
+<style>
+.form__legend{
+  font-size: 14px!important;
+}
+.icon-style {
+  @apply w-4 h-4 text-gray-800;
+
+}
+</style>

@@ -19,8 +19,10 @@ const { formSettings } = useCvState()
   >
     <h3
       class="capitalize"
-      :class="formSettings.layout === 'one-column' ? 'two-dots inline flex-shrink-0' : 'cv__section-title'"
+      :class="formSettings.layout === 'one-column' ? 'two-dots inline flex-shrink-0' : 'cv__section-title flex gap-2'"
     >
+      <slot v-if="formSettings.layout === 'two-column'" name="icon" />
+
       {{ skillName }}
     </h3>
     <ul

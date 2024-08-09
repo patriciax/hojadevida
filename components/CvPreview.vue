@@ -29,7 +29,7 @@ const { formSettings, isLoading } = useCvState()
         :class="[
           { blur: isLoading },
           formSettings.layout === 'one-column' && 'p-10 flex flex-col gap-4',
-          formSettings.layout === 'two-column' && 'grid grid-cols-3',
+          formSettings.layout === 'two-column' && 'grid grid-cols-3 ',
         ]"
       >
         <template v-if="formSettings.layout === 'one-column'">
@@ -110,6 +110,8 @@ p {
   @media screen and (min-width: 1024px) {
     transform: scale(0.7);
     transform-origin: top;
+    min-width: 25cm;
+
   }
 
   &__pages {
@@ -128,7 +130,7 @@ p {
   }
 
   :deep(&__section-title) {
-    @apply text-base uppercase mb-1 font-bold tracking-wide;
+    @apply text-base uppercase mb-5 font-bold tracking-wide;
 
     &--sm {
       @apply text-sm/normal mb-0;
@@ -137,8 +139,15 @@ p {
     }
 
     &--main {
-      color: var(--primary);
+      color: #000;
+      border-color: var(--primary);
     }
+    &--icon-content{
+      svg{
+        @apply w-1 h-1;
+      }
+    }
+
   }
 
   :deep(&__icon-wrapper) {
@@ -169,7 +178,7 @@ p {
   :deep(&__event) {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 20px;
   }
 }
 

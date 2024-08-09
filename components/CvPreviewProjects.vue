@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { LightBulbIcon } from '@heroicons/vue/24/solid'
 import useFormatDate from '~/composables/useFormatDate'
 import { orderEvents } from '~/utils/functions'
 import { useCvState } from '~/data/useCvState'
@@ -17,7 +18,10 @@ const formatDate = useFormatDate()
     v-if="formSettings.displayProjects"
     class="cv__section cv__section--main w-full"
   >
-    <h4 class="cv__section-title cv__section-title--main">
+    <h4 class="cv__section-title cv__section-title--main " :class="formSettings.layout === 'two-column' ? 'border-b flex pb-1 gap-2' : ''">
+      <div v-if="formSettings.layout === 'two-column'" class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+        <LightBulbIcon class="icon-style" />
+      </div>
       {{ $t("projects") }}
     </h4>
     <ul class="cv__event">

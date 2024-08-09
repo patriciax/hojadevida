@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { AcademicCapIcon } from '@heroicons/vue/24/solid'
 import useFormatDate from '~/composables/useFormatDate'
 import { orderEvents } from '~/utils/functions'
 import { useCvState } from '~/data/useCvState'
@@ -17,7 +18,10 @@ const educationSorted = computed(() => {
     v-if="formSettings.displayEducation"
     class="cv__section cv__section--main w-full"
   >
-    <h4 class="cv__section-title cv__section-title--main">
+    <h4 class="cv__section-title cv__section-title--main " :class="formSettings.layout === 'two-column' ? 'border-b flex pb-1 gap-2' : ''">
+      <div v-if="formSettings.layout === 'two-column'" class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+        <AcademicCapIcon class="icon-style" />
+      </div>
       {{ $t("education") }}
     </h4>
     <ul class="cv__event">
@@ -25,11 +29,10 @@ const educationSorted = computed(() => {
         v-for="edu in educationSorted"
         :key="edu.id"
       >
-        <div class="grid grid-cols-3 gap-3">
+        <div class="flex justify-between gap-2 mb-2">
           <h5 class="cv__section-title cv__section-title--sm">
             {{ edu.title }}
           </h5>
-          <span class="justify-self-center">{{ edu.location }}</span>
           <span class="justify-self-end flex-shrink-0">
             {{ formatDate(edu.from) }} –
             <template v-if="edu.current">{{ $t("current")
@@ -37,6 +40,10 @@ const educationSorted = computed(() => {
             <template v-else>{{ formatDate(edu.to) }}</template>
           </span>
         </div>
+        <!-- <p class="justify-self-start col-span-2 my-1">
+          {{ edu.location }}
+        </p> -->
+
         <CvTextEditor
           v-model="edu.summary"
           :read-only="true"

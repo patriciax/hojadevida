@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { EnvelopeIcon } from '@heroicons/vue/24/solid'
 import { useCvState } from '~/data/useCvState'
 
 const { formSettings } = useCvState()
@@ -17,14 +18,17 @@ const phoneNumberHref = computed(() => {
     :class="formSettings.layout === 'one-column' && 'mt-0'"
   >
     <h4
-      class="cv__section-title"
+      class="cv__section-title flex gap-2"
       :class="[{ 'sr-only': formSettings.layout === 'one-column' }]"
     >
+      <div v-if="formSettings.layout === 'two-column'" class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+        <EnvelopeIcon class="icon-style" />
+      </div>
       {{ $t("contact") }}
     </h4>
     <div
       class="flex"
-      :class="formSettings.layout === 'one-column' ? 'flex-wrap gap-2' : 'flex-col'"
+      :class="formSettings.layout === 'one-column' ? 'flex-wrap gap-2' : 'flex-col gap-3'"
     >
       <div
         v-if="formSettings.email"

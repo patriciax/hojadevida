@@ -54,9 +54,12 @@ export default defineComponent({
       @click.prevent="togglePanel"
     >
       <div class="expansion-panel__title">
-        <slot name="title">
-          Título
-        </slot>
+        <div class="flex gap-2 items-center">
+          <slot name="icon" />
+          <slot name="title">
+            Título
+          </slot>
+        </div>
         <button
           :id="`expansionPanel${panelName}`"
           type="button"
@@ -159,6 +162,6 @@ export default defineComponent({
 }
 
 .form__legend{
-  font-size: 16px!important;
+  font-size: 14px!important;
 }
 </style>

@@ -7,7 +7,7 @@ const { formSettings } = useCvState()
 <template>
   <img
     v-if="formSettings.profileImageDataUri"
-    class="object-cover h-[212px]  max-w-[212px] max-h-[212px] rounded-md overflow-hidden"
+    class="object-cover h-[212px]  max-w-[212px] max-h-[212px] rounded-full aspect-square"
     :src="formSettings.profileImageDataUri ?? ''"
     alt="Your profile image"
   >

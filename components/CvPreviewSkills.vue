@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ChartBarIcon, LightBulbIcon, UserIcon } from '@heroicons/vue/24/solid'
 import { useCvState } from '~/data/useCvState'
 
 const { formSettings } = useCvState()
@@ -26,12 +27,26 @@ const { formSettings } = useCvState()
       :display="formSettings.displayJobSkills"
       :skills="formSettings.jobSkills"
       :with-tags="true"
-    />
+    >
+      <template #icon>
+        <div class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+          <ChartBarIcon class="icon-style" />
+        </div>
+      </template>
+    </CvPreviewSkill>
+    <div v-if="formSettings.layout === 'two-column'" class="border-dashed border-b border-var-color mt-3 mb-2" />
+
     <CvPreviewSkill
       :skill-name="$t('soft-skills')"
       :display="formSettings.displaySoftSkills"
       :skills="formSettings.softSkills"
-    />
+    >
+      <template #icon>
+        <div class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+          <UserIcon class="icon-style" />
+        </div>
+      </template>
+    </CvPreviewSkill>
     <section
       v-if="formSettings.displayLanguages"
       class="cv__section"
@@ -96,5 +111,8 @@ const { formSettings } = useCvState()
   &::after {
     content: ' ';
   }
+}
+.border-var-color{
+  border-color: var(--primary);
 }
 </style>

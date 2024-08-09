@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, Cog6ToothIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/solid'
 import { SectionNameList } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
 
@@ -103,6 +104,9 @@ function getCurrentColor(colorValue: string): {
     >
       <fieldset>
         <ExpansionPanel :panel-name="$t('general')">
+          <template #icon>
+            <Cog6ToothIcon class="icon-style" />
+          </template>
           <template #title>
             <legend class="form__legend">
               {{ $t("general") }}
@@ -215,6 +219,9 @@ function getCurrentColor(colorValue: string): {
       <!-- PERSONAL DETAILS -->
       <fieldset class="form__section ">
         <expansion-panel :panel-name="$t('personal-details')">
+          <template #icon>
+            <UserIcon class="icon-style" />
+          </template>
           <template #title>
             <legend class="form__legend">
               {{ $t("personal-details") }}
@@ -323,6 +330,10 @@ function getCurrentColor(colorValue: string): {
       <!-- SKILLS -->
       <fieldset class="form__section grid gap-3 ">
         <expansion-panel :panel-name="$t('skills')">
+          <template #icon>
+            <ChartPieIcon class="icon-style" />
+          </template>
+
           <template #title>
             <legend class="form__legend">
               {{ $t("skills") }}
@@ -363,6 +374,9 @@ function getCurrentColor(colorValue: string): {
       <!-- SOCIAL -->
       <fieldset class="form__section grid gap-3 ">
         <expansion-panel :panel-name="$t('social')">
+          <template #icon>
+            <ChatBubbleOvalLeftIcon class="icon-style" />
+          </template>
           <template #title>
             <legend class="form__legend">
               {{ $t("social") }}
@@ -544,6 +558,10 @@ function getCurrentColor(colorValue: string): {
 }
 
 .form__legend{
-  font-size: 16px!important;
+  font-size: 14px!important;
+}
+.icon-style {
+  @apply w-4 h-4 text-gray-800;
+
 }
 </style>

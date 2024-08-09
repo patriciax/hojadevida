@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { BriefcaseIcon } from '@heroicons/vue/24/solid'
 import useFormatDate from '~/composables/useFormatDate'
 import { orderEvents } from '~/utils/functions'
 import { useCvState } from '~/data/useCvState'
@@ -14,7 +15,10 @@ const workSorted = computed(() => {
 
 <template>
   <section class="cv__section cv__section--main w-full">
-    <h4 class="cv__section-title cv__section-title--main">
+    <h4 class="cv__section-title cv__section-title--main " :class="formSettings.layout === 'two-column' ? 'border-b flex gap-2 pb-1' : ''">
+      <div v-if="formSettings.layout === 'two-column'" class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+        <BriefcaseIcon class="icon-style" />
+      </div>
       {{ $t("experience") }}
     </h4>
     <ul class="cv__event">
@@ -22,11 +26,10 @@ const workSorted = computed(() => {
         v-for="job in workSorted"
         :key="job.id"
       >
-        <div class="grid grid-cols-3 gap-3">
+        <div class="flex justify-between gap-2 ">
           <h5 class="cv__section-title cv__section-title--sm">
             {{ job.title }}
           </h5>
-          <span class="justify-self-center">{{ job.location }}</span>
           <span class="justify-self-end">
             {{ formatDate(job.from) }} –
             <template v-if="job.current">{{ $t("current")
@@ -36,6 +39,10 @@ const workSorted = computed(() => {
             </template>
           </span>
         </div>
+        <p class="justify-self-center my-2">
+          {{ job.location }}
+        </p>
+
         <CvTextEditor
           v-model="job.summary"
           :read-only="true"
