@@ -3,7 +3,7 @@ const process = require('node:process')
 export default {
   theme: {
     fontFamily: {
-      app: ['Poppins', 'sans-serif'],
+      app: ['raleway', 'sans-serif'],
       landing: ['Inter', 'sans-serif'],
       logo: ['Roboto Slab', 'serif'],
     },

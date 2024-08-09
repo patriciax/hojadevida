@@ -1,5 +1,10 @@
 <script lang="ts" setup>
+import { defineComponent } from 'vue'
 import { useCvState } from '~/data/useCvState'
+
+const props = defineProps<{
+  color?: string
+}>()
 
 const { formSettings, isLoading } = useCvState()
 </script>
@@ -37,7 +42,7 @@ const { formSettings, isLoading } = useCvState()
         </template>
 
         <template v-if="formSettings.layout === 'two-column'">
-          <CvPreviewTwoColumn />
+          <CvPreviewTwoColumn :color="props.color" />
         </template>
       </div>
     </div>

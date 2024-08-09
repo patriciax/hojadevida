@@ -71,5 +71,6 @@
   "get-started": "Comenzar",
   "create-cv": "Crear CV",
   "native-bilingual": "Nativo/Bilingüe",
-  "settings": "Configuracion"
+  "settings": "Configuracion",
+  "color-theme-bg": "Color del fondo"
 }

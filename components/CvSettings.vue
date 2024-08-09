@@ -3,6 +3,7 @@ import { BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, Cog6ToothIcon, Trophy
 import { SectionNameList } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
 
+const emit = defineEmits(['color'])
 const {
   formSettings,
   uploadCV,
@@ -12,16 +13,18 @@ const {
 const switchLocalePath = useSwitchLocalePath()
 const i18n = useI18n()
 const { downloadPdf } = usePrint()
-
+const bgCv = ref('white')
 const config = {
   layouts: ['one-column', 'two-column'],
-  colors: [
-    { name: 'pink', color: '#9D174D', darker: '#831843' },
-    { name: 'purple', color: '#5B21B6', darker: '#4C1D95' },
-    { name: 'blue', color: '#1E40AF', darker: '#1E3A8A' },
-    { name: 'green', color: '#065F46', darker: '#064E3B' },
-    { name: 'black', color: '#1F2937', darker: '#111827' },
-  ],
+  selectedColor: '#9D174D',
+
+  // colors: [
+  //   { name: 'pink', color: '#9D174D', darker: '#831843' },
+  //   { name: 'purple', color: '#5B21B6', darker: '#4C1D95' },
+  //   { name: 'blue', color: '#1E40AF', darker: '#1E3A8A' },
+  //   { name: 'green', color: '#065F46', darker: '#064E3B' },
+  //   { name: 'black', color: '#1F2937', darker: '#111827' },
+  // ],
   languages: [
     { name: 'es-name', code: 'es' },
     { name: 'en-name', code: 'en' },
@@ -33,18 +36,32 @@ const config = {
     // { name: 'pt-name', code: 'pt' },
   ],
 }
-
 watch(
-  () => formSettings.value,
-  (newValue, oldValue) => {
-    localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify(newValue))
-    if (newValue.activeColor !== oldValue.activeColor) {
-      const newColor = getCurrentColor(newValue.activeColor)
-      changeColor(newColor.color, newColor.darker)
-    }
+  () => config.selectedColor,
+  (newColor) => {
+    localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify({
+      ...formSettings.value,
+      activeColor: newColor,
+    }))
+    changeColor(newColor)
   },
-  { deep: true },
 )
+watch(bgCv, (newColor) => {
+  localStorage.setItem('bgCv', newColor)
+  emit('color', newColor)
+})
+
+// watch(
+//   () => formSettings.value,
+//   (newValue, oldValue) => {
+//     localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify(newValue))
+//     if (newValue.activeColor !== oldValue.activeColor) {
+//       const newColor = getCurrentColor(newValue.activeColor)
+//       changeColor(newColor.color, newColor.darker)
+//     }
+//   },
+//   { deep: true },
+// )
 
 const formSettingsHref = computed(() => {
   return `data:text/json;charset=utf-8,${encodeURIComponent(
@@ -56,21 +73,35 @@ const availableLocales = computed(() => {
   return i18n.localeCodes.value.filter((locale: any) => !locale.includes('-'))
 })
 
-function changeColor(color: string, darker: string): void {
-  formSettings.value.activeColor = color
+function changeColor(color: string): void {
+  config.selectedColor = color
   document.documentElement.style.setProperty('--primary', color)
-  document.documentElement.style.setProperty('--primary-darker', darker)
+  document.documentElement.style.setProperty('--primary-darker', darkenColor(color))
 }
 
-function getCurrentColor(colorValue: string): {
-  color: string
-  darker: string
-} {
-  return (
-    config.colors.find(color => color.color === colorValue)
-    || config.colors[1]
-  )
+function darkenColor(color: string, amount = 0.4): string {
+  const [r, g, b] = color.match(/\w\w/g)!.map(x => Number.parseInt(x, 16))
+  return `#${[
+    Math.round(Math.max(0, r - r * amount)).toString(16).padStart(2, '0'),
+    Math.round(Math.max(0, g - g * amount)).toString(16).padStart(2, '0'),
+    Math.round(Math.max(0, b - b * amount)).toString(16).padStart(2, '0'),
+  ].join('')}`
 }
+// function changeColor(color: string, darker: string): void {
+//   formSettings.value.activeColor = color
+//   document.documentElement.style.setProperty('--primary', color)
+//   document.documentElement.style.setProperty('--primary-darker', darker)
+// }
+
+// function getCurrentColor(colorValue: string): {
+//   color: string
+//   darker: string
+// } {
+//   return (
+//     config.colors.find(color => color.color === colorValue)
+//     || config.colors[1]
+//   )
+// }
 </script>
 
 <template>
@@ -181,10 +212,38 @@ function getCurrentColor(colorValue: string): {
               <!-- LAYOUT -->
 
               <!-- COLOR THEME -->
-              <fieldset class="form__section ">
+              <fieldset class="form__section">
                 <legend class="form__legend">
-                  <!-- {{ $t("color-theme") }} -->
+                  {{ $t("color-theme") }}
                 </legend>
+                <div class="flex items-center gap-2">
+                  <input
+                    type="color"
+                    class="form__btn form__btn--color-theme w-52"
+                    :value="config.selectedColor"
+                    @input="changeColor($event.target.value)"
+                  >
+                  <span class="capitalize" />
+                </div>
+              </fieldset>
+              <fieldset class="form__section mt-4">
+                <legend class="form__legend">
+                  {{ $t("color-theme-bg") }}
+                </legend>
+                <div class="flex gap-4 mb-4 items-center ">
+                  <label :class="[bgCv === 'black' ? 'shadow-sm text-gray-800 border' : 'bg-gray-700 text-white']" class=" cursor-pointer text-sm px-4 py-3   rounded-lg">
+                    <input v-model="bgCv" type="radio" value="white">
+                    Blanco
+                  </label>
+                  <label :class="[bgCv === 'black' ? 'bg-gray-700 text-white' : 'shadow-sm text-gray-800 border']" class="text-sm cursor-pointer  px-4 py-3    rounded-lg">
+                    <input v-model="bgCv" type="radio" value="black">
+                    Negro
+                  </label>
+                </div>
+              </fieldset>
+
+              <!-- <fieldset class="form__section ">
+
                 <div class="flex flex-wrap gap-2 justify-start">
                   <label
                     v-for="color in config.colors"
@@ -210,7 +269,7 @@ function getCurrentColor(colorValue: string): {
                     >
                   </label>
                 </div>
-              </fieldset>
+              </fieldset> -->
               <!-- COLOR THEME -->
             </div>
           </template>

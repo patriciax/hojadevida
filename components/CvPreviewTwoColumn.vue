@@ -1,13 +1,21 @@
 <script lang="ts" setup>
 import { useCvState } from '~/data/useCvState'
 
+const props = defineProps<{
+  color?: string
+}>()
+
 const { formSettings } = useCvState()
 </script>
 
 <template>
   <div
-    class="flex relative flex-col overflow-hidden gap-4 p-8 py-7 col-span-1 bg-[#f9f9f9]   "
-    :class="formSettings.profileImageDataUri ? 'py-7' : 'py-8'"
+    class="flex relative flex-col overflow-hidden gap-4 p-8 py-7 col-span-1  "
+
+    :class="[
+      formSettings.profileImageDataUri ? 'py-7' : 'py-8',
+      props.color === 'black' ? 'bg-gray-950 text-white' : 'bg-[#f9f9f9] text-black',
+    ]"
   >
     <div class="absolute  bg-traslate-cv transform  rotate-[48deg]   w-[15rem] h-[35rem]" />
     <CvProfileImageViewer class="border-white border-8 z-10 mb-4" />
