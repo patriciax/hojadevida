@@ -15,7 +15,7 @@ const i18n = useI18n()
 const { downloadPdf } = usePrint()
 const bgCv = ref('white')
 const config = {
-  layouts: ['one-column', 'two-column'],
+  layouts: ['one-column', 'two-column', 'three-column', 'four-column'],
   selectedColor: '#9D174D',
 
   // colors: [
@@ -186,20 +186,106 @@ function darkenColor(color: string, amount = 0.4): string {
                 <legend class="form__legend">
                   {{ $t("layout-theme") }}
                 </legend>
-                <div class="flex flex-wrap gap-2 justify-start">
+                <div class="grid grid-cols-4 gap-4 justify-start">
                   <label
                     v-for="layout in config.layouts"
                     :key="layout"
                     tabindex="0"
-                    class="form__btn form__btn--ghost capitalize"
+                    class=" capitalize cursor-pointer "
                     :class="[
                       {
-                        'form__btn--active':
+                        '  ':
                           layout === formSettings.layout,
                       },
                     ]"
                   >
-                    {{ $t(layout) }}
+                    <!-- {{ $t(layout) }} -->
+                    <!-- <template v-if="layout === 'one-column'">
+                      <svg
+                        height="39" viewBox="0 0 60 39" fill="none" xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          width="60" height="39" rx="3" fill="#8A8A8A"
+                        />
+                      </svg>
+
+                    </template>
+                    <template v-if="layout === 'three-column'">
+                      <svg width="59" height="39" viewBox="0 0 59 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="31" width="28" height="39" rx="3" fill="#8A8A8A" />
+                        <rect x="31" width="28" height="39" rx="3" fill="#8A8A8A" />
+                        <rect x="31" width="28" height="39" rx="3" fill="#8A8A8A" />
+                        <rect width="28" height="39" rx="3" fill="#8A8A8A" />
+                        <rect width="28" height="39" rx="3" fill="#8A8A8A" />
+                        <rect width="28" height="39" rx="3" fill="#8A8A8A" />
+                      </svg>
+                    </template>
+                    <template v-if="layout === 'two-column'">
+                      <svg width="59" height="39" viewBox="0 0 59 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="19" height="39" rx="3" fill="#8A8A8A" />
+                        <rect width="19" height="39" rx="3" fill="#8A8A8A" />
+                        <rect width="19" height="39" rx="3" fill="#8A8A8A" />
+                        <rect x="22" width="37" height="39" rx="3" fill="#8A8A8A" />
+                        <rect x="22" width="37" height="39" rx="3" fill="#8A8A8A" />
+                        <rect x="22" width="37" height="39" rx="3" fill="#8A8A8A" />
+                      </svg>
+
+                    </template>
+
+                    <template v-if="layout === 'four-column'">
+                      <svg width="59" height="39" viewBox="0 0 59 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="40" width="19" height="39" rx="3" fill="#8A8A8A" />
+                        <rect x="40" width="19" height="39" rx="3" fill="#8A8A8A" />
+                        <rect x="40" width="19" height="39" rx="3" fill="#8A8A8A" />
+                        <rect width="37" height="39" rx="3" fill="#8A8A8A" />
+                        <rect width="37" height="39" rx="3" fill="#8A8A8A" />
+                        <rect width="37" height="39" rx="3" fill="#8A8A8A" />
+                      </svg>
+
+                    </template> -->
+                    <template v-if="layout === 'one-column'">
+                      <svg
+                        height="39" viewBox="0 0 60 39" fill="none" xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          width="60" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'"
+                        />
+                      </svg>
+
+                    </template>
+                    <template v-if="layout === 'three-column'">
+                      <svg width="59" height="39" viewBox="0 0 59 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="31" width="28" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect x="31" width="28" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect x="31" width="28" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect width="28" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect width="28" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect width="28" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                      </svg>
+                    </template>
+                    <template v-if="layout === 'two-column'">
+                      <svg width="59" height="39" viewBox="0 0 59 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="19" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect width="19" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect width="19" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect x="22" width="37" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect x="22" width="37" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect x="22" width="37" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                      </svg>
+
+                    </template>
+
+                    <template v-if="layout === 'four-column'">
+                      <svg width="59" height="39" viewBox="0 0 59 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="40" width="19" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect x="40" width="19" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect x="40" width="19" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect width="37" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect width="37" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                        <rect width="37" height="39" rx="3" :fill=" layout === formSettings.layout ? '#334155' : '#8A8A8A'" />
+                      </svg>
+
+                    </template>
                     <input
                       v-model="formSettings.layout"
                       :value="layout"
@@ -219,7 +305,7 @@ function darkenColor(color: string, amount = 0.4): string {
                 <div class="flex items-center gap-2">
                   <input
                     type="color"
-                    class="form__btn form__btn--color-theme w-52"
+                    class="form__btn form__btn--color-theme w-52 h-10"
                     :value="config.selectedColor"
                     @input="changeColor($event.target.value)"
                   >
@@ -233,11 +319,11 @@ function darkenColor(color: string, amount = 0.4): string {
                 <div class="flex gap-4 mb-4 items-center ">
                   <label :class="[bgCv === 'black' ? 'shadow-sm text-gray-800 border' : 'bg-gray-700 text-white']" class=" cursor-pointer text-sm px-4 py-3   rounded-lg">
                     <input v-model="bgCv" type="radio" value="white">
-                    Blanco
+                    Claro
                   </label>
                   <label :class="[bgCv === 'black' ? 'bg-gray-700 text-white' : 'shadow-sm text-gray-800 border']" class="text-sm cursor-pointer  px-4 py-3    rounded-lg">
                     <input v-model="bgCv" type="radio" value="black">
-                    Negro
+                    Oscuro
                   </label>
                 </div>
               </fieldset>

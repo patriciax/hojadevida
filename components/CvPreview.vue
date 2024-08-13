@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { defineComponent } from 'vue'
+import CvPreviewThreeColumn from './CvPreviewThreeColumn.vue'
 import { useCvState } from '~/data/useCvState'
 
 const props = defineProps<{
@@ -35,14 +36,22 @@ const { formSettings, isLoading } = useCvState()
           { blur: isLoading },
           formSettings.layout === 'one-column' && 'p-10 flex flex-col gap-4',
           formSettings.layout === 'two-column' && 'grid grid-cols-3 ',
+          formSettings.layout === 'three-column' && 'grid grid-cols-2',
+          formSettings.layout === 'four-column' && 'grid grid-cols-3 ',
         ]"
       >
         <template v-if="formSettings.layout === 'one-column'">
           <CvPreviewOneColumn />
         </template>
 
-        <template v-if="formSettings.layout === 'two-column'">
+        <template v-if="formSettings.layout === 'two-column' ">
           <CvPreviewTwoColumn :color="props.color" />
+        </template>
+        <template v-if="formSettings.layout === 'three-column'">
+          <CvPreviewThreeColumn :color="props.color" />
+        </template>
+        <template v-if="formSettings.layout === 'four-column'">
+          <CvPreviewFourColumn :color="props.color" />
         </template>
       </div>
     </div>

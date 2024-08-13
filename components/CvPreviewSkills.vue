@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ChartBarIcon, LightBulbIcon, UserIcon } from '@heroicons/vue/24/solid'
+import { ChartBarIcon, LanguageIcon, LightBulbIcon, StarIcon, UserIcon } from '@heroicons/vue/24/solid'
 import { useCvState } from '~/data/useCvState'
 
 const { formSettings } = useCvState()
@@ -9,16 +9,19 @@ const { formSettings } = useCvState()
   <section class="cv__section">
     <h4
       class="cv__section-title"
-      :class="formSettings.layout === 'one-column' ? 'cv__section-title--main' : 'sr-only'"
+      :class="formSettings.layout === 'one-column' ? 'cv__section-title--main ' : 'sr-only'"
     >
-      <span>
+      <span :class="{ 'flex gap-2': formSettings.layout === 'one-column' }">
+        <div v-if="formSettings.layout === 'one-column'" class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+          <ChartBarIcon class="icon-style" />
+        </div>
         {{ $t("skills") }}
       </span>
       <span
-        v-if="formSettings.displayInterests"
+        v-if="formSettings.displayInterests && formSettings.layout !== 'one-column'"
         class="slash"
       >/</span>
-      <span v-if="formSettings.displayInterests">
+      <span v-if="formSettings.displayInterests && formSettings.layout !== 'one-column'">
         {{ $t("interests") }}
       </span>
     </h4>
@@ -34,7 +37,7 @@ const { formSettings } = useCvState()
         </div>
       </template>
     </CvPreviewSkill>
-    <div v-if="formSettings.layout === 'two-column'" class="border-dashed border-b border-var-color mt-3 mb-2" />
+    <div v-if="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column'" class="border-dashed border-b border-var-color mt-3 mb-2" />
 
     <CvPreviewSkill
       :skill-name="$t('soft-skills')"
@@ -54,8 +57,11 @@ const { formSettings } = useCvState()
     >
       <h3
         class="capitalize"
-        :class="formSettings.layout === 'one-column' ? 'two-dots inline flex-shrink-0' : 'cv__section-title'"
+        :class="formSettings.layout === 'one-column' ? 'two-dots inline flex-shrink-0' : 'cv__section-title flex gap-2'"
       >
+        <div v-if="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column'" class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+          <LanguageIcon class="icon-style" />
+        </div>
         {{ $t("languages") }}
       </h3>
 
@@ -80,7 +86,13 @@ const { formSettings } = useCvState()
       :skill-name="$t('interests')"
       :display="formSettings.displayInterests"
       :skills="formSettings.interests"
-    />
+    >
+      <template #icon>
+        <div class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+          <StarIcon class="icon-style" />
+        </div>
+      </template>
+    </CvPreviewSkill>
   </section>
 </template>
 

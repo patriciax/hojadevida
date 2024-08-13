@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { AcademicCapIcon, BriefcaseIcon, LightBulbIcon } from '@heroicons/vue/24/solid'
+import { AcademicCapIcon, BriefcaseIcon, FolderIcon, LightBulbIcon } from '@heroicons/vue/24/solid'
 import { useCvState } from '~/data/useCvState'
 import type { OptionalSection, SectionName, SectionNameList } from '~/types/cvfy'
 
@@ -21,16 +21,39 @@ const displaySection = computed(() => `display${props.section[0].toLocaleUpperCa
         <BriefcaseIcon v-if="section === 'work'" class="icon-style" />
         <AcademicCapIcon v-if="section === 'education'" class="icon-style" />
         <LightBulbIcon v-if="section === 'projects'" class="icon-style" />
+        <FolderIcon v-if="section === 'references'" class="icon-style" />
       </template>
       <template #title>
         <legend class="form__legend">
-          {{ $t(name) }}
+          <template v-if="section === 'work'">
+            {{ $t("experience") }}
+          </template>
+          <template v-else>
+            {{ $t(name) }}
+          </template>
         </legend>
       </template>
-      <template #content>
+      <template
+        v-if="section === 'references'"
+        #content
+      >
         <div>
           <CvDisplayCheckbox
-            v-if="section !== 'work'"
+            v-if="section !== 'worka'"
+            class="mb-10"
+            :display-section="formSettings[displaySection]"
+            :section-name="name"
+          />
+          <CvDynamicSection
+            :section-name="section"
+            :reference="formSettings.references"
+          />
+        </div>
+      </template>
+      <template v-else #content>
+        <div>
+          <CvDisplayCheckbox
+            v-if="section !== 'worka'"
             class="mb-10"
             :display-section="formSettings[displaySection]"
             :section-name="name"

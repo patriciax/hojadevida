@@ -25,6 +25,7 @@ export interface Cv {
   displayLanguages?: boolean
   interests: string[]
   displayInterests?: boolean
+
   linkedin: string
   twitter: string
   github: string
@@ -34,9 +35,11 @@ export interface Cv {
   education: CvEvent[]
   work: CvEvent[]
   projects: CvEvent[]
+  references: CvEventReference[]
   displaySocial: boolean
   displayEducation: boolean
   displayProjects: boolean
+  displayWork: boolean
   activeColor: string
 }
 export interface CvEvent {
@@ -48,8 +51,16 @@ export interface CvEvent {
   current: boolean
   summary: string
 }
+export interface CvEventReference {
+  id: string
+  nameref: string
+  cargo: string
+  current: boolean
+  tel: string
+  email: string
+}
 
-export type OptionalSection = 'displaySocial' | 'displayEducation' | 'displayProjects'
+export type OptionalSection = 'displaySocial' | 'displayEducation' | 'displayProjects' | 'displayWork'
 
 export type SkillType =
   'jobSkills' |
@@ -69,8 +80,9 @@ export interface DefaultSkill {
 export type Skill = DefaultSkill['skill'] | LanguagesSkill['skill']
 
 export const SectionNameList = {
-  work: 'experience',
+  work: 'work',
   education: 'education',
   projects: 'projects',
+  references: 'references',
 } as const
 export type SectionName = keyof typeof SectionNameList

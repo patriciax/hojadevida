@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import type { CvEvent, SectionName } from '~/types/cvfy'
+import type { CvEvent, CvEventReference, SectionName } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
 
 const { sectionName, entries = [] } = defineProps<{
   sectionName: SectionName
   entries: CvEvent[]
+  reference: CvEventReference[]
 }>()
-const { addEntry, removeEntry } = useCvState()
+const { addEntry, addEntryReference, removeEntry } = useCvState()
 function focusEditor(id: string) {
   const editorElem = document.getElementById(`${id}-editor`)
   if (editorElem)
@@ -20,13 +21,88 @@ function focusEditor(id: string) {
     class="dynamic-section"
   >
     <button
+      v-if="sectionName === 'references'"
+      class="form__btn col-span-full"
+      type="button"
+      @click="addEntryReference({ sectionName })"
+    >
+      {{ $t("add") }} {{ $t(sectionName) }}
+    </button>
+    <button
+      v-else
       class="form__btn col-span-full"
       type="button"
       @click="addEntry({ sectionName })"
     >
       {{ $t("add") }} {{ $t(sectionName) }}
     </button>
-    <ul class="col-span-full">
+    <ul v-if="sectionName === 'references'" class="col-span-full">
+      <li
+        v-for="entry in reference"
+        :key="entry.id"
+      >
+        <expansion-panel
+          :panel-name="`${entry.nameref}`"
+          class="mb-3 gap-10"
+        >
+          <template #title>
+            <h3 class="form__legend form__legend--small dynamic-section__title">
+              <span>
+                {{ entry.nameref }}
+              </span>
+            </h3>
+          </template>
+          <template #action-button>
+            <button
+              :aria-label="`Remove ${entry.nameref} ${$t(sectionName)} from CV`"
+              type="button"
+              class="form__btn form__btn--delete btn-transparent mr-3"
+              @click.stop="removeEntry({ sectionName, entry })"
+            >
+              <svg class="form__icon">
+                <use href="@/assets/sprite.svg#trash" />
+              </svg>
+            </button>
+          </template>
+          <template #content>
+            <div class="dynamic-section">
+              <div class="form__group col-span-full">
+                <label
+                  class="form__label"
+                  :for="`entryTitle--${entry.id}`"
+                >
+
+                  {{ $t("title") }}
+                </label>
+                <input
+                  :id="`entryTitle--${entry.id}`"
+                  v-model="entry.nameref"
+                  class="form__control"
+                  type="text"
+                >
+              </div>
+              <div class="form__group col-span-full">
+                <label
+                  class="form__label"
+                  :for="`entryLocation-${entry.id}`"
+                >
+
+                  Cargo
+
+                </label>
+                <input
+                  :id="`entryLocation-${entry.id}`"
+                  v-model="entry.cargo"
+                  class="form__control"
+                  type="text"
+                >
+              </div>
+            </div>
+          </template>
+        </expansion-panel>
+      </li>
+    </ul>
+    <ul v-else class="col-span-full">
       <li
         v-for="entry in entries"
         :key="entry.id"

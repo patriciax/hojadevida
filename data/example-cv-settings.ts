@@ -67,6 +67,18 @@ export const cvSettingTemplate: Cv = {
         '<ul><li><p>Sed ut lorem viverra urna malesuada interdum in ut risus.</p></li><li><p>Duis at sem non justo aliquam iaculis.</p></li><li><p>Quisque lobortis nibh non turpis interdum ornare.</p></li><li><p>Sed et diam nec arcu tempor suscipit sit amet at tellus.</p></li><li><p>Duis quis diam imperdiet, pharetra lacus eget, fringilla odio.</p></li></ul>',
     },
   ],
+
+  references: [
+    {
+      id: '1',
+      nameref: 'Lot 48',
+      current: true,
+      cargo: 'City of Pawnee, Indiana',
+      tel: '317-123-4567',
+      email: 'xJ5oH@example.com',
+
+    },
+  ],
   displaySocial: true,
   displayEducation: true,
   displayProjects: true,
@@ -74,6 +86,7 @@ export const cvSettingTemplate: Cv = {
   displaySoftSkills: true,
   displayLanguages: true,
   displayInterests: true,
+  displayWork: true,
   activeColor: '#5B21B6',
 }
 
@@ -100,8 +113,10 @@ export const cvSettingsEmptyTemplate: Cv = {
   education: [],
   work: [],
   projects: [],
+  references: [],
   displaySocial: true,
   displayEducation: true,
   displayProjects: false,
+  displayWork: true,
   activeColor: '#5B21B6',
 }

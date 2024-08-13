@@ -6,6 +6,7 @@ import {
 import {
   type Cv,
   type CvEvent,
+  type CvEventReference,
   type DefaultSkill,
   type LanguagesSkill,
   type SectionName,
@@ -92,6 +93,24 @@ export function useCvState() {
     })
   }
 
+  function addEntryReference(e: { sectionName: 'references' }) {
+    state.formSettings[e.sectionName].unshift({
+      id: crypto.randomUUID(),
+      nameref: '',
+      cargo: '',
+      current: false,
+      tel: '',
+      email: '',
+    } as CvEventReference)
+  }
+  // function addEntryReference(e: { sectionName: SectionName }) {
+  //   state.formSettings[e.sectionName].unshift({
+  //     id: crypto.randomUUID(),
+  //    nameref: '',
+  //     cargo: '',
+  //   })
+  // }
+
   function removeEntry(e: { sectionName: SectionName, entry: CvEvent }) {
     state.formSettings[e.sectionName] = state.formSettings[
       e.sectionName
@@ -138,6 +157,7 @@ export function useCvState() {
       | 'displayJobSkills'
       | 'displaySoftSkills'
       | 'displayLanguages'
+      | 'displayWork'
     state.formSettings[propName] = e.status
   }
 
@@ -163,5 +183,6 @@ export function useCvState() {
     resetForm,
     clearForm,
     changeDisplaySection,
+    addEntryReference,
   }
 }

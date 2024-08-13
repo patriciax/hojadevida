@@ -10,7 +10,7 @@ const { formSettings } = useCvState()
 
 <template>
   <div
-    class="flex relative flex-col overflow-hidden gap-4 p-8 py-7 col-span-1 "
+    class="flex relative flex-col overflow-hidden gap-4 p-8 py-7 col-span-1 order-1"
 
     :class="[
       formSettings.profileImageDataUri ? 'py-7' : 'py-8',
@@ -27,7 +27,7 @@ const { formSettings } = useCvState()
     <CvPreviewSkills class="flex flex-col gap-6" />
     <div class="border-dashed border-b border-var-color py-4" />
 
-    <CvPreviewSocial :color="props.color" />
+    <CvPreviewSocial />
   </div>
 
   <div class="col-span-2">

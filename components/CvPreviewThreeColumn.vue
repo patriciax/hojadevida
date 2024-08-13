@@ -27,10 +27,10 @@ const { formSettings } = useCvState()
     <CvPreviewSkills class="flex flex-col gap-6" />
     <div class="border-dashed border-b border-var-color py-4" />
 
-    <CvPreviewSocial :color="props.color" />
+    <CvPreviewSocial />
   </div>
 
-  <div class="col-span-2">
+  <div>
     <div class=" bg-slate-50 p-10 mt-16 mb-[36px]">
       <CvPreviewName />
       <CvPreviewTitle />
