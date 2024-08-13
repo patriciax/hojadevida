@@ -24,6 +24,8 @@
   <CvPreviewEducation />
 
   <CvPreviewProjects />
+
+  <CvPreviewReferences class="mt-4" />
 </template>
 
 <style lang="postcss" scoped>

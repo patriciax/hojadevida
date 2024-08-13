@@ -99,6 +99,7 @@ export function useCvState() {
       nameref: '',
       cargo: '',
       current: false,
+      company: '',
       tel: '',
       email: '',
     } as CvEventReference)

@@ -73,5 +73,7 @@
   "create-cv": "Crear CV",
   "native-bilingual": "Nativo/Bilingüe",
   "settings": "Configuracion",
-  "color-theme-bg": "Color del fondo"
+  "color-theme-bg": "Color del fondo",
+  "tel": "Telefono",
+  "name": "Nombre"
 }

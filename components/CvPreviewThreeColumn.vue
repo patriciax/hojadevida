@@ -27,6 +27,9 @@ const { formSettings } = useCvState()
     <CvPreviewSkills class="flex flex-col gap-6" />
     <div class="border-dashed border-b border-var-color py-4" />
 
+    <CvPreviewReferences :color="props.color" />
+
+    <div class="border-dashed border-b border-var-color py-4" />
     <CvPreviewSocial />
   </div>
 

@@ -71,11 +71,12 @@ export const cvSettingTemplate: Cv = {
   references: [
     {
       id: '1',
-      nameref: 'Lot 48',
+      nameref: 'John Doe',
       current: true,
       cargo: 'City of Pawnee, Indiana',
       tel: '317-123-4567',
       email: 'xJ5oH@example.com',
+      company: 'Pawnee, Indiana',
 
     },
   ],

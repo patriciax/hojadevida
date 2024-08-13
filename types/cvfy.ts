@@ -58,6 +58,7 @@ export interface CvEventReference {
   current: boolean
   tel: string
   email: string
+  company: string
 }
 
 export type OptionalSection = 'displaySocial' | 'displayEducation' | 'displayProjects' | 'displayWork'

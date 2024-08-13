@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { CheckIcon } from '@heroicons/vue/24/solid'
 import type { CvEvent, CvEventReference, SectionName } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
 
@@ -72,7 +73,7 @@ function focusEditor(id: string) {
                   :for="`entryTitle--${entry.id}`"
                 >
 
-                  {{ $t("title") }}
+                  {{ $t("name") }}
                 </label>
                 <input
                   :id="`entryTitle--${entry.id}`"
@@ -93,6 +94,54 @@ function focusEditor(id: string) {
                 <input
                   :id="`entryLocation-${entry.id}`"
                   v-model="entry.cargo"
+                  class="form__control"
+                  type="text"
+                >
+              </div>
+              <div class="form__group col-span-full">
+                <label
+                  class="form__label"
+                  :for="`entryLocation-${entry.id}`"
+                >
+
+                  Empresa
+
+                </label>
+                <input
+                  :id="`entryLocation-${entry.id}`"
+                  v-model="entry.company"
+                  class="form__control"
+                  type="text"
+                >
+              </div>
+              <div class="form__group col-span-full">
+                <label
+                  class="form__label"
+                  :for="`entryLocation-${entry.id}`"
+                >
+
+                  Email
+
+                </label>
+                <input
+                  :id="`entryLocation-${entry.id}`"
+                  v-model="entry.email"
+                  class="form__control"
+                  type="text"
+                >
+              </div>
+              <div class="form__group col-span-full">
+                <label
+                  class="form__label"
+                  :for="`entryLocation-${entry.id}`"
+                >
+
+                  {{ $t("tel") }}
+
+                </label>
+                <input
+                  :id="`entryLocation-${entry.id}`"
+                  v-model="entry.tel"
                   class="form__control"
                   type="text"
                 >
