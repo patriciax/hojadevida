@@ -16,7 +16,8 @@ const projectsSorted = computed(() => {
 
 <template>
   <section
-    class="cv__section cv__section--main w-full"
+    v-if="formSettings.displayReferences"
+    class="cv__section cv__section--main w-full pt-3"
   >
     <h4 class="cv__section-title  " :class="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column' ? 'flex pb-1 gap-2' : ''">
       <div :class="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column' ? 'h-6 w-6' : 'w-8 h-7 mr-2'" class="bg-change rounded-full   flex justify-center items-center">
@@ -69,6 +70,7 @@ const projectsSorted = computed(() => {
         /> -->
       </div>
     </ul>
+    <div class="border-dashed border-b border-var-color py-4" />
   </section>
 </template>
 
@@ -93,5 +95,8 @@ ul,
   ol {
     @apply pl-[8px];
     list-style: initial;
+  }
+  .border-var-color{
+    border-color: var(--primary);
   }
 </style>

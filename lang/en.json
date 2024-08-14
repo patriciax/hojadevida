@@ -74,5 +74,6 @@
   "tel": "Phone",
   "name": "Name",
   "addPassword": "Add password",
-  "addnewpasss": "Añadir"
+  "addnewpasss": "Añadir",
+  "addnewpasssmodal": " Add a password to your CV"
 }

@@ -40,6 +40,7 @@ export interface Cv {
   displayEducation: boolean
   displayProjects: boolean
   displayWork: boolean
+  displayReferences: boolean
   activeColor: string
 }
 export interface CvEvent {
@@ -61,7 +62,7 @@ export interface CvEventReference {
   company: string
 }
 
-export type OptionalSection = 'displaySocial' | 'displayEducation' | 'displayProjects' | 'displayWork'
+export type OptionalSection = 'displaySocial' | 'displayEducation' | 'displayProjects' | 'displayWork' | 'displayReferences'
 
 export type SkillType =
   'jobSkills' |

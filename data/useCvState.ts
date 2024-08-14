@@ -159,6 +159,7 @@ export function useCvState() {
       | 'displaySoftSkills'
       | 'displayLanguages'
       | 'displayWork'
+      | 'displayReferences'
     state.formSettings[propName] = e.status
   }
 
