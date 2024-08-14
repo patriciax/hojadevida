@@ -97,12 +97,14 @@ useHead({
     },
   ],
 })
+
+const color = ref('')
 </script>
 
 <template>
   <main class="font-app main">
-    <CvSettings class="basis-1/4 min-w-80" />
-    <CvPreview class="basis-3/4" />
+    <CvSettings class="basis-1/4 min-w-80" @color="color = $event" />
+    <CvPreview class="basis-3/4" :color="color" />
   </main>
 </template>
 

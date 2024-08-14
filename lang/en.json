@@ -75,5 +75,6 @@
   "name": "Name",
   "addPassword": "Add password",
   "addnewpasss": "Añadir",
-  "addnewpasssmodal": " Add a password to your CV"
+  "addnewpasssmodal": " Add a password to your CV",
+  "singIn": " Sign in to your account"
 }
