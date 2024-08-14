@@ -33,8 +33,8 @@
   "profile-image": "Foto de perfil",
   "upload-profile-image": "Subir imagen de perfil",
   "clear-profile-image": "Limpiar",
-  "upload-cv": "Importar",
-  "download-cv-settings": "Exportar",
+  "upload-cv": "Compartir",
+  "download-cv-settings": "Guardar",
   "download-cv-pdf": "Imprimir",
   "chrome-recommended": "Firefox recomendado para ATSs",
   "job-title": "Puesto / Ocupación",
@@ -75,5 +75,7 @@
   "settings": "Configuracion",
   "color-theme-bg": "Color del fondo",
   "tel": "Telefono",
-  "name": "Nombre"
+  "name": "Nombre",
+  "addPassword": "Añadir contraseña",
+  "addnewpasss": "Añadir"
 }

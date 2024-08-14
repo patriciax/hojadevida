@@ -18,7 +18,7 @@ const educationSorted = computed(() => {
     v-if="formSettings.displayEducation"
     class="cv__section cv__section--main w-full"
   >
-    <h4 class="cv__section-title cv__section-title--main " :class="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column' ? 'border-b flex pb-1 gap-2' : ''">
+    <h4 class="cv__section-title cv__section-title--main  " :class="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column' ? 'border-b flex pb-2.5 gap-2' : ''">
       <div :class="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column' ? 'h-6 w-6' : 'w-8 h-7 mr-2'" class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
         <AcademicCapIcon class="icon-style" />
       </div>

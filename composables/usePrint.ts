@@ -6,7 +6,7 @@ export default function usePrint() {
   const docTitle = ref<string>()
 
   onMounted(() => {
-    const printMargin = cssPagedMedia('margin')
+    const printMargin = cssPagedMedia('margin', '1.6in')
     docTitle.value = document.title
 
     addEventListener('beforeprint', () => {
@@ -26,11 +26,19 @@ export default function usePrint() {
     })
   })
 
-  function cssPagedMedia(property: string) {
+  // function cssPagedMedia(property: string) {
+  //   const style = document.createElement('style')
+  //   document.head.appendChild(style)
+  //   return function (value: string) {
+  //     style.innerHTML = `@page {${property}: ${value}}`
+  //   }
+  // }
+
+  function cssPagedMedia(property: string, bottomMargin: string, topMargin = '0.55in') {
     const style = document.createElement('style')
     document.head.appendChild(style)
     return function (value: string) {
-      style.innerHTML = `@page {${property}: ${value}}`
+      style.innerHTML = `@page {${property}: ${value}; margin-bottom: ${bottomMargin}; margin-top: ${topMargin}}`
     }
   }
 

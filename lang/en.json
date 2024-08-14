@@ -33,9 +33,9 @@
   "profile-image": "Profile picture",
   "upload-profile-image": "Upload profile image",
   "clear-profile-image": "Clear",
-  "upload-cv": "Upload CV settings",
-  "download-cv-settings": "Download CV settings",
-  "download-cv-pdf": "Download your CV as PDF",
+  "upload-cv": "Share",
+  "download-cv-settings": "Save",
+  "download-cv-pdf": "Print",
   "chrome-recommended": "Firefox recommended for ATSs",
   "job-title": "Job Title / Current Position",
   "first-name": "First name",
@@ -72,5 +72,7 @@
   "create-cv": "Create CV",
   "native-bilingual": "Native/Bilingual",
   "tel": "Phone",
-  "name": "Name"
+  "name": "Name",
+  "addPassword": "Add password",
+  "addnewpasss": "Añadir"
 }

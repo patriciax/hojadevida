@@ -8,7 +8,7 @@ const { formSettings } = useCvState()
 <template>
   <section class="cv__section cv__section--main">
     <h4
-      class="cv__section-title cv__section-title--main border-b flex items-center gap-2 pb-1"
+      class="cv__section-title cv__section-title--main border-b flex items-center gap-2 pb-2.5"
       :class="formSettings.layout === 'one-column' && 'sr-only'"
     >
       <div class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
@@ -28,6 +28,15 @@ const { formSettings } = useCvState()
   background: var(--primary);
 svg {
   color: #fff;
+}
+}
+
+@media print {
+  .bg-change {
+  svg {
+    color: #0000;
+    fill: #000;
+  }
 }
 }
 </style>

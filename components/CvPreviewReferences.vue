@@ -24,7 +24,7 @@ const projectsSorted = computed(() => {
       </div>
       {{ $t("references") }}
     </h4>
-    <ul class="cv__event pl-4">
+    <ul class="cv__event">
       <div
         v-for="project in projectsSorted"
         :key="project.id"
@@ -78,7 +78,6 @@ const projectsSorted = computed(() => {
   line-height: 1.5;
   ul,
   ol {
-    @apply pl-4;
     list-style: initial;
   }
 
@@ -92,7 +91,7 @@ const projectsSorted = computed(() => {
 }
 ul,
   ol {
-    @apply pl-4;
+    @apply pl-[8px];
     list-style: initial;
   }
 </style>
