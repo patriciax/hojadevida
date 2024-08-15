@@ -44,6 +44,8 @@ export default defineNuxtConfig({
     // '@vite-pwa/nuxt',
     '@nuxt/fonts',
     '@nuxt/image',
+    '@pinia/nuxt',
+    '@vueuse/nuxt',
   ],
 
   eslintConfig: {
@@ -60,6 +62,7 @@ export default defineNuxtConfig({
       'postcss-nested': {},
     },
   },
+  plugins: ['~/plugins/axios.ts'],
 
   i18n: {
     strategy: 'prefix_and_default',
@@ -114,11 +117,17 @@ export default defineNuxtConfig({
       redirectOn: 'root',
     },
   },
+  runtimeConfig: {
+    public: {
+      appUrl: 'https://api.hojadevida.digital/',
+    },
+  },
 
   router: {
     options: {
       linkActiveClass: 'form__btn--active',
     },
+
   },
 
   // pwa: {

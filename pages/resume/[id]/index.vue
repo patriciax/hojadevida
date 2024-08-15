@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { useCvState } from '~/data/useCvState'
+// import useResumenStore from '@/stores/resumen'
+// const resumenStore = useResumenStore()
+// await resumenStore.getPerson()
 
 const CVFY_IMAGE = 'http://imgfz.com/i/rTZ5AEK.png'
-
 const { setUpCvSettings } = useCvState()
 const route = useRoute()
 const { t, locale } = useI18n()
-
 const href = `https://hojadevida.digital${route.path}`
 
-onMounted(() => {
-  setUpCvSettings()
+onMounted(async () => {
+  await setUpCvSettings()
 })
 
 useHead({
@@ -97,14 +98,11 @@ useHead({
     },
   ],
 })
-
-const color = ref('')
 </script>
 
 <template>
   <main class="font-app main">
-    <CvSettings class="basis-1/4 min-w-80" @color="color = $event" />
-    <CvPreview class="basis-3/4" :color="color" />
+    <CvPreview class="basis-3/4" />
   </main>
 </template>
 

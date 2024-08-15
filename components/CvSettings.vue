@@ -2,43 +2,39 @@
 import { BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, Cog6ToothIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/solid'
 import { SectionNameList } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
+import useResumenStore from '@/stores/resumen'
 
 const emit = defineEmits(['color'])
+const resumenStore = useResumenStore()
 const {
   formSettings,
   uploadCV,
   clearForm,
   resetForm,
 } = useCvState()
+
+onMounted(() => {
+
+})
+
 const switchLocalePath = useSwitchLocalePath()
 const i18n = useI18n()
 const { downloadPdf } = usePrint()
 const bgCv = ref('white')
 const config = {
   layouts: ['one-column', 'two-column', 'three-column', 'four-column'],
-  selectedColor: '#9D174D',
-
-  // colors: [
-  //   { name: 'pink', color: '#9D174D', darker: '#831843' },
-  //   { name: 'purple', color: '#5B21B6', darker: '#4C1D95' },
-  //   { name: 'blue', color: '#1E40AF', darker: '#1E3A8A' },
-  //   { name: 'green', color: '#065F46', darker: '#064E3B' },
-  //   { name: 'black', color: '#1F2937', darker: '#111827' },
-  // ],
+  selectedColor: formSettings.value.activeColor || '#9D174D',
   languages: [
     { name: 'es-name', code: 'es' },
     { name: 'en-name', code: 'en' },
-    // { name: 'id-name', code: 'id' },
-    // { name: 'fr-name', code: 'fr' },
-    // { name: 'zh-name', code: 'zh' },
-    // { name: 'de-name', code: 'de' },
-    // { name: 'ar-name', code: 'ar' },
-    // { name: 'pt-name', code: 'pt' },
+
   ],
 }
 watch(
   () => config.selectedColor,
   (newColor) => {
+    formSettings.value.activeColor = newColor
+
     localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify({
       ...formSettings.value,
       activeColor: newColor,
@@ -51,23 +47,33 @@ watch(bgCv, (newColor) => {
   emit('color', newColor)
 })
 
-// watch(
-//   () => formSettings.value,
-//   (newValue, oldValue) => {
-//     localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify(newValue))
-//     if (newValue.activeColor !== oldValue.activeColor) {
-//       const newColor = getCurrentColor(newValue.activeColor)
-//       changeColor(newColor.color, newColor.darker)
-//     }
-//   },
-//   { deep: true },
-// )
+watch(
+  () => formSettings.value,
+  (newValue, oldValue) => {
+    localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify(newValue))
+    if (newValue.activeColor !== oldValue.activeColor) {
+      const newColor = config.selectedColor
+      changeColor(newColor)
+    }
+  },
+  { deep: true },
+)
 
-const formSettingsHref = computed(() => {
-  return `data:text/json;charset=utf-8,${encodeURIComponent(
-    JSON.stringify({ formSettings: formSettings.value }),
-  )}`
-})
+// const formSettingsHref = computed(() => {
+//   return `data:text/json;charset=utf-8,${encodeURIComponent(
+//     JSON.stringify({ formSettings: formSettings.value }),
+//   )}`
+// })
+
+async function saveCV() {
+  await resumenStore.addCvSettings(JSON.stringify({ formSettings: formSettings.value }))
+
+  if (resumenStore.isReady) {
+    useNuxtApp().$toast.success('¡Hoja de vida guardado!')
+    resumenStore.getDataUser()
+  }
+  else { useNuxtApp().$toast.error('Error al guardar hoja de vida') }
+}
 
 const availableLocales = computed(() => {
   return i18n.localeCodes.value.filter((locale: any) => !locale.includes('-'))
@@ -649,7 +655,7 @@ function darkenColor(color: string, amount = 0.4): string {
         >
           <span>{{ $t("download-cv-pdf") }}</span>
         </button>
-        <label
+        <!-- <label
           tabindex="0"
           class="form__btn flex justify-center w-full h-fit"
         >
@@ -661,14 +667,17 @@ function darkenColor(color: string, amount = 0.4): string {
             class="hidden"
             @change="uploadCV"
           >
-        </label>
-        <a
-          :href="formSettingsHref"
+        </label> -->
+        <nuxt-link target="_blank" to="/resume" class="form__btn flex justify-center w-full h-fit">
+          {{ $t("upload-cv") }}
+        </nuxt-link>
+        <p
           rel="noopener"
-          :download="`CV_${formSettings.name}_${formSettings.lastName}_${$i18n.locale}.json`"
           class="form__btn flex justify-center w-full h-fit"
-        >{{ $t("download-cv-settings") }}
-        </a>
+          @click="saveCV"
+        >
+          {{ $t("download-cv-settings") }}
+        </p>
       </div>
       <!-- CTA -->
     </form>

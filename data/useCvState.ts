@@ -3,6 +3,8 @@ import {
   cvSettingTemplate,
   cvSettingsEmptyTemplate,
 } from './example-cv-settings'
+import useResumenStore from '@/stores/resumen'
+
 import {
   type Cv,
   type CvEvent,
@@ -13,32 +15,60 @@ import {
   SectionNameList,
 } from '~/types/cvfy'
 
+const resumenStore = useResumenStore()
+
 const state = reactive({
-  formSettings: { ...cvSettingsEmptyTemplate } as Cv,
+  formSettings: {} as Cv,
   isLoading: true,
   isProfilePhotoLoading: false,
 })
 
 export function useCvState() {
   const i18n = useI18n()
-
-  function setUpCvSettings(): void {
+  async function setUpCvSettings(): Promise<void> {
     const locale = `cvSettings-${i18n.locale.value}`
-    const cvSettings = localStorage.getItem(locale)
 
-    if (cvSettings == null) {
+    // Verifica si hay datos en resumenStore.formSettings
+    if (resumenStore.formSettings && Object.keys(resumenStore.formSettings).length > 0) {
       state.formSettings = {
-        ...cvSettingTemplate,
+        ...cvSettingsEmptyTemplate,
+        ...resumenStore.formSettings,
       }
+      localStorage.setItem(locale, JSON.stringify(state.formSettings))
     }
     else {
-      const cvSettingsObj = JSON.parse(cvSettings)
-      state.formSettings = { ...cvSettingsEmptyTemplate, ...cvSettingsObj }
-      patchId(state.formSettings)
+      const cvSettings = localStorage.getItem(locale)
+      if (cvSettings == null) {
+        state.formSettings = {
+          ...cvSettingTemplate,
+        }
+      }
+      else {
+        const cvSettingsObj = JSON.parse(cvSettings)
+        state.formSettings = { ...cvSettingsEmptyTemplate, ...cvSettingsObj }
+        patchId(state.formSettings)
+      }
     }
-    localStorage.setItem(locale, JSON.stringify(state.formSettings))
+
     state.isLoading = false
   }
+  // function setUpCvSettings(): void {
+  //   const locale = `cvSettings-${i18n.locale.value}`
+  //   const cvSettings = localStorage.getItem(locale)
+
+  //   if (cvSettings == null) {
+  //     state.formSettings = {
+  //       ...cvSettingTemplate,
+  //     }
+  //   }
+  //   else {
+  //     const cvSettingsObj = JSON.parse(cvSettings)
+  //     state.formSettings = { ...cvSettingsEmptyTemplate, ...cvSettingsObj }
+  //     patchId(state.formSettings)
+  //   }
+  //   localStorage.setItem(locale, JSON.stringify(state.formSettings))
+  //   state.isLoading = false
+  // }
 
   function addSkill<T extends LanguagesSkill | DefaultSkill>(e: T): void {
     if (e.skillType === 'languages') {
