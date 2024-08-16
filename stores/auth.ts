@@ -83,11 +83,7 @@ export default defineStore({
 
         const { $axios } = useNuxtApp()
 
-        const response = await $axios.post('signup/', body, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
+        const response = await $axios.post('signup/', body)
         if (response.status === 200)
 
           this.changeStatus('ready')
