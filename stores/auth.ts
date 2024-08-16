@@ -84,12 +84,8 @@ export default defineStore({
         const { $axios } = useNuxtApp()
 
         const response = await $axios.post('signup/', body)
-        if (response.status === 200)
-
+        if (response.status === 200 || response.status === 201)
           this.changeStatus('ready')
-
-        else
-          this.changeStatus('error', response.data)
       }
       catch (error: any) {
         this.changeStatus('error', error.response.data.messages.errors)
