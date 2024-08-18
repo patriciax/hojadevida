@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, Cog6ToothIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/solid'
+import type { p } from '@vite-pwa/assets-generator/dist/shared/assets-generator.5e51fd40.mjs'
 import { SectionNameList } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
 import useResumenStore from '@/stores/resumen'
+
+const props = defineProps<{
+  isLoading?: boolean
+  id?: string
+}>()
 
 const emit = defineEmits(['color'])
 const resumenStore = useResumenStore()
@@ -12,6 +18,7 @@ const {
   clearForm,
   resetForm,
 } = useCvState()
+const routerId = ref()
 
 onMounted(() => {
 
@@ -23,25 +30,25 @@ const { downloadPdf } = usePrint()
 const bgCv = ref('white')
 const config = {
   layouts: ['one-column', 'two-column', 'three-column', 'four-column'],
-  selectedColor: formSettings.value.activeColor || '#9D174D',
+  selectedColor: resumenStore.formSettings?.activeColor || '#4f4f4f',
   languages: [
     { name: 'es-name', code: 'es' },
     { name: 'en-name', code: 'en' },
 
   ],
 }
-watch(
-  () => config.selectedColor,
-  (newColor) => {
-    formSettings.value.activeColor = newColor
+// watch(
+//   () => config.selectedColor,
+//   (newColor) => {
+//     formSettings.value.activeColor = newColor
 
-    localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify({
-      ...formSettings.value,
-      activeColor: newColor,
-    }))
-    changeColor(newColor)
-  },
-)
+//     localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify({
+//       ...formSettings.value,
+//       activeColor: newColor,
+//     }))
+//     changeColor(newColor)
+//   },
+// )
 watch(bgCv, (newColor) => {
   localStorage.setItem('bgCv', newColor)
   emit('color', newColor)
@@ -53,7 +60,7 @@ watch(
     localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify(newValue))
     if (newValue.activeColor !== oldValue.activeColor) {
       const newColor = config.selectedColor
-      changeColor(newColor)
+      changeColor(resumenStore.formSettings?.activeColor)
     }
   },
   { deep: true },
@@ -83,6 +90,12 @@ function changeColor(color: string): void {
   config.selectedColor = color
   document.documentElement.style.setProperty('--primary', color)
   document.documentElement.style.setProperty('--primary-darker', darkenColor(color))
+  formSettings.value.activeColor = color
+
+  localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify({
+    ...formSettings.value,
+    activeColor: color,
+  }))
 }
 
 function darkenColor(color: string, amount = 0.4): string {
@@ -107,6 +120,16 @@ function darkenColor(color: string, amount = 0.4): string {
 //     config.colors.find(color => color.color === colorValue)
 //     || config.colors[1]
 //   )
+// }
+// function copyLink() {
+//   const url = `http://localhost:3000/resume/${resumenStore.data.id}`
+//   navigator.clipboard.writeText(url)
+
+//   // useNuxtApp().$toast.success('¡Link copiado al portapapeles!')
+// }
+// function goToRoute() {
+//   navigateTo(`/resume/${resumenStore.data.id}`)
+//   copyLink()
 // }
 </script>
 
@@ -668,9 +691,12 @@ function darkenColor(color: string, amount = 0.4): string {
             @change="uploadCV"
           >
         </label> -->
-        <nuxt-link target="_blank" to="/resume" class="form__btn flex justify-center w-full h-fit">
+        <NuxtLink
+          target="_blank" :to="`/resume/${props.id}`"
+          class="form__btn flex justify-center w-full h-fit"
+        >
           {{ $t("upload-cv") }}
-        </nuxt-link>
+        </NuxtLink>
         <p
           rel="noopener"
           class="form__btn flex justify-center w-full h-fit"

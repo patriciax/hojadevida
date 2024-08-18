@@ -3,8 +3,8 @@ import useLoginStore from '@/stores/auth'
 
 const loginStore = useLoginStore()
 const dataForm = ref({
-  email: '',
-  password: '',
+  email: 'yively.pa@gmail.com',
+  password: '12345678',
 })
 async function login() {
   await loginStore.login(dataForm.value)

@@ -76,6 +76,35 @@ export default defineStore({
         this.changeStatus('error', error.response.data)
       }
     },
+    async loginTest(body: any) {
+      try {
+        this.changeStatus('loading')
+
+        const { $axios } = useNuxtApp()
+
+        const response = await $axios.post('signin/', body, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        if (response.status === 200) {
+          this._token = response.data.token
+          this._authenticated = true
+          const expiration = Date.now() + (30 * 60 * 1000)
+          sessionStorage.setItem('access', response.data.token)
+          sessionStorage.setItem('access_expiration', expiration.toString())
+          this.changeStatus('ready')
+        }
+        else {
+          this.changeStatus('error', response)
+        }
+
+        this.changeStatus('ready')
+      }
+      catch (error: any) {
+        this.changeStatus('error', error.response.data)
+      }
+    },
 
     async register(body: any) {
       try {
@@ -86,6 +115,8 @@ export default defineStore({
         const response = await $axios.post('signup/', body)
         if (response.status === 200 || response.status === 201)
           this.changeStatus('ready')
+
+        this.changeStatus('ready')
       }
       catch (error: any) {
         this.changeStatus('error', error.response.data.messages.errors)

@@ -7,6 +7,8 @@ interface State {
   _data: any | null
   _formSettings: any | null
   _profile: any | null
+  _isPassword: boolean
+  _codeUrl: string | null
 
 }
 
@@ -18,6 +20,8 @@ export default defineStore({
     _data: null,
     _formSettings: null,
     _profile: null,
+    _isPassword: true,
+    _codeUrl: null,
 
   }),
   getters: {
@@ -28,9 +32,10 @@ export default defineStore({
     error: state => state._error,
     data: state => state._data,
     userId: state => state._data.id,
-    codeUrl: state => state._data.code_url,
     profile: state => state._profile,
     formSettings: state => state._formSettings,
+    isPassword: state => state._isPassword,
+    codeUrl: state => state._codeUrl,
 
   },
   actions: {
@@ -135,7 +140,59 @@ export default defineStore({
         this.changeStatus('error', error)
       }
     },
+    async getDataUserExternal(id: any) {
+      try {
+        this.changeStatus('loading')
 
+        const { $axios } = useNuxtApp()
+
+        const response = await $axios.get(`api/v1/people/${id}/`, {
+          headers: {
+            'Authorization': `Token ${sessionStorage.getItem('access')}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        if (response.status === 200) {
+          this._profile = response.data
+          this._formSettings = response.data[0].formSettings
+          this._codeUrl = response.data[0].code_url
+          this.changeStatus('ready')
+        }
+        else {
+          this.changeStatus('error', response)
+        }
+
+        this.changeStatus('ready')
+      }
+      catch (error) {
+        this.changeStatus('error', error)
+      }
+    },
+    async getCvPassword(body: any) {
+      try {
+        this.changeStatus('loading')
+
+        const { $axios } = useNuxtApp()
+
+        const response = await $axios.post(`/share-resume/`, body, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        if (response.status === 200) {
+          this._isPassword = false
+          this.changeStatus('ready')
+        }
+        else {
+          this.changeStatus('error', response)
+        }
+
+        this.changeStatus('ready')
+      }
+      catch (error) {
+        this.changeStatus('error', error)
+      }
+    },
     changeStatus(status: 'loading' | 'ready' | 'readyPass' | 'error', error: any = null) {
       this._status = status
       if (status === 'error')

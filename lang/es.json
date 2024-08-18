@@ -80,5 +80,8 @@
   "addnewpasss": "Añadir",
   "addnewpasssmodal": " Añade una contraseña a su CV",
   "singIn": " Acceda a su cuenta",
-  "regsiterIn": "Crea una cuenta"
+  "regsiterIn": "Crea una cuenta",
+  "general": " Diseño y Apariencia",
+  "addnewpasssmodaluser": "Ingrese la contraseña del CV",
+  "addnewpasssuser": "Ingresar"
 }

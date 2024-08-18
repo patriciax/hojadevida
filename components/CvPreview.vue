@@ -5,6 +5,7 @@ import { useCvState } from '~/data/useCvState'
 
 const props = defineProps<{
   color?: string
+  loading?: boolean
 }>()
 const { isLoading, formSettings } = useCvState()
 </script>
@@ -12,15 +13,14 @@ const { isLoading, formSettings } = useCvState()
 <template>
   <div
     class="
-
+ overflow-y-auto overflow-x-hidden
     cvWrapper
     font-normal
     text-slate-800 text-sm/normal
     bg-white
     relative
     w-full
-    overflow-y-auto
-    overflow-x-hidden
+
     pt-0
     px-0
     p-6
@@ -37,7 +37,8 @@ const { isLoading, formSettings } = useCvState()
         aria-label="CV preview"
         class="cv shadow-lg mt-6 bg-white relative"
         :class="[
-          { blur: isLoading },
+
+          { blur: isLoading || props.loading },
           formSettings.layout === 'one-column' && 'p-10 flex flex-col gap-4',
           formSettings.layout === 'two-column' && 'grid grid-cols-3 ',
           formSettings.layout === 'three-column' && 'grid grid-cols-2',

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { LockClosedIcon, XMarkIcon } from '@heroicons/vue/24/solid'
+import { useRouter } from 'vue-router'
 import Input from '@/components/common/Input.vue'
 import Modal from '@/components/common/Modal.vue'
 import { useCvState } from '~/data/useCvState'
@@ -10,10 +11,10 @@ const resumenStore = useResumenStore()
 
 const loginStore = useLoginStore()
 const CVFY_IMAGE = 'http://imgfz.com/i/rTZ5AEK.png'
-
 const { setUpCvSettings } = useCvState()
 const route = useRoute()
 const { t, locale } = useI18n()
+const router = useRouter()
 
 const href = `https://hojadevida.digital${route.path}`
 
@@ -22,6 +23,7 @@ onMounted(async () => {
   await resumenStore.getDataUser()
   await setUpCvSettings()
 })
+
 definePageMeta({
   middleware: 'auth',
 })
@@ -141,7 +143,7 @@ function openModalPassword() {
 }
 function logout() {
   loginStore.reset()
-  navigateTo('/login')
+  router.push('/login')
 }
 </script>
 
@@ -183,7 +185,7 @@ function logout() {
       </section>
     </Modal>
 
-    <CvSettings class="basis-1/4 min-w-80" @color="color = $event" />
+    <CvSettings :id="resumenStore.data?.id" class="basis-1/4 min-w-80" :is-loading="resumenStore.isLoading" @color="color = $event" />
     <CvPreview class="basis-3/4" :color="color">
       <nav class="bg-white  z-[1] w-full top-0  border-gray-200 shadow-sm ">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">

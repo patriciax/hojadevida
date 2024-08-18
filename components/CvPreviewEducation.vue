@@ -40,9 +40,9 @@ const educationSorted = computed(() => {
             <template v-else>{{ formatDate(edu.to) }}</template>
           </span>
         </div>
-        <!-- <p class="justify-self-start col-span-2 my-1">
+        <p class="justify-self-start col-span-2 my-1">
           {{ edu.location }}
-        </p> -->
+        </p>
 
         <CvTextEditor
           v-model="edu.summary"

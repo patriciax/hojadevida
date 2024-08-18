@@ -15,8 +15,6 @@ import {
   SectionNameList,
 } from '~/types/cvfy'
 
-const resumenStore = useResumenStore()
-
 const state = reactive({
   formSettings: {} as Cv,
   isLoading: true,
@@ -24,6 +22,8 @@ const state = reactive({
 })
 
 export function useCvState() {
+  const resumenStore = useResumenStore()
+
   const i18n = useI18n()
   async function setUpCvSettings(): Promise<void> {
     const locale = `cvSettings-${i18n.locale.value}`
