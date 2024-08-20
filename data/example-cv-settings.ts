@@ -90,6 +90,9 @@ export const cvSettingTemplate: Cv = {
   displayWork: true,
   displayReferences: true,
   activeColor: '#5B21B6',
+  font: 'Raleway',
+  country: '',
+  city: '',
 }
 
 export const cvSettingsEmptyTemplate: Cv = {
@@ -122,4 +125,8 @@ export const cvSettingsEmptyTemplate: Cv = {
   displayWork: true,
   displayReferences: true,
   activeColor: '#5B21B6',
+  font: 'Raleway',
+  country: '',
+  city: '',
+
 }

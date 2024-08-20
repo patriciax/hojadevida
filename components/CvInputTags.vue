@@ -95,7 +95,7 @@ function onDrop() {
 </script>
 
 <template>
-  <div class="form__group mb-10 border-b pb-10 mt-4 ">
+  <div class="form__group mb-10 border-b pb-10 mt-4 border-gray-200">
     <label
       class="form__label"
       :for="tagListName"

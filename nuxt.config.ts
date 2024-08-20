@@ -47,9 +47,18 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@vueuse/nuxt',
     '@pinia/nuxt',
-    "@samk-dev/nuxt-vcalendar"
-  ],
+    '@samk-dev/nuxt-vcalendar',
 
+  ],
+  fonts: {
+    provider: 'google',
+
+    google: {
+      families: {
+        Raleway: true,
+      },
+    },
+  },
   eslintConfig: {
     setup: false,
   },

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, Cog6ToothIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/solid'
 import type { p } from '@vite-pwa/assets-generator/dist/shared/assets-generator.5e51fd40.mjs'
+import InputPhoneNumber from '@/components/common/InputPhoneNumber.vue'
 import { SectionNameList } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
 import useResumenStore from '@/stores/resumen'
@@ -19,9 +20,10 @@ const {
   resetForm,
 } = useCvState()
 const routerId = ref()
-
+const countryCode = ref(null)
+const countryCodeName = ref(null)
 onMounted(() => {
-
+  // phone.value = resumenStore.formSettings?.phoneNumber || ''
 })
 
 const switchLocalePath = useSwitchLocalePath()
@@ -73,11 +75,18 @@ watch(
 // })
 
 async function saveCV() {
-  await resumenStore.addCvSettings(JSON.stringify({ formSettings: formSettings.value }))
+  // formSettings.value.phoneNumber = `${countryCode.value}${formSettings.value.phoneNumber}`
+  // const phoneNumberWithCountryCode = `${countryCode.value}${formSettings.value.phoneNumber}`
+  await resumenStore.addCvSettings(JSON.stringify({ formSettings: {
+    ...formSettings.value,
+    // phoneNumber: phoneNumberWithCountryCode,
+    countryCode: countryCode.value,
+    countryCodeName: countryCodeName.value,
+  } }))
 
   if (resumenStore.isReady) {
     useNuxtApp().$toast.success('¡Hoja de vida guardado!')
-    resumenStore.getDataUser()
+    await resumenStore.getDataUser()
   }
   else { useNuxtApp().$toast.error('Error al guardar hoja de vida') }
 }
@@ -121,19 +130,22 @@ function darkenColor(color: string, amount = 0.4): string {
 //     || config.colors[1]
 //   )
 // }
+
+const newUrl = ref('http://localhost:3000/resume/')
+// https://bucolic-souffle-ead4bd.netlify.app/resume/
 async function copyLink() {
-  const url = `https://bucolic-souffle-ead4bd.netlify.app/resume/${resumenStore.data.id}`
+  const url = `${newUrl.value}${resumenStore.data.id}`
   await navigator.clipboard.writeText(url)
 
   useNuxtApp().$toast.success('¡Link copiado al portapapeles!')
 }
 function goToRoute() {
-  const url = `https://bucolic-souffle-ead4bd.netlify.app/resume/${resumenStore.data.id}`
+  const url = `${newUrl.value}${resumenStore.data.id}`
   window.open(url, '_blank'); copyLink()
 }
 
 function shared(id: any) {
-  const _url = `https://bucolic-souffle-ead4bd.netlify.app/resume/${resumenStore.data.id}`
+  const _url = `${newUrl.value}${resumenStore.data.id}`
   if (navigator.share) {
     navigator.share({
       title: 'CV',
@@ -149,6 +161,14 @@ function shared(id: any) {
   else {
     goToRoute()
   }
+}
+
+function changeFont(font: string) {
+  formSettings.value.font = font
+}
+function handleInputPhone(value: any) {
+  const number = value.nationalNumber
+  formSettings.value.phoneNumber = `${number}`
 }
 </script>
 
@@ -344,6 +364,14 @@ function shared(id: any) {
                 </div>
               </fieldset>
               <!-- LAYOUT -->
+              <fieldset class="form__section pt-3 mt-3 ">
+                <legend class="form__legend">
+                  {{ $t("layout-fonts") }}
+                </legend>
+                <section>
+                  <SelectFonts :current-font="formSettings.font" @change-font="changeFont" />
+                </section>
+              </fieldset>
 
               <!-- COLOR THEME -->
               <fieldset class="form__section">
@@ -365,11 +393,11 @@ function shared(id: any) {
                   {{ $t("color-theme-bg") }}
                 </legend>
                 <div class="flex gap-4 mb-4 items-center ">
-                  <label :class="[bgCv === 'black' ? 'shadow-sm text-gray-800 border' : 'bg-gray-700 text-white']" class=" cursor-pointer text-sm px-4 py-3   rounded-lg">
+                  <label :class="[bgCv === 'black' ? 'shadow-sm text-gray-800 ' : 'bg-gray-700 text-white']" class=" cursor-pointer text-sm px-4 py-3   rounded-lg">
                     <input v-model="bgCv" type="radio" value="white">
                     Claro
                   </label>
-                  <label :class="[bgCv === 'black' ? 'bg-gray-700 text-white' : 'shadow-sm text-gray-800 border']" class="text-sm cursor-pointer  px-4 py-3    rounded-lg">
+                  <label :class="[bgCv === 'black' ? 'bg-gray-700 text-white' : 'shadow-sm text-gray-800 ']" class="text-sm cursor-pointer  px-4 py-3    rounded-lg">
                     <input v-model="bgCv" type="radio" value="black">
                     Oscuro
                   </label>
@@ -421,7 +449,7 @@ function shared(id: any) {
             </legend>
           </template>
           <template #content>
-            <div class="grid grid-cols-2 gap-x-3 gap-y-10">
+            <div class="grid grid-cols-2 gap-x-3 gap-y-6">
               <div class="form__group col-span-full">
                 <span class="form__label">{{ $t("profile-image") }} </span>
                 <CvProfileImageUploader
@@ -476,6 +504,38 @@ function shared(id: any) {
                   type="email"
                 >
               </div>
+
+              <div class="form__group">
+                <p
+                  class="mb-4"
+                  for="email"
+                >
+                  {{ $t("country") }}
+                </p>
+
+                <select v-model="formSettings.country" class="mb-4 form__control h-10 ">
+                  <option disabled value="" v-text=" $t('selectFont')" />
+                  <option v-for="(item, index) in 4" :key="index">
+                    {{ item }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form__group ">
+                <p
+                  class="mb-4"
+                  for="email"
+                >
+                  {{ $t("city") }}
+                </p>
+
+                <select v-model="formSettings.city" class="mb-4 form__control h-10 ">
+                  <option disabled value="" v-text=" $t('selectFont')" />
+                  <option v-for="(item, index) in 4" :key="index">
+                    {{ item }}
+                  </option>
+                </select>
+              </div>
               <div class="form__group">
                 <label
                   class="form__label"
@@ -493,12 +553,14 @@ function shared(id: any) {
                   class="form__label"
                   for="phone"
                 > {{ $t("phone-number") }}</label>
-                <input
+                <InputPhoneNumber id="phone" v-model="formSettings.phoneNumber" placeholder="1234569" class="mt-px" :code="formSettings.countryCodeName" @code="countryCodeName = $event " @country-code="countryCode = $event " @update="handleInputPhone" />
+
+                <!-- <input
                   id="phone"
                   v-model="formSettings.phoneNumber"
                   class="form__control"
                   type="tel"
-                >
+                > -->
               </div>
               <div class="form__group col-span-full">
                 <label
@@ -733,7 +795,7 @@ function shared(id: any) {
 
 <style lang="postcss" scoped>
 .settings {
-  @apply bg-[#f9f9f9] bg-opacity-100 shadow-lg font-bold z-10;
+  @apply bg-[#f9f9f9dc]  shadow-lg font-bold z-10;
 
   @media screen and (min-width: 1024px) {
     & {

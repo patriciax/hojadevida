@@ -83,5 +83,12 @@
   "regsiterIn": "Crea una cuenta",
   "general": " Diseño y Apariencia",
   "addnewpasssmodaluser": "Ingrese la contraseña del CV",
-  "addnewpasssuser": "Ingresar"
+  "addnewpasssuser": "Ingresar",
+  "layout-fonts": "Tipo de fuente",
+  "selectFont": "Seleccionar",
+  "domicilio": "Domicilio",
+  "country": "Pais",
+  "city": "Ciudad",
+  "title_edu": "Nombre de la institución",
+  "title_company": "Empresa"
 }

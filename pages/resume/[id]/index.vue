@@ -6,13 +6,14 @@ import Modal from '@/components/common/Modal.vue'
 import { useCvState } from '~/data/useCvState'
 import useLoginStore from '@/stores/auth'
 import useResumenStore from '@/stores/resumen'
+import useFontStore from '@/stores/font'
 
 const {
   formSettings,
 
 } = useCvState()
 const resumenStore = useResumenStore()
-
+const fontStore = useFontStore()
 const loginStore = useLoginStore()
 const CVFY_IMAGE = 'http://imgfz.com/i/rTZ5AEK.png'
 const router = useRouter()
@@ -127,11 +128,6 @@ const error = ref({
   password: '',
 })
 async function sendPassword() {
-  // if (dataForm.value.password !== dataForm.value.confirm_password) {
-  //   error.value.password = 'Las contraseñas no coinciden'
-  //   return
-  // }
-
   await resumenStore.getCvPassword({
     code: resumenStore.codeUrl,
     password: dataForm.value.password,
@@ -183,13 +179,31 @@ watch(
 
 onMounted(async () => {
   await resumenStore.getDataUserExternal({
-    person: `'${router.currentRoute.value.params.id}'`,
+    person: router.currentRoute.value.params.id,
   })
   await setUpCvSettings()
-
+  fontStore.getFont(resumenStore.formSettings.font)
+  changeFont()
   if (resumenStore.isPassword)
     showPassword.value = true
 })
+
+function changeFont() {
+  const fontName = resumenStore.formSettings?.font.replace(/ /g, '+')
+  const link = document.createElement('link')
+  link.href = `https://fonts.googleapis.com/css2?family=${fontName}&display=swap`
+  link.rel = 'stylesheet'
+
+  const existingLink = document.getElementById('font-link')
+  if (existingLink)
+    existingLink.parentNode.removeChild(existingLink)
+
+  link.id = 'font-link'
+  document.head.appendChild(link)
+
+  const textContainer = document.querySelector('.font-selected')
+  textContainer.style.fontFamily = resumenStore.formSettings?.font
+}
 </script>
 
 <template>

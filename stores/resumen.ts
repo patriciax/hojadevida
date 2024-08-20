@@ -146,7 +146,11 @@ export default defineStore({
 
         const { $axios } = useNuxtApp()
 
-        const response = await $axios.post(`api/resume/`, body)
+        const response = await $axios.post(`/resume/`, body, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
         if (response.status === 200) {
           this._profile = response.data
           this._formSettings = response.data[0].formSettings

@@ -42,6 +42,9 @@ export interface Cv {
   displayWork: boolean
   displayReferences: boolean
   activeColor: string
+  font: string
+  country: string
+  city: string
 }
 export interface CvEvent {
   id: string

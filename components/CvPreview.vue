@@ -31,7 +31,7 @@ const { isLoading, formSettings } = useCvState()
   >
     <slot />
 
-    <div style="min-height: var(--height);">
+    <div class="font-selected" style="min-height: var(--height);">
       <div
         tabindex="0"
         aria-label="CV preview"

@@ -15,14 +15,33 @@ const { setUpCvSettings } = useCvState()
 const route = useRoute()
 const { t, locale } = useI18n()
 const router = useRouter()
-
+const loadingFont = ref(true)
 const href = `https://hojadevida.digital${route.path}`
 
 onMounted(async () => {
   await resumenStore.getPerson()
   await resumenStore.getDataUser()
   await setUpCvSettings()
+  changeFont()
+  loadingFont.value = false
 })
+
+function changeFont() {
+  const fontName = resumenStore.formSettings?.font.replace(/ /g, '+')
+  const link = document.createElement('link')
+  link.href = `https://fonts.googleapis.com/css2?family=${fontName}&display=swap`
+  link.rel = 'stylesheet'
+
+  const existingLink = document.getElementById('font-link')
+  if (existingLink)
+    existingLink.parentNode.removeChild(existingLink)
+
+  link.id = 'font-link'
+  document.head.appendChild(link)
+
+  const textContainer = document.querySelector('.font-selected')
+  textContainer.style.fontFamily = resumenStore.formSettings?.font
+}
 
 definePageMeta({
   middleware: 'auth',
@@ -143,7 +162,7 @@ function openModalPassword() {
 }
 function logout() {
   loginStore.reset()
-  router.push('/login')
+  router.push({ path: '/login' })
 }
 </script>
 
@@ -186,7 +205,11 @@ function logout() {
     </Modal>
 
     <CvSettings :id="resumenStore.data?.id" class="basis-1/4 min-w-80" :is-loading="resumenStore.isLoading" @color="color = $event" />
-    <CvPreview class="basis-3/4" :color="color">
+    <CvPreview
+      :loading="loadingFont || resumenStore.isLoading"
+      class="basis-3/4
+" :color="color"
+    >
       <nav class="bg-white  z-[1] w-full top-0  border-gray-200 shadow-sm ">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <div class="flex h-9 items-center gap-4 cursor-pointer text-gray-700 hover:text-gray-900">

@@ -30,7 +30,7 @@
 
 }
 
-.m-country-selector__country-flag[data-v-1e2814b9] {
+.m-country-selector__country-flag {
 
   top: 8px;
 }
@@ -38,3 +38,118 @@
   width: rem!important;
 
 } */
+.m-phone-number-input.--responsive .m-phone-input.--border-radius .m-input-wrapper {
+
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px!important;
+}
+
+.m-phone-number-input.--responsive .m-country-selector__select .m-select-input .m-input-wrapper {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-bottom-left-radius: 10px!important;
+  border-top-left-radius: 10px !important;
+}
+@media screen and (max-width: 768px) {
+  .m-phone-input {
+    min-width: max-content !important;
+    width: 100%!important;
+}
+.m-phone-number-input{
+
+  width: 100% !important;
+}
+}
+@media screen and (max-width: 421px) {
+  .m-phone-number-input{
+  
+    flex-direction: row !important;
+}
+/* .m-phone-number-input.--responsive .m-phone-input {
+  margin-left: -.125rem !important;
+  margin-top: 0 !important;
+  flex: 1 1 auto !important;
+} */
+.m-country-selector, .m-input {
+  /* width: 6.5rem !important; */
+  /* margin-right: 3rem!important; */
+}
+/* .m-phone-number-input.--responsive .m-country-selector {
+  min-width: inherit;
+} */
+/* .m-phone-input {
+  min-width: 14rem !important;
+} */
+.m-phone-number-input{
+
+  /* width: 25% !important; */
+}
+.m-phone-number-input.--responsive .m-country-selector{
+  min-width: auto!important;
+}
+.m-phone-input {
+  min-width: auto !important;
+  width: 70%!important;
+}
+}
+@media print {
+  nav {
+    display: none;
+  }
+}
+
+.form__group .m-phone-number-input  {
+  /* --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    transition: all 0.1s linear;
+    outline: none; */
+
+
+}
+.form__group .m-input{
+  height: 34px!important;
+}
+.form__group .m-country-selector,.form__group .m-input {
+    width: 2.5rem !important;
+}
+.form__group  .m-phone-number-input.--responsive .m-country-selector__select .m-select-input .m-input-wrapper {
+background: #fff;
+border: none;
+  border-radius: 5px !important;
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  transition: all 0.1s linear;
+  outline: none;
+}
+.form__group  .m-phone-number-input.--responsive .m-phone-input.--border-radius .m-input-wrapper {
+
+  background: #fff;
+  border: none;
+    border-radius: 5px !important;
+    --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    transition: all 0.1s linear;
+    outline: none;
+}
+
+.form__group  .m-country-selector__country-flag {
+
+  top: 3px;
+  left: 11px!important;
+}
+
+.form__group .m-phone-input {
+  min-width: 10rem !important;
+}
+.form__group .m-select .m-select-list[data-v-ca1ac71d] {
+  width: 187px;
+}

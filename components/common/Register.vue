@@ -57,10 +57,10 @@ async function register() {
   await loginStore.register(dataForm.value)
 
   if (loginStore.isReady) {
-    useNuxtApp().$toast.success('¡Registro exitoso!')
-    setTimeout(() => {
-      router.push('/login')
-    }, 2000)
+    await useNuxtApp().$toast.success('¡Registro exitoso!')
+    // setTimeout(() => {
+    router.push('/login')
+    // }, 2000)
   }
 
   if (loginStore.isError) {
@@ -173,7 +173,7 @@ function formatDatenew(date: any) {
                 <input id="password" v-model="dataForm.password" type="password" name="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5   " required @input="error.password = ''">
               </div>
               <div>
-                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Confirmar ontraseña</label>
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Confirmar contraseña</label>
                 <input id="password" v-model="dataForm.confirm_password" type="password" name="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5   " required @input="error.password = ''">
               </div>
               <p v-if="error.password" class="text-md bg-red-100 w-full  col-span-2 rounded-md text-center py-2 text-red-600 dark:text-red-500">

@@ -78,5 +78,12 @@
   "addnewpasssmodal": " Add a password to your CV",
   "singIn": " Sign in to your account",
   "regsiterIn": "Create an account",
-  "general": " Design and Appearance"
+  "general": " Design and Appearance",
+  "layout-fonts": "Fonts type",
+  "selectFont": "Select font",
+  "domicilio": "Address",
+  "country": "Country",
+  "city": "City",
+  "title_edu": "Nombre de la institución",
+  "title_company": "Company"
 }

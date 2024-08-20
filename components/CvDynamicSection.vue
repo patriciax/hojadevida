@@ -186,10 +186,19 @@ function focusEditor(id: string) {
                   class="form__label"
                   :for="`entryTitle--${entry.id}`"
                 >
-                  <template v-if="sectionName === 'education'" />
-                  <template v-else-if="sectionName === 'projects'" />
-                  <template v-else />
-                  {{ $t("title") }}
+                  <template v-if="sectionName === 'education'">
+                    {{ $t("title_edu") }}
+
+                  </template>
+                  <template v-if="sectionName === 'projects'" />
+                  <template v-if="sectionName === 'work'">
+
+                    {{ $t("title_company") }}
+
+                  </template>
+                  <!-- <template v-else>
+                    {{ $t("title") }}
+                  </template> -->
                 </label>
                 <input
                   :id="`entryTitle--${entry.id}`"

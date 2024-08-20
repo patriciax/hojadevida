@@ -37,11 +37,11 @@ onMounted(() => {
           </h1>
           <form class="space-y-4 md:space-y-6" @submit.prevent="login">
             <div>
-              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
+              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Ingrese su correo electrónico</label>
               <input id="email" v-model="dataForm.email" type="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="name@email.com" required="">
             </div>
             <div>
-              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Contraseña</label>
+              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Ingrese la contraseña</label>
               <input id="password" v-model="dataForm.password" type="password" name="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5   " required="">
             </div>
             <!-- <div class="flex items-center justify-between">

@@ -109,7 +109,7 @@ export default defineComponent({
 
 .expansion-panel {
   overflow: hidden;
-  @apply  bg-opacity-100 relative px-6 py-3 border-b;
+  @apply  bg-opacity-100 relative px-6 py-3 border-b border-gray-200;
 
   & & {
     @apply p-1;
