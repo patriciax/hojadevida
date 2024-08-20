@@ -131,7 +131,7 @@ function darkenColor(color: string, amount = 0.4): string {
 //   )
 // }
 
-const newUrl = ref('http://localhost:3000/resume/')
+const newUrl = ref('https://bucolic-souffle-ead4bd.netlify.app/resume/')
 // https://bucolic-souffle-ead4bd.netlify.app/resume/
 async function copyLink() {
   const url = `${newUrl.value}${resumenStore.data.id}`
