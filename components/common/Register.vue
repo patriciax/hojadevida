@@ -1,14 +1,25 @@
 <script lang="ts" setup>
+import { DatePicker } from 'v-calendar'
 import useLoginStore from '@/stores/auth'
+import { ref } from '#imports'
+import 'v-calendar/style.css'
+import InputPhoneNumber from './InputPhoneNumber.vue'
+import { useRouter } from 'vue-router'
 
+const masks = ref({
+  input: 'YYYY-MM-DD',
+})
+const router = useRouter()
+
+const countryCode = ref(null)
 const loginStore = useLoginStore()
 const isInvalidLastName = ref(false)
 const message = ref('')
-const rulesPassword = ref(false)
 const error = ref({
   dni: '',
   email: '',
   password: '',
+  date: '',
 })
 
 const dataForm = ref({
@@ -19,6 +30,8 @@ const dataForm = ref({
   last_name: '',
   phone_number: '',
   dni: '',
+  date_of_birth: '',
+
 })
 async function register() {
   isInvalidLastName.value = dataForm.value.last_name.length < 4
@@ -35,12 +48,18 @@ async function register() {
     return
   }
 
+  if (dataForm.value.date_of_birth === '')
+    error.value.date = 'Campo requerido'
+
+  dataForm.value.phone_number = countryCode.value + dataForm.value.phone_number
+  dataForm.value.date_of_birth = formatDatenew(dataForm.value.date_of_birth)
+
   await loginStore.register(dataForm.value)
 
   if (loginStore.isReady) {
     useNuxtApp().$toast.success('¡Registro exitoso!')
     setTimeout(() => {
-      navigateTo('/login')
+      router.push('/login')
     }, 2000)
   }
 
@@ -54,7 +73,26 @@ async function register() {
 
     if (loginStore.error?.password)
       error.value.password = 'Contraseña invalida'
+
+    if (loginStore.error.date_of_birth)
+      error.value.date = loginStore.error.date_of_birth
   }
+}
+function handleInputPhone(value: any) {
+  countryCode.value = value.countryCallingCode
+  dataForm.value.phone_number = value.nationalNumber
+}
+
+const minDate = new Date()
+minDate.setFullYear(minDate.getFullYear() - 18)
+
+function formatDatenew(date: any) {
+  if (!date)
+    return ''
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
 }
 </script>
 
@@ -64,7 +102,7 @@ async function register() {
       <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 ">
         <img class="w-52 mr-2" src="/assets/img/logo.png" alt="logo">
       </a>
-      <div class="w-full relative bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-lg xl:p-0 ">
+      <div class="w-full relative bg-white rounded-lg shadow  md:mt-0 sm:max-w-xl xl:p-0 ">
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
             {{ $t("regsiterIn") }}
@@ -81,12 +119,14 @@ async function register() {
                 {{ message }}
               </p>
             </div>
-            <div class="col-span-2">
-              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
-              <input id="email" v-model="dataForm.email" :class="{ 'border-red-500': error.email }" type="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="name@email.com" required @input="error.email = ''">
-              <p v-if="error.email" class="text-xs absolute max-w-max text-red-600 dark:text-red-500">
-                {{ error.email }}
-              </p>
+            <div class="col-span-">
+              <div>
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
+                <input id="email" v-model="dataForm.email" :class="{ 'border-red-500': error.email }" type="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="name@email.com" required @input="error.email = ''">
+                <p v-if="error.email" class="text-xs absolute max-w-max text-red-600 dark:text-red-500">
+                  {{ error.email }}
+                </p>
+              </div>
             </div>
             <div>
               <label for="dni" class="block mb-2 text-sm font-medium text-gray-900 ">Identificación</label>
@@ -95,10 +135,38 @@ async function register() {
                 {{ error.dni }}
               </p>
             </div>
+
             <div>
               <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 ">Teléfono</label>
-              <input id="phone" v-model="dataForm.phone_number" type="text" name="phone" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="571234569" required>
+              <InputPhoneNumber id="phone" v-model="dataForm.phone_number" placeholder="1234569" class="mt-px" @country-code="countryCode" @update="handleInputPhone" />
+
+              <!-- <input id="phone" v-model="dataForm.phone_number" type="text" name="phone" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="571234569" required> -->
             </div>
+            <div>
+              <label for="name" class="block mb-1 mt-1 text-sm font-medium text-gray-900 ">Fecha de nacimiento</label>
+
+              <DatePicker v-model="dataForm.date_of_birth" :masks="masks" :max-date="minDate" mode="date">
+                <template #default="{ togglePopover }">
+                  <button
+                    type="button"
+                    :class="{ ' border-red-500': error.date }"
+
+                    class="bg-gray-50 border text-start h-[46px] border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                    @click="
+                      () => {
+                        togglePopover()
+                      }
+                    "
+                  >
+                    {{ formatDatenew(dataForm.date_of_birth) }}
+                  </button>
+                </template>
+              </DatePicker>
+              <p v-if="error.date" class="text-xs absolute max-w-max text-red-600 dark:text-red-500">
+                {{ error.date }}
+              </p>
+            </div>
+
             <section class="group col-span-2 flex flex-col lg:grid grid-cols-2 gap-3">
               <div class="">
                 <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Contraseña</label>

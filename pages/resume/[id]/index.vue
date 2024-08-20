@@ -182,11 +182,9 @@ watch(
 )
 
 onMounted(async () => {
-  // await loginStore.loginTest({
-  //   email: 'yively.pa@gmail.com',
-  //   password: '12345678',
-  // })
-  await resumenStore.getDataUserExternal(router.currentRoute.value.params.id as string)
+  await resumenStore.getDataUserExternal({
+    person: `'${router.currentRoute.value.params.id}'`,
+  })
   await setUpCvSettings()
 
   if (resumenStore.isPassword)

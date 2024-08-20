@@ -3,8 +3,8 @@ import useLoginStore from '@/stores/auth'
 
 const loginStore = useLoginStore()
 const dataForm = ref({
-  email: 'yively.pa@gmail.com',
-  password: '12345678',
+  email: '',
+  password: '',
 })
 async function login() {
   await loginStore.login(dataForm.value)
@@ -30,7 +30,7 @@ onMounted(() => {
       <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 ">
         <img class="w-52 mr-2" src="/assets/img/logo.png" alt="logo">
       </a>
-      <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 ">
+      <div class="w-full bg-white rounded-lg shadow r md:mt-0 sm:max-w-md xl:p-0 ">
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
             {{ $t("singIn") }}

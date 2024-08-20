@@ -121,16 +121,35 @@ function darkenColor(color: string, amount = 0.4): string {
 //     || config.colors[1]
 //   )
 // }
-// function copyLink() {
-//   const url = `http://localhost:3000/resume/${resumenStore.data.id}`
-//   navigator.clipboard.writeText(url)
+async function copyLink() {
+  const url = `https://bucolic-souffle-ead4bd.netlify.app/resume/${resumenStore.data.id}`
+  await navigator.clipboard.writeText(url)
 
-//   // useNuxtApp().$toast.success('¡Link copiado al portapapeles!')
-// }
-// function goToRoute() {
-//   navigateTo(`/resume/${resumenStore.data.id}`)
-//   copyLink()
-// }
+  useNuxtApp().$toast.success('¡Link copiado al portapapeles!')
+}
+function goToRoute() {
+  const url = `https://bucolic-souffle-ead4bd.netlify.app/resume/${resumenStore.data.id}`
+  window.open(url, '_blank'); copyLink()
+}
+
+function shared(id: any) {
+  const _url = `https://bucolic-souffle-ead4bd.netlify.app/resume/${resumenStore.data.id}`
+  if (navigator.share) {
+    navigator.share({
+      title: 'CV',
+      text: 'Descubre mi hoja de vida digital:',
+      url: _url,
+    }).then(() => {
+      console.log('¡Enlace compartido con éxito!')
+    }).catch((error) => {
+      console.error('Error al compartir el enlace:', error)
+      alert(`Ocurrió un error al intentar compartir el enlace: ${error}`)
+    })
+  }
+  else {
+    goToRoute()
+  }
+}
 </script>
 
 <template>
@@ -691,12 +710,14 @@ function darkenColor(color: string, amount = 0.4): string {
             @change="uploadCV"
           >
         </label> -->
-        <NuxtLink
-          target="_blank" :to="`/resume/${props.id}`"
+        <button
+          type="button"
+
           class="form__btn flex justify-center w-full h-fit"
+          @click="shared(props.id)"
         >
           {{ $t("upload-cv") }}
-        </NuxtLink>
+        </button>
         <p
           rel="noopener"
           class="form__btn flex justify-center w-full h-fit"

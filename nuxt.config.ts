@@ -47,6 +47,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@vueuse/nuxt',
     '@pinia/nuxt',
+    "@samk-dev/nuxt-vcalendar"
   ],
 
   eslintConfig: {

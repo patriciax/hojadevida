@@ -140,18 +140,13 @@ export default defineStore({
         this.changeStatus('error', error)
       }
     },
-    async getDataUserExternal(id: any) {
+    async getDataUserExternal(body: any) {
       try {
         this.changeStatus('loading')
 
         const { $axios } = useNuxtApp()
 
-        const response = await $axios.get(`api/v1/people/${id}/`, {
-          headers: {
-            'Authorization': `Token ${sessionStorage.getItem('access')}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        })
+        const response = await $axios.post(`api/resume/`, body)
         if (response.status === 200) {
           this._profile = response.data
           this._formSettings = response.data[0].formSettings

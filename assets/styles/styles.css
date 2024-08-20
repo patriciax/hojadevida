@@ -19,3 +19,22 @@
   --black: #1f2937;
   --black-darker: #111827;
 }
+.m-phone-number-input {
+  width: 1rem!important;
+}
+.m-phone-input {
+  min-width: 11rem!important;
+}
+.m-country-selector , .m-input{
+  width: 4.5rem!important;
+
+}
+
+.m-country-selector__country-flag[data-v-1e2814b9] {
+
+  top: 8px;
+}
+/* .m-select-list {
+  width: rem!important;
+
+} */
