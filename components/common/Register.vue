@@ -1,17 +1,16 @@
 <script lang="ts" setup>
-import { DatePicker } from 'v-calendar'
 import useLoginStore from '@/stores/auth'
 import { ref } from '#imports'
 import 'v-calendar/style.css'
 import InputPhoneNumber from './InputPhoneNumber.vue'
 import { useRouter } from 'vue-router'
+import DateBirth from './dateBirth.vue'
 
-const masks = ref({
-  input: 'YYYY-MM-DD',
-})
 const router = useRouter()
 
 const countryCode = ref(null)
+const countryCodeName = ref(null)
+
 const loginStore = useLoginStore()
 const isInvalidLastName = ref(false)
 const message = ref('')
@@ -31,6 +30,11 @@ const dataForm = ref({
   phone_number: '',
   dni: '',
   date_of_birth: '',
+  formSettings: {
+    countryCode: '',
+    countryCodeName: '',
+    phoneNumber: '',
+  },
 
 })
 async function register() {
@@ -51,15 +55,14 @@ async function register() {
   if (dataForm.value.date_of_birth === '')
     error.value.date = 'Campo requerido'
 
-  dataForm.value.phone_number = countryCode.value + dataForm.value.phone_number
-  dataForm.value.date_of_birth = formatDatenew(dataForm.value.date_of_birth)
-
   await loginStore.register(dataForm.value)
 
   if (loginStore.isReady) {
-    await useNuxtApp().$toast.success('¡Registro exitoso!')
+    useNuxtApp().$toast.success('¡Registro exitoso!')
     // setTimeout(() => {
-    router.push('/login')
+    // await nextTick()
+
+    router.push({ path: '/login' })
     // }, 2000)
   }
 
@@ -79,20 +82,15 @@ async function register() {
   }
 }
 function handleInputPhone(value: any) {
-  countryCode.value = value.countryCallingCode
-  dataForm.value.phone_number = value.nationalNumber
+  dataForm.value.phone_number = value
+  dataForm.value.formSettings.phoneNumber = value
 }
 
 const minDate = new Date()
 minDate.setFullYear(minDate.getFullYear() - 18)
 
-function formatDatenew(date: any) {
-  if (!date)
-    return ''
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
+function handleDate(date: any) {
+  dataForm.value.date_of_birth = date
 }
 </script>
 
@@ -138,34 +136,11 @@ function formatDatenew(date: any) {
 
             <div>
               <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 ">Teléfono</label>
-              <InputPhoneNumber id="phone" v-model="dataForm.phone_number" placeholder="1234569" class="mt-px" @country-code="countryCode" @update="handleInputPhone" />
+              <InputPhoneNumber id="phone" v-model="dataForm.phone_number" placeholder="1234569" class="mt-px" @code="dataForm.formSettings.countryCodeName = $event " @country-code="dataForm.formSettings.countryCode = $event " @update:model-value="handleInputPhone" />
 
               <!-- <input id="phone" v-model="dataForm.phone_number" type="text" name="phone" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " placeholder="571234569" required> -->
             </div>
-            <div>
-              <label for="name" class="block mb-1 mt-1 text-sm font-medium text-gray-900 ">Fecha de nacimiento</label>
-
-              <DatePicker v-model="dataForm.date_of_birth" :masks="masks" :max-date="minDate" mode="date">
-                <template #default="{ togglePopover }">
-                  <button
-                    type="button"
-                    :class="{ ' border-red-500': error.date }"
-
-                    class="bg-gray-50 border text-start h-[46px] border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-                    @click="
-                      () => {
-                        togglePopover()
-                      }
-                    "
-                  >
-                    {{ formatDatenew(dataForm.date_of_birth) }}
-                  </button>
-                </template>
-              </DatePicker>
-              <p v-if="error.date" class="text-xs absolute max-w-max text-red-600 dark:text-red-500">
-                {{ error.date }}
-              </p>
-            </div>
+            <DateBirth @date="handleDate" />
 
             <section class="group col-span-2 flex flex-col lg:grid grid-cols-2 gap-3">
               <div class="">
@@ -197,7 +172,12 @@ function formatDatenew(date: any) {
                 </ul>
               </div>
             </section>
-            <button type="submit" class="w-full mt-6 col-span-2 text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
+            <section class="col-span-2 text-xs text-gray-500">
+              <p>
+                Al hacer clic en "Crear cuenta", aceptas nuestras <a href="https://hojadevida.digital/terminos-y-condiciones/" target="_blank" class="text-blue-600 hover:underline ">Condiciones</a> , la Política de privacidad y la Política de cookies.
+              </p>
+            </section>
+            <button type="submit" class="w-full mt-0 col-span-2 text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
               Crear cuenta
             </button>
             <p class="text-sm font-light text-center text-gray-500 col-span-2">

@@ -5,17 +5,36 @@ const emit = defineEmits<{
 
 const isPhotoLoading = ref(false)
 
+// async function uploadImage(e: Event) {
+//   isPhotoLoading.value = true
+//   const file = (e.target as HTMLInputElement).files?.[0]
+//   if (file) {
+//     const readerResult = await fileToDataUri(file)
+//     const imageDataUri = await resizeImageFromReader(readerResult)
+//     emit('update:modelValue', imageDataUri)
+//     isPhotoLoading.value = false
+//   }
+// }
 async function uploadImage(e: Event) {
   isPhotoLoading.value = true
   const file = (e.target as HTMLInputElement).files?.[0]
   if (file) {
     const readerResult = await fileToDataUri(file)
-    const imageDataUri = await resizeImageFromReader(readerResult)
-    emit('update:modelValue', imageDataUri)
-    isPhotoLoading.value = false
+    const img = new Image()
+    img.src = readerResult
+
+    img.onload = async () => {
+      const shouldResize = file.size > 1 * 1024 * 1024 || img.width > 1000 || img.height > 1000
+
+      let imageDataUri = readerResult
+      if (shouldResize)
+        imageDataUri = await resizeImageFromReader(readerResult)
+
+      emit('update:modelValue', imageDataUri)
+      isPhotoLoading.value = false
+    }
   }
 }
-
 function clearProfileImage() {
   emit('update:modelValue', null)
   isPhotoLoading.value = false

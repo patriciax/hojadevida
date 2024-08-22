@@ -20,7 +20,7 @@ export default defineStore({
     _data: null,
     _formSettings: null,
     _profile: null,
-    _isPassword: true,
+    _isPassword: false,
     _codeUrl: null,
 
   }),
@@ -155,6 +155,8 @@ export default defineStore({
           this._profile = response.data
           this._formSettings = response.data[0].formSettings
           this._codeUrl = response.data[0].code_url
+          this._isPassword = response.data[0].profiles[0].is_password === 'true'
+
           this.changeStatus('ready')
         }
         else {

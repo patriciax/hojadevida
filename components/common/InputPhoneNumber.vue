@@ -22,6 +22,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue', 'update:number', 'countryCode', 'code'])
+const numberCode = ref(sessionStorage.getItem('country_code') || 'CO')
 
 function updateValue(_values) {
   emit('update:modelValue', _values.phoneNumber)
@@ -34,6 +35,8 @@ function updateValue(_values) {
   <div>
     <MazPhoneNumberInput
       :id="id"
+      orientation="row"
+      :country-code="numberCode"
       no-search
       no-example
       placeholder=" "
@@ -45,9 +48,10 @@ function updateValue(_values) {
       }"
       :model-value="modelValue"
       show-code-on-list
-      :default-country-code="props.code ? props.code : 'CO'"
+      :default-country-code="numberCode"
       :disabled="isDisabled"
       :class="{ 'phone-number-error': errorMessage }"
+
       @data="updateValue"
     />
     <p

@@ -116,6 +116,9 @@ export default defineStore({
         if (response.status === 200 || response.status === 201)
           this.changeStatus('ready')
 
+        else
+          this.changeStatus('error')
+
         this.changeStatus('ready')
       }
       catch (error: any) {

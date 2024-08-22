@@ -23,10 +23,10 @@
   width: 1rem!important;
 }
 .m-phone-input {
-  min-width: 11rem!important;
+  min-width: 9.5rem!important;
 }
 .m-country-selector , .m-input{
-  width: 4.5rem!important;
+  width: 6.2rem!important;
 
 }
 
@@ -56,7 +56,7 @@
   border-bottom-left-radius: 10px!important;
   border-top-left-radius: 10px !important;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1021px) {
   .m-phone-input {
     min-width: max-content !important;
     width: 100%!important;
@@ -152,4 +152,8 @@ border: none;
 }
 .form__group .m-select .m-select-list[data-v-ca1ac71d] {
   width: 187px;
+}
+.icon-style {
+  @apply w-4 h-4;
+
 }

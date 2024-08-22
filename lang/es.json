@@ -90,5 +90,11 @@
   "country": "Pais",
   "city": "Ciudad",
   "title_edu": "Nombre de la institución",
-  "title_company": "Empresa"
+  "title_company": "Empresa",
+  "retiro": "Fecha de ingreso",
+  "fechainicio": "Fecha de inicio",
+  "fechafin": "Fecha de finalización",
+  "noretiro": "Fecha de retiro",
+  "funcion": "Funciones realizadas",
+  "tituloabtenido": "Título obtenido"
 }

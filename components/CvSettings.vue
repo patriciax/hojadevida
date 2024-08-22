@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, Cog6ToothIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/solid'
 import type { p } from '@vite-pwa/assets-generator/dist/shared/assets-generator.5e51fd40.mjs'
+import { get } from '@vueuse/core'
 import InputPhoneNumber from '@/components/common/InputPhoneNumber.vue'
 import { SectionNameList } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
 import useResumenStore from '@/stores/resumen'
+import LocationStore from '@/stores/address'
 
 const props = defineProps<{
   isLoading?: boolean
@@ -13,6 +15,9 @@ const props = defineProps<{
 
 const emit = defineEmits(['color'])
 const resumenStore = useResumenStore()
+const locationStore = LocationStore()
+const country = ref()
+const city = ref()
 const {
   formSettings,
   uploadCV,
@@ -22,8 +27,12 @@ const {
 const routerId = ref()
 const countryCode = ref(null)
 const countryCodeName = ref(null)
-onMounted(() => {
-  // phone.value = resumenStore.formSettings?.phoneNumber || ''
+const isOpen = ref(false)
+
+onMounted(async () => {
+  await locationStore.getCountry()
+  if (Object.keys(resumenStore.formSettings.country).length > 0)
+    await locationStore.getCity(formSettings.value.country.id)
 })
 
 const switchLocalePath = useSwitchLocalePath()
@@ -32,13 +41,14 @@ const { downloadPdf } = usePrint()
 const bgCv = ref('white')
 const config = {
   layouts: ['one-column', 'two-column', 'three-column', 'four-column'],
-  selectedColor: resumenStore.formSettings?.activeColor || '#4f4f4f',
+  selectedColor: resumenStore.formSettings?.activeColor ? resumenStore.formSettings?.activeColor : '#545454',
   languages: [
     { name: 'es-name', code: 'es' },
     { name: 'en-name', code: 'en' },
 
   ],
 }
+
 // watch(
 //   () => config.selectedColor,
 //   (newColor) => {
@@ -54,6 +64,10 @@ const config = {
 watch(bgCv, (newColor) => {
   localStorage.setItem('bgCv', newColor)
   emit('color', newColor)
+  localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify({
+    ...formSettings.value,
+    bgCv: newColor,
+  }))
 })
 
 watch(
@@ -62,7 +76,8 @@ watch(
     localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify(newValue))
     if (newValue.activeColor !== oldValue.activeColor) {
       const newColor = config.selectedColor
-      changeColor(resumenStore.formSettings?.activeColor)
+      changeColor(resumenStore.formSettings?.activeColor ? resumenStore.formSettings?.activeColor : newColor)
+      bgCv.value = resumenStore.formSettings?.bgCv ? resumenStore.formSettings?.bgCv : 'white'
     }
   },
   { deep: true },
@@ -75,13 +90,11 @@ watch(
 // })
 
 async function saveCV() {
-  // formSettings.value.phoneNumber = `${countryCode.value}${formSettings.value.phoneNumber}`
-  // const phoneNumberWithCountryCode = `${countryCode.value}${formSettings.value.phoneNumber}`
   await resumenStore.addCvSettings(JSON.stringify({ formSettings: {
     ...formSettings.value,
-    // phoneNumber: phoneNumberWithCountryCode,
     countryCode: countryCode.value,
     countryCodeName: countryCodeName.value,
+    bgCv: bgCv.value,
   } }))
 
   if (resumenStore.isReady) {
@@ -115,21 +128,6 @@ function darkenColor(color: string, amount = 0.4): string {
     Math.round(Math.max(0, b - b * amount)).toString(16).padStart(2, '0'),
   ].join('')}`
 }
-// function changeColor(color: string, darker: string): void {
-//   formSettings.value.activeColor = color
-//   document.documentElement.style.setProperty('--primary', color)
-//   document.documentElement.style.setProperty('--primary-darker', darker)
-// }
-
-// function getCurrentColor(colorValue: string): {
-//   color: string
-//   darker: string
-// } {
-//   return (
-//     config.colors.find(color => color.color === colorValue)
-//     || config.colors[1]
-//   )
-// }
 
 const newUrl = ref('https://bucolic-souffle-ead4bd.netlify.app/resume/')
 // https://bucolic-souffle-ead4bd.netlify.app/resume/
@@ -146,6 +144,7 @@ function goToRoute() {
 
 function shared(id: any) {
   const _url = `${newUrl.value}${resumenStore.data.id}`
+
   if (navigator.share) {
     navigator.share({
       title: 'CV',
@@ -170,12 +169,16 @@ function handleInputPhone(value: any) {
   const number = value.nationalNumber
   formSettings.value.phoneNumber = `${number}`
 }
+
+async function handleInputCountry(_value: any) {
+  await locationStore.getCity(_value.id)
+}
 </script>
 
 <template>
   <div class="settings">
-    <div class="flex justify-center items-center title pt-2 px-6 bg-white py-4">
-      <LandingLogo />
+    <div class="flex justify-center items-center title pt-2 px-6 bg-white  py-3">
+      <LandingLogo @toggle-sidebar="isOpen = !isOpen" />
       <!-- <a
         class="buy-me-a-coffee"
         href="https://ko-fi.com/X8X4COWK0"
@@ -198,7 +201,8 @@ function handleInputPhone(value: any) {
       </span>
     </h2> -->
     <form
-      class="form mb-10"
+      :class="`form ${isOpen ? 'block' : 'hidden lg:block'}`"
+      class="form mb-10 transition-all"
       autocomplete="on"
     >
       <fieldset>
@@ -513,10 +517,13 @@ function handleInputPhone(value: any) {
                   {{ $t("country") }}
                 </p>
 
-                <select v-model="formSettings.country" class="mb-4 form__control h-10 ">
+                <select v-model="formSettings.country" class="mb-4 form__control h-10 " @change="handleInputCountry(formSettings.country)">
                   <option disabled value="" v-text=" $t('selectFont')" />
-                  <option v-for="(item, index) in 4" :key="index">
-                    {{ item }}
+                  <option
+                    v-for="(item, index) in locationStore.country"
+                    :key="index" :value="item"
+                  >
+                    {{ item.name }}
                   </option>
                 </select>
               </div>
@@ -529,10 +536,10 @@ function handleInputPhone(value: any) {
                   {{ $t("city") }}
                 </p>
 
-                <select v-model="formSettings.city" class="mb-4 form__control h-10 ">
+                <select v-model="formSettings.city" :disabled="!formSettings.country" class="mb-4 form__control h-10 " @change="handleInputCity(formSettings.city)">
                   <option disabled value="" v-text=" $t('selectFont')" />
-                  <option v-for="(item, index) in 4" :key="index">
-                    {{ item }}
+                  <option v-for="(item, index) in locationStore.city" :key="index" :value="item">
+                    {{ item.name }}
                   </option>
                 </select>
               </div>
@@ -553,6 +560,7 @@ function handleInputPhone(value: any) {
                   class="form__label"
                   for="phone"
                 > {{ $t("phone-number") }}</label>
+                <!-- {{ resumenStore.profile[0].phone_number }} -->
                 <InputPhoneNumber id="phone" v-model="formSettings.phoneNumber" placeholder="1234569" class="mt-px" :code="formSettings.countryCodeName" @code="countryCodeName = $event " @country-code="countryCode = $event " @update="handleInputPhone" />
 
                 <!-- <input

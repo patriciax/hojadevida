@@ -63,15 +63,7 @@ const phoneNumberHref = computed(() => {
             formSettings.phoneNumber
           }}</a>
       </div>
-      <div
-        v-if="formSettings.city || formSettings.country"
-        class="cv__icon-wrapper"
-      >
-        <svg class="cv__icon">
-          <use href="@/assets/sprite.svg#location" />
-        </svg>
-        <span tabindex="0">{{ formSettings.country }},{{ formSettings.city }}</span>
-      </div>
+
       <div
         v-if="formSettings.location"
         class="cv__icon-wrapper"
@@ -80,6 +72,8 @@ const phoneNumberHref = computed(() => {
           <use href="@/assets/sprite.svg#location" />
         </svg>
         <span tabindex="0">{{ formSettings.location }}</span>
+        <span v-if="formSettings.city || formSettings.country" tabindex="0">, {{ formSettings.country.name }} <span v-if="formSettings.city" v-text="','" />  {{ formSettings.city.name }}
+        </span>
       </div>
     </div>
   </section>

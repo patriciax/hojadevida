@@ -1,5 +1,8 @@
 <script lang="ts" setup>
+import { useRouter } from 'vue-router'
 import useLoginStore from '@/stores/auth'
+
+const router = useRouter()
 
 const loginStore = useLoginStore()
 const dataForm = ref({
@@ -10,7 +13,7 @@ async function login() {
   await loginStore.login(dataForm.value)
 
   if (loginStore.isReady)
-    navigateTo('/')
+    router.push({ path: '/' })
 
   if (loginStore.isError)
     useNuxtApp().$toast.error('Email o contraseña no válidos.')
@@ -20,7 +23,7 @@ onMounted(() => {
   // loginStore.hydrate()
 
   if (loginStore.token)
-    navigateTo('/')
+    router.push({ path: '/' })
 })
 </script>
 

@@ -18,6 +18,7 @@ const loginStore = useLoginStore()
 const CVFY_IMAGE = 'http://imgfz.com/i/rTZ5AEK.png'
 const router = useRouter()
 const i18n = useI18n()
+const bgCv = ref('white')
 
 const { setUpCvSettings } = useCvState()
 const route = useRoute()
@@ -117,7 +118,7 @@ const dataForm = ref({
 })
 const config = {
   layouts: ['one-column', 'two-column', 'three-column', 'four-column'],
-  selectedColor: resumenStore.formSettings?.activeColor || '#4f4f4f',
+  selectedColor: resumenStore.formSettings ? resumenStore.formSettings?.activeColor : formSettings.value.activeColor,
   languages: [
     { name: 'es-name', code: 'es' },
     { name: 'en-name', code: 'en' },
@@ -149,11 +150,6 @@ function changeColor(color: string): void {
   document.documentElement.style.setProperty('--primary', color)
   document.documentElement.style.setProperty('--primary-darker', darkenColor(color))
   formSettings.value.activeColor = color
-
-  localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify({
-    ...formSettings.value,
-    activeColor: color,
-  }))
 }
 
 function darkenColor(color: string, amount = 0.4): string {
@@ -171,7 +167,8 @@ watch(
     localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify(newValue))
     if (newValue.activeColor !== oldValue.activeColor) {
       const newColor = config.selectedColor
-      changeColor(resumenStore.formSettings?.activeColor)
+      changeColor(resumenStore.formSettings ? resumenStore.formSettings?.activeColor : formSettings.value.activeColor)
+      bgCv.value = resumenStore.formSettings?.bgCv ? resumenStore.formSettings?.bgCv : 'white'
     }
   },
   { deep: true },
@@ -186,6 +183,9 @@ onMounted(async () => {
   changeFont()
   if (resumenStore.isPassword)
     showPassword.value = true
+
+  else
+    showPassword.value = false
 })
 
 function changeFont() {
@@ -229,7 +229,7 @@ function changeFont() {
         </div>
       </section>
     </Modal>
-    <CvPreview :loading="resumenStore.isPassword" />
+    <CvPreview :loading="resumenStore.isPassword" :color="bgCv" />
   </main>
 </template>
 

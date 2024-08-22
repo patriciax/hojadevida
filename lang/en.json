@@ -85,5 +85,11 @@
   "country": "Country",
   "city": "City",
   "title_edu": "Nombre de la institución",
-  "title_company": "Company"
+  "title_company": "Company",
+  "retiro": "Entry date",
+  "fechainicio": "Start date",
+  "fechafin": "Completion date",
+  "noretiro": "Date of withdrawal",
+  "funcion": "Functions performed",
+  "tituloabtenido": "Degree obtained"
 }

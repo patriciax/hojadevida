@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CheckIcon } from '@heroicons/vue/24/solid'
+import { CheckIcon, TrashIcon } from '@heroicons/vue/24/solid'
 import type { CvEvent, CvEventReference, SectionName } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
 
@@ -57,12 +57,13 @@ function focusEditor(id: string) {
             <button
               :aria-label="`Remove ${entry.nameref} ${$t(sectionName)} from CV`"
               type="button"
-              class="form__btn form__btn--delete btn-transparent mr-3"
+              class="form__btn form__btn--delete btn-transparent mr-3 group"
               @click.stop="removeEntry({ sectionName, entry })"
             >
-              <svg class="form__icon">
+              <!-- <svg class="form__icon">
                 <use href="@/assets/sprite.svg#trash" />
-              </svg>
+              </svg> -->
+              <TrashIcon class="text-red-600 group-hover:text-white h-5 w-5" />
             </button>
           </template>
           <template #content>
@@ -171,12 +172,13 @@ function focusEditor(id: string) {
             <button
               :aria-label="`Remove ${entry.title} ${$t(sectionName)} from CV`"
               type="button"
-              class="form__btn form__btn--delete btn-transparent mr-3"
+              class="form__btn form__btn--delete btn-transparent group mr-3"
               @click.stop="removeEntry({ sectionName, entry })"
             >
-              <svg class="form__icon">
+              <!-- <svg class="form__icon">
                 <use href="@/assets/sprite.svg#trash" />
-              </svg>
+              </svg> -->
+              <TrashIcon class="text-red-600 group-hover:text-white h-5 w-5" />
             </button>
           </template>
           <template #content>
@@ -191,14 +193,10 @@ function focusEditor(id: string) {
 
                   </template>
                   <template v-if="sectionName === 'projects'" />
-                  <template v-if="sectionName === 'work'">
-
-                    {{ $t("title_company") }}
-
-                  </template>
-                  <!-- <template v-else>
+                  <template v-if="sectionName === 'work'">   {{ $t("title_company") }}</template>
+                  <template v-else-if="sectionName === 'projects'">
                     {{ $t("title") }}
-                  </template> -->
+                  </template>
                 </label>
                 <input
                   :id="`entryTitle--${entry.id}`"
@@ -215,6 +213,9 @@ function focusEditor(id: string) {
                   <template v-if="sectionName === 'projects'">
                     Link
                   </template>
+                  <template v-else-if="sectionName === 'education'">
+                    {{ $t("tituloabtenido") }}
+                  </template>
                   <template v-else>
                     {{ $t("location") }}
                   </template>
@@ -230,8 +231,16 @@ function focusEditor(id: string) {
                 <label
                   class="form__label"
                   :for="`entryFrom-${entry.id}`"
-                > {{ $t("from")
-                }}</label>
+                >
+
+                  <template v-if="sectionName === 'work'">   {{ $t("retiro") }}</template>
+                  <template v-if="sectionName === 'education'">   {{ $t("fechainicio") }}</template>
+                  <template v-if="sectionName === 'projects' || sectionName === 'references'">
+                    {{ $t("from")
+                    }}
+                  </template>
+
+                </label>
                 <input
                   :id="`entryFrom-${entry.id}`"
                   v-model="entry.from"
@@ -244,7 +253,12 @@ function focusEditor(id: string) {
                   class="form__label flex justify-between"
                   :for="`entryTo-${entry.id}`"
                 >
-                  {{ $t("to") }}
+                  <template v-if="sectionName === 'work'">   {{ $t("noretiro") }}</template>
+                  <template v-if="sectionName === 'education'">   {{ $t("fechafin") }}</template>
+                  <template v-if="sectionName === 'projects' || sectionName === 'references'">
+                    {{ $t("to") }}
+                  </template>
+
                   <label class="form__label flex items-center">
                     <input
                       v-model="entry.current"
@@ -267,8 +281,17 @@ function focusEditor(id: string) {
                   class="form__label"
                   :for="`entrySummary-${entry.id}`"
                   @click="focusEditor(`entrySummary-${entry.id}`)"
-                >{{ $t("summary")
-                }}</label>
+                >
+                  <template v-if="sectionName === 'work'">
+                    {{ $t("funcion") }}
+                  </template>
+
+                  <template v-else>
+
+                    {{ $t("summary")
+                    }}
+                  </template>
+                </label>
                 <CvTextEditor
                   :id="`entrySummary-${entry.id}`"
                   v-model="entry.summary"
@@ -291,5 +314,8 @@ function focusEditor(id: string) {
   &__title {
     @apply flex items-center flex-row-reverse;
   }
+}
+.form__btn--delete {
+  background-color: transparent;
 }
 </style>

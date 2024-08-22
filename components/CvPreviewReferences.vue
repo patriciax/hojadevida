@@ -70,7 +70,7 @@ const projectsSorted = computed(() => {
         /> -->
       </div>
     </ul>
-    <div class="border-dashed border-b border-var-color py-4" />
+    <div v-if="formSettings.layout !== 'one-column' " class="border-dashed border-b border-var-color py-4" />
   </section>
 </template>
 

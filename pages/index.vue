@@ -8,6 +8,7 @@ import useLoginStore from '@/stores/auth'
 import useResumenStore from '@/stores/resumen'
 
 const resumenStore = useResumenStore()
+const i18n = useI18n()
 
 const loginStore = useLoginStore()
 const CVFY_IMAGE = 'http://imgfz.com/i/rTZ5AEK.png'
@@ -17,6 +18,10 @@ const { t, locale } = useI18n()
 const router = useRouter()
 const loadingFont = ref(true)
 const href = `https://hojadevida.digital${route.path}`
+const {
+  formSettings,
+
+} = useCvState()
 
 onMounted(async () => {
   await resumenStore.getPerson()
@@ -162,6 +167,7 @@ function openModalPassword() {
 }
 function logout() {
   loginStore.reset()
+  localStorage.removeItem(`cvSettings-${i18n.locale.value}`)
   router.push({ path: '/login' })
 }
 </script>
@@ -206,7 +212,7 @@ function logout() {
 
     <CvSettings :id="resumenStore.data?.id" class="basis-1/4 min-w-80" :is-loading="resumenStore.isLoading" @color="color = $event" />
     <CvPreview
-      :loading="loadingFont || resumenStore.isLoading"
+      :loading=" resumenStore.isLoading || loadingFont"
       class="basis-3/4
 " :color="color"
     >
