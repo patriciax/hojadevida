@@ -32,7 +32,7 @@ onMounted(async () => {
 })
 
 function changeFont() {
-  const fontName = resumenStore.formSettings?.font.replace(/ /g, '+')
+  const fontName = resumenStore.formSettings?.font?.replace(/ /g, '+')
   const link = document.createElement('link')
   link.href = `https://fonts.googleapis.com/css2?family=${fontName}&display=swap`
   link.rel = 'stylesheet'

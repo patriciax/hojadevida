@@ -31,8 +31,10 @@ const isOpen = ref(false)
 
 onMounted(async () => {
   await locationStore.getCountry()
-  if (Object.keys(resumenStore.formSettings.country).length > 0)
-    await locationStore.getCity(formSettings.value.country.id)
+  if (resumenStore.formSettings?.country) {
+    if (Object.keys(resumenStore.formSettings?.country).length > 0)
+      await locationStore.getCity(formSettings.value.country.id)
+  }
 })
 
 const switchLocalePath = useSwitchLocalePath()

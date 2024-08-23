@@ -31,9 +31,18 @@ const dataForm = ref({
   dni: '',
   date_of_birth: '',
   formSettings: {
+    name: '',
+    lastName: '',
+    email: '',
     countryCode: '',
     countryCodeName: '',
     phoneNumber: '',
+    displaySocial:	true,
+    displayEducation:	true,
+    displayProjects:	true,
+    displayWork:	true,
+    displayReferences:	true,
+
   },
 
 })
@@ -92,6 +101,18 @@ minDate.setFullYear(minDate.getFullYear() - 18)
 function handleDate(date: any) {
   dataForm.value.date_of_birth = date
 }
+
+watch(() => dataForm.value.name, (newName) => {
+  dataForm.value.formSettings.name = newName
+})
+
+watch(() => dataForm.value.last_name, (newLastName) => {
+  dataForm.value.formSettings.lastName = newLastName
+})
+
+watch(() => dataForm.value.email, (newEmail) => {
+  dataForm.value.formSettings.email = newEmail
+})
 </script>
 
 <template>
