@@ -35,7 +35,7 @@ const { isLoading, formSettings } = useCvState()
       <div
         tabindex="0"
         aria-label="CV preview"
-        class="cv shadow-lg mt-6 bg-white relative"
+        class="cv shadow-lg mt-6 lg:mt-24 bg-white relative"
         :class="[
 
           { blur: isLoading || props.loading },

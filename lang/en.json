@@ -73,9 +73,9 @@
   "native-bilingual": "Native/Bilingual",
   "tel": "Phone",
   "name": "Name",
-  "addPassword": "Add password",
-  "addnewpasss": "Añadir",
-  "addnewpasssmodal": " Add a password to your CV",
+  "addPassword": "Config",
+  "addnewpasss": "Save",
+  "addnewpasssmodal": "Configure access to your resume",
   "singIn": " Sign in to your account",
   "regsiterIn": "Create an account",
   "general": " Design and Appearance",
@@ -91,5 +91,8 @@
   "fechafin": "Completion date",
   "noretiro": "Date of withdrawal",
   "funcion": "Functions performed",
-  "tituloabtenido": "Degree obtained"
+  "tituloabtenido": "Degree obtained",
+  "logout": "Logout",
+  "addpublic": "Public",
+  "addprivate": "Private"
 }

@@ -167,7 +167,12 @@ watch(
     localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify(newValue))
     if (newValue.activeColor !== oldValue.activeColor) {
       const newColor = config.selectedColor
-      changeColor(resumenStore.formSettings ? resumenStore.formSettings?.activeColor : formSettings.value.activeColor)
+      // changeColor(resumenStore.formSettings ? resumenStore.formSettings?.activeColor : formSettings.value.activeColor)
+      changeColor(
+        resumenStore.formSettings && resumenStore.formSettings.activeColor
+          ? resumenStore.formSettings.activeColor
+          : '#545454',
+      )
       bgCv.value = resumenStore.formSettings?.bgCv ? resumenStore.formSettings?.bgCv : 'white'
     }
   },
@@ -189,7 +194,10 @@ onMounted(async () => {
 })
 
 function changeFont() {
-  const fontName = resumenStore.formSettings?.font.replace(/ /g, '+')
+  const font = resumenStore.formSettings?.font ? resumenStore.formSettings?.font : 'raleway'
+  // const fontName = resumenStore.formSettings?.font.replace(/ /g, '+')
+  const fontName = font.replace(/ /g, '+')
+
   const link = document.createElement('link')
   link.href = `https://fonts.googleapis.com/css2?family=${fontName}&display=swap`
   link.rel = 'stylesheet'

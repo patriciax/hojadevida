@@ -1,19 +1,24 @@
 <script setup lang="ts">
-import { BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, Cog6ToothIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/solid'
+import { ArrowRightStartOnRectangleIcon, BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, CloudArrowDownIcon, Cog6ToothIcon, PrinterIcon, ShareIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/solid'
 import type { p } from '@vite-pwa/assets-generator/dist/shared/assets-generator.5e51fd40.mjs'
 import { get } from '@vueuse/core'
+import { useRouter } from 'vue-router'
+import Nav from './Nav.vue'
 import InputPhoneNumber from '@/components/common/InputPhoneNumber.vue'
 import { SectionNameList } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
 import useResumenStore from '@/stores/resumen'
 import LocationStore from '@/stores/address'
+import useLoginStore from '@/stores/auth'
 
 const props = defineProps<{
   isLoading?: boolean
   id?: string
 }>()
-
 const emit = defineEmits(['color'])
+const loginStore = useLoginStore()
+const router = useRouter()
+
 const resumenStore = useResumenStore()
 const locationStore = LocationStore()
 const country = ref()
@@ -131,7 +136,7 @@ function darkenColor(color: string, amount = 0.4): string {
   ].join('')}`
 }
 
-const newUrl = ref('https://bucolic-souffle-ead4bd.netlify.app/resume/')
+const newUrl = ref('https://bucolic-souffle-ead4bd.netlify.app/app/')
 // https://bucolic-souffle-ead4bd.netlify.app/resume/
 async function copyLink() {
   const url = `${newUrl.value}${resumenStore.data.id}`
@@ -175,12 +180,29 @@ function handleInputPhone(value: any) {
 async function handleInputCountry(_value: any) {
   await locationStore.getCity(_value.id)
 }
+
+function logout() {
+  loginStore.reset()
+  localStorage.removeItem(`cvSettings-${i18n.locale.value}`)
+  router.push({ path: '/login' })
+}
 </script>
 
 <template>
   <div class="settings">
     <div class="flex justify-center items-center title pt-2 px-6 bg-white  py-3">
-      <LandingLogo @toggle-sidebar="isOpen = !isOpen" />
+      <LandingLogo @toggle-sidebar="isOpen = !isOpen">
+        <button
+          class="flex gap-2 text-sm md:hidden text-gray-700 hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg"
+
+          rel="noopener"
+          @click="saveCV"
+        >
+          <CloudArrowDownIcon class="w-4 h-4" />
+          {{ $t("download-cv-settings") }}
+        </button>
+      </LandingLogo>
+
       <!-- <a
         class="buy-me-a-coffee"
         href="https://ko-fi.com/X8X4COWK0"
@@ -202,6 +224,35 @@ async function handleInputCountry(_value: any) {
         {{ $t("cv-settings") }}
       </span>
     </h2> -->
+    <Nav>
+      <button
+        type="button"
+        class="flex gap-2 text-gray-700 hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg text-sm"
+        @click="downloadPdf"
+      >
+        <PrinterIcon class="w-4 h-4" />
+        <span>{{ $t("download-cv-pdf") }}</span>
+      </button>
+
+      <button
+        class="flex gap-2 text-gray-700 text-sm hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg"
+
+        rel="noopener"
+        @click="saveCV"
+      >
+        <CloudArrowDownIcon class="w-4 h-4" />
+        {{ $t("download-cv-settings") }}
+      </button>
+    </Nav>
+    <button
+      class="fixed bottom-0 h-12 w-12 z-10 hover:bg-gray-200 right-5 lg:right-10 mb-10 pr-1 rounded-full text-center items-center justify-center bg-primary hover:bg-primary-darker flex"
+      :style="`background: ${resumenStore.formSettings?.activeColor}` || '#0000'"
+
+      type="button"
+      @click="shared(props.id)"
+    >
+      <ShareIcon class="w-6 h-6 text-white" />
+    </button>
     <form
       :class="`form ${isOpen ? 'block' : 'hidden lg:block'}`"
       class="form mb-10 transition-all"
@@ -761,43 +812,13 @@ async function handleInputCountry(_value: any) {
       <!-- HISTORY SECTIONS -->
 
       <!-- CTA -->
-      <div class="form__section flex justify-center p-6 gap-2">
-        <button
-          type="button"
-          class="form__btn flex flex-col justify-center h-fit w-full"
-          @click="downloadPdf"
-        >
-          <span>{{ $t("download-cv-pdf") }}</span>
-        </button>
-        <!-- <label
-          tabindex="0"
-          class="form__btn flex justify-center w-full h-fit"
-        >
-          {{ $t("upload-cv") }}
-          <input
-            type="file"
-            accept=".json"
-            name="uploadCV"
-            class="hidden"
-            @change="uploadCV"
-          >
-        </label> -->
-        <button
-          type="button"
-
-          class="form__btn flex justify-center w-full h-fit"
-          @click="shared(props.id)"
-        >
-          {{ $t("upload-cv") }}
-        </button>
-        <p
-          rel="noopener"
-          class="form__btn flex justify-center w-full h-fit"
-          @click="saveCV"
-        >
-          {{ $t("download-cv-settings") }}
-        </p>
-      </div>
+      <p
+        class="flex gap-2 ml-4 cursor-pointer lg:hidden  text-sm font-bold border-gray-300 px-2 py-1.5 rounded-lg"
+        @click="logout"
+      >
+        <ArrowRightStartOnRectangleIcon class="w-4 h-4" />
+        {{ $t('logout') }}
+      </p>
       <!-- CTA -->
     </form>
   </div>

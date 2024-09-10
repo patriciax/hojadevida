@@ -76,9 +76,9 @@
   "color-theme-bg": "Color del fondo",
   "tel": "Telefono",
   "name": "Nombre",
-  "addPassword": "Añadir contraseña",
-  "addnewpasss": "Añadir",
-  "addnewpasssmodal": " Añade una contraseña a su CV",
+  "addPassword": "Configurar Acceso",
+  "addnewpasss": "Guardar",
+  "addnewpasssmodal": "Configura el acceso a tu hoja de vida",
   "singIn": " Acceda a su cuenta",
   "regsiterIn": "Crea una cuenta",
   "general": " Diseño y Apariencia",
@@ -96,5 +96,8 @@
   "fechafin": "Fecha de finalización",
   "noretiro": "Fecha de retiro",
   "funcion": "Funciones realizadas",
-  "tituloabtenido": "Título obtenido"
+  "tituloabtenido": "Título obtenido",
+  "logout": "Cerrar sesión",
+  "addpublic": "Pública",
+  "addprivate": "Privada"
 }

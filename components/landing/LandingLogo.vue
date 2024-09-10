@@ -14,6 +14,7 @@ const localePath = useLocalePath()
     >
       <img src="/assets/img/logo.png" alt="CV logo" class="w-40">
     </NuxtLink>
+    <slot />
     <button class="focus:outline-none lg:hidden" @click="$emit('toggleSidebar')">
       <Bars4Icon class="w-6 h-6" />
     </button>
