@@ -455,7 +455,7 @@ async function handleInputCountry(_value: any) {
             </legend>
           </template>
           <template #content>
-            <div class="grid grid-cols-2 gap-x-3 gap-y-6">
+            <div class="grid grid-cols-2 gap-x-2 gap-y-4">
               <div class="form__group col-span-full">
                 <span class="form__label">{{ $t("profile-image") }} </span>
                 <CvProfileImageUploader
@@ -545,7 +545,7 @@ async function handleInputCountry(_value: any) {
                   </option>
                 </select>
               </div>
-              <div class="form__group">
+              <div class="form__group col-span-full">
                 <label
                   class="form__label"
                   for="location"
@@ -557,7 +557,7 @@ async function handleInputCountry(_value: any) {
                   type="text"
                 >
               </div>
-              <div class="form__group">
+              <div class="form__group col-span-full">
                 <label
                   class="form__label"
                   for="phone"

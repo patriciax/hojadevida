@@ -120,7 +120,7 @@ export default defineComponent({
   }
 
   &__title {
-    @apply flex items-center justify-between w-full  bg-opacity-100 z-10  uppercase;
+    @apply flex items-center justify-between w-full  bg-opacity-100 z-10 capitalize;
 
     &:hover {
       cursor: pointer;

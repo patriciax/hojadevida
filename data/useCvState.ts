@@ -27,31 +27,44 @@ export function useCvState() {
   const i18n = useI18n()
   async function setUpCvSettings(): Promise<void> {
     const locale = `cvSettings-${i18n.locale.value}`
+    state.formSettings = { ...cvSettingTemplate }
 
-    // Verifica si hay datos en resumenStore.formSettings
     if (resumenStore.formSettings && Object.keys(resumenStore.formSettings).length > 0) {
-      state.formSettings = {
-        ...cvSettingsEmptyTemplate,
-        ...resumenStore.formSettings,
-      }
-      localStorage.setItem(locale, JSON.stringify(state.formSettings))
-    }
-    else {
-      const cvSettings = localStorage.getItem(locale)
-      if (cvSettings == null) {
-        state.formSettings = {
-          ...cvSettingTemplate,
-        }
-      }
-      else {
-        const cvSettingsObj = JSON.parse(cvSettings)
-        state.formSettings = { ...cvSettingsEmptyTemplate, ...cvSettingsObj }
-        patchId(state.formSettings)
+      for (const key in resumenStore.formSettings) {
+        if (resumenStore.formSettings[key] !== undefined)
+          state.formSettings[key] = resumenStore.formSettings[key]
       }
     }
-
+    localStorage.setItem(locale, JSON.stringify(state.formSettings))
     state.isLoading = false
   }
+  // async function setUpCvSettings(): Promise<void> {
+  //   const locale = `cvSettings-${i18n.locale.value}`
+
+  //   // Verifica si hay datos en resumenStore.formSettings
+  //   if (resumenStore.formSettings && Object.keys(resumenStore.formSettings).length > 0) {
+  //     state.formSettings = {
+  //       ...cvSettingsEmptyTemplate,
+  //       ...resumenStore.formSettings,
+  //     }
+  //     localStorage.setItem(locale, JSON.stringify(state.formSettings))
+  //   }
+  //   else {
+  //     const cvSettings = localStorage.getItem(locale)
+  //     if (cvSettings == null) {
+  //       state.formSettings = {
+  //         ...cvSettingTemplate,
+  //       }
+  //     }
+  //     else {
+  //       const cvSettingsObj = JSON.parse(cvSettings)
+  //       state.formSettings = { ...cvSettingsEmptyTemplate, ...cvSettingsObj }
+  //       patchId(state.formSettings)
+  //     }
+  //   }
+
+  //   state.isLoading = false
+  // }
   // function setUpCvSettings(): void {
   //   const locale = `cvSettings-${i18n.locale.value}`
   //   const cvSettings = localStorage.getItem(locale)

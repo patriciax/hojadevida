@@ -14,6 +14,26 @@ function focusEditor(id: string) {
   if (editorElem)
     editorElem.focus()
 }
+
+const entry = ref({
+  current: false,
+  to: '',
+  id: 1,
+})
+
+const maxDate = ref('')
+
+onMounted(() => {
+  calculateMaxDate()
+})
+
+function calculateMaxDate() {
+  const today = new Date()
+  const dd = String(today.getDate()).padStart(2, '0')
+  const mm = String(today.getMonth() + 1).padStart(2, '0') // Enero es 0!
+  const yyyy = today.getFullYear()
+  maxDate.value = `${yyyy}-${mm}-${dd}`
+}
 </script>
 
 <template>
@@ -48,9 +68,10 @@ function focusEditor(id: string) {
         >
           <template #title>
             <h3 class="form__legend form__legend--small dynamic-section__title">
-              <span>
+              <span v-if="entry.nameref">
                 {{ entry.nameref }}
               </span>
+              <span v-else class="text-gray-600">Añade información</span>
             </h3>
           </template>
           <template #action-button>
@@ -163,9 +184,11 @@ function focusEditor(id: string) {
         >
           <template #title>
             <h3 class="form__legend form__legend--small dynamic-section__title">
-              <span>
+              <span v-if="entry.title">
                 {{ entry.title }}
               </span>
+
+              <span v-else class="text-gray-600">Añade información</span>
             </h3>
           </template>
           <template #action-button>
@@ -274,6 +297,7 @@ function focusEditor(id: string) {
                   v-model="entry.to"
                   class="form__control"
                   type="date"
+                  :max="sectionName === 'education' ? maxDate : undefined"
                 >
               </div>
               <div class="form__group col-span-full">
