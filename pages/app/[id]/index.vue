@@ -183,14 +183,15 @@ onMounted(async () => {
   await resumenStore.getDataUserExternal({
     person: router.currentRoute.value.params.id,
   })
-  await setUpCvSettings()
-  fontStore.getFont(resumenStore.formSettings.font)
-  changeFont()
+
   if (resumenStore.isPassword)
     showPassword.value = true
 
   else
     showPassword.value = false
+  await setUpCvSettings()
+  fontStore.getFont(resumenStore.formSettings.font)
+  changeFont()
 })
 
 function changeFont() {

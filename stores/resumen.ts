@@ -155,7 +155,7 @@ export default defineStore({
           this._profile = response.data
           this._formSettings = response.data[0].formSettings
           this._codeUrl = response.data[0].code_url
-          this._isPassword = response.data[0].profiles[0].is_password === 'true'
+          this._isPassword = response.data[0].profiles[0].is_password
 
           this.changeStatus('ready')
         }
@@ -187,6 +187,29 @@ export default defineStore({
         else {
           this.changeStatus('error', response)
         }
+
+        this.changeStatus('ready')
+      }
+      catch (error) {
+        this.changeStatus('error', error)
+      }
+    },
+    async setPassword(id: any, body: any) {
+      try {
+        this.changeStatus('loading')
+
+        const { $axios } = useNuxtApp()
+
+        const response = await $axios.put(`/set-password/${id}`, body, {
+          headers: {
+            Authorization: `Token ${sessionStorage.getItem('access')}`,
+          },
+        })
+        if (response.status === 200)
+          this.changeStatus('ready')
+
+        else
+          this.changeStatus('error', response)
 
         this.changeStatus('ready')
       }
