@@ -81,6 +81,9 @@ export default defineStore({
         if (response.status === 200) {
           this._profile = response.data
           this._formSettings = response.data[0].formSettings
+          this._isPassword = response.data[0].profiles[0].is_password
+          console.log(this._isPassword)
+
           this.changeStatus('ready')
         }
         else {
@@ -200,9 +203,10 @@ export default defineStore({
 
         const { $axios } = useNuxtApp()
 
-        const response = await $axios.put(`/set-password/${id}`, body, {
+        const response = await $axios.put(`api/v1/set-password/${id}`, body, {
           headers: {
-            Authorization: `Token ${sessionStorage.getItem('access')}`,
+            'Authorization': `Token ${sessionStorage.getItem('access')}`,
+            'Content-Type': 'application/json',
           },
         })
         if (response.status === 200)

@@ -9,8 +9,8 @@ import Input from '@/components/common/Input.vue'
 const loginStore = useLoginStore()
 const router = useRouter()
 const resumenStore = useResumenStore()
-const publicCheck = ref(false)
-const privateCheck = ref(false)
+const publicCheck = ref()
+const privateCheck = ref()
 const showPassword = ref(false)
 const dataForm = ref({
   password: '',
@@ -36,7 +36,7 @@ async function sendPassword() {
     await resumenStore.setPassword(resumenStore.data.id, {
       public: true,
     })
-
+    publicCheck.value = true
     if (resumenStore.isReady)
       useNuxtApp().$toast.success('¡Perfil publico exitoso!')
 
@@ -49,9 +49,11 @@ async function sendPassword() {
   }
 
   await resumenStore.addPasswordCV(dataForm.value)
+
   if (resumenStore.isReadyPass) {
     useNuxtApp().$toast.success('¡Contraseña agregada!')
     showPassword.value = false
+    privateCheck.value = true
   }
   else {
     useNuxtApp().$toast.error('Error al agregar contraseña')
@@ -83,6 +85,37 @@ function changePublic() {
   publicCheck.value = false
   error.value.password = ''
 }
+
+const data = ref([
+  {
+    id: 1,
+    name: 'public',
+    label: 'Público',
+  },
+  {
+    id: 2,
+    name: 'private',
+    label: 'Privado',
+  },
+])
+const selectedOption = ref()
+
+function setData() {
+  selectedOption.value = resumenStore.isPassword ? 'private' : 'public'
+}
+function handleRadioChange(value) {
+  selectedOption.value = value
+  if (selectedOption.value === 'private')
+    publicCheck.value = false
+  else
+    publicCheck.value = true
+}
+
+onMounted(() => {
+  setData()
+  if (selectedOption.value === 'public')
+    publicCheck.value = true
+})
 </script>
 
 <template>
@@ -136,15 +169,28 @@ function changePublic() {
             class="md:w-1/2 w-full"
           /> -->
         <section class="w-full flex gap-4 items-center mb-2">
-          <div class="flex items-center  ">
-            <input id="default-radio-1" :checked="resumenStore.isPassword" type="radio" value="public" name="default-radio" class="w-4 h-4 text-blue-600 cursor-pointer  border-gray-300  " @change="changePrivate">
+          <div v-for="item in data" :key="item.id" class="flex items-center">
+            <input
+              :id="`default-radio-${item.id}`"
+              v-model="selectedOption"
+              type="radio"
+              :value="item.name"
+              class="w-4 h-4 text-blue-600 cursor-pointer border-gray-300"
+              @change="handleRadioChange(item.name)"
+            >
+            <label :for="`default-radio-${item.id}`" class="ms-2 text-sm cursor-pointer font-medium text-gray-900">
+              {{ item.label }}
+            </label>
+            <!-- <div class="flex items-center  ">
+            <input id="default-radio-1" :checked="{ true: resumenStore.isPassword }" type="radio" value="public" name="default-radio" class="w-4 h-4 text-blue-600 cursor-pointer  border-gray-300  " @change="changePrivate">
             <label for="default-radio-1" class="ms-2 text-sm cursor-pointer font-medium text-gray-900 "> {{ $t('addpublic') }} </label>
           </div>
           <div class="flex items-center">
-            <input id="default-radio-2" :checked="!resumenStore.isPassword" type="radio" value="private" name="default-radio" class="w-4 h-4 text-blue-600  border-gray-300 cursor-pointer  " @change="changePublic">
+            <input id="default-radio-2" :checked="privateCheck" type="radio" value="private" name="default-radio" class="w-4 h-4 text-blue-600  border-gray-300 cursor-pointer  " @change="changePublic">
             <label for="default-radio-2" class="ms-2 text-sm cursor-pointer font-medium text-gray-900 ">
               {{ $t('addprivate') }}
             </label>
+          </div> -->
           </div>
         </section>
         <div class="grid grid-cols-2 gap-2" :class="{ 'opacity-50': publicCheck }">
