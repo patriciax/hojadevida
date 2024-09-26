@@ -147,13 +147,6 @@ export function useCvState() {
       email: '',
     } as CvEventReference)
   }
-  // function addEntryReference(e: { sectionName: SectionName }) {
-  //   state.formSettings[e.sectionName].unshift({
-  //     id: crypto.randomUUID(),
-  //    nameref: '',
-  //     cargo: '',
-  //   })
-  // }
 
   function removeEntry(e: { sectionName: SectionName, entry: CvEvent }) {
     state.formSettings[e.sectionName] = state.formSettings[
@@ -186,21 +179,18 @@ export function useCvState() {
 
   function clearForm(): void {
     state.formSettings = cvSettingsEmptyTemplate
-    localStorage.removeItem(`cvSettings-${i18n.locale.value}`)
+    // localStorage.removeItem(`cvSettings-${i18n.locale.value}`)
   }
   function myForm() {
-    const locale = `cvSettingsMyData-${i18n.locale.value}` // Cambia el nombre de la clave según tu necesidad
+    const locale = `cvSettingsMyData-${i18n.locale.value}`
     const storedSettings = localStorage.getItem(locale)
 
-    // Verificar si hay configuraciones almacenadas
     if (storedSettings) {
       const cvSettingsObj = JSON.parse(storedSettings)
-      // Combina las configuraciones almacenadas con las configuraciones vacías
       state.formSettings = { ...cvSettingsEmptyTemplate, ...cvSettingsObj }
-      patchId(state.formSettings) // Asegúrate de que cada entrada tenga un ID
+      patchId(state.formSettings)
     }
     else {
-      // Si no hay configuraciones almacenadas, inicializa con la plantilla
       state.formSettings = { ...cvSettingTemplate }
     }
   }

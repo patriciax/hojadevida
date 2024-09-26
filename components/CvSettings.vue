@@ -90,11 +90,11 @@ watch(
   },
   { deep: true },
 )
-
 watch(
   () => formSettings.value,
   (newValue, oldValue) => {
-    localStorage.setItem(`cvSettingsMyData-${i18n.locale.value}`, JSON.stringify(oldValue))
+    if (JSON.stringify(oldValue) !== JSON.stringify(formSettings.value))
+      localStorage.setItem(`cvSettingsMyData-${i18n.locale.value}`, JSON.stringify(oldValue))
   },
   { deep: true },
 )
