@@ -37,7 +37,7 @@ const { formSettings } = useCvState()
         </div>
       </template>
     </CvPreviewSkill>
-    <div v-if="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column'" class="border-dashed border-b border-var-color mt-3 mb-2" />
+    <div v-if="formSettings.displayJobSkills && formSettings.layout !== 'one-column'" class="border-dashed border-b border-var-color mt-3 mb-2" />
 
     <CvPreviewSkill
       :skill-name="$t('soft-skills')"
@@ -93,6 +93,7 @@ const { formSettings } = useCvState()
         </div>
       </template>
     </CvPreviewSkill>
+    <div v-if="formSettings.displayInterests && formSettings.layout !== 'one-column' " class="border-dashed border-b border-var-color " />
   </section>
 </template>
 

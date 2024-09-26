@@ -188,7 +188,22 @@ export function useCvState() {
     state.formSettings = cvSettingsEmptyTemplate
     localStorage.removeItem(`cvSettings-${i18n.locale.value}`)
   }
+  function myForm() {
+    const locale = `cvSettingsMyData-${i18n.locale.value}` // Cambia el nombre de la clave según tu necesidad
+    const storedSettings = localStorage.getItem(locale)
 
+    // Verificar si hay configuraciones almacenadas
+    if (storedSettings) {
+      const cvSettingsObj = JSON.parse(storedSettings)
+      // Combina las configuraciones almacenadas con las configuraciones vacías
+      state.formSettings = { ...cvSettingsEmptyTemplate, ...cvSettingsObj }
+      patchId(state.formSettings) // Asegúrate de que cada entrada tenga un ID
+    }
+    else {
+      // Si no hay configuraciones almacenadas, inicializa con la plantilla
+      state.formSettings = { ...cvSettingTemplate }
+    }
+  }
   function changeDisplaySection(e: {
     sectionName: string
     status: boolean
@@ -226,6 +241,7 @@ export function useCvState() {
     removeEntry,
     uploadCV,
     resetForm,
+    myForm,
     clearForm,
     changeDisplaySection,
     addEntryReference,
