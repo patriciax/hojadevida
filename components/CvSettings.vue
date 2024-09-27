@@ -159,7 +159,7 @@ function goToRoute() {
 }
 
 function shared(id: any) {
-  const _url = `${newUrl.value}${resumenStore.data.id}`
+  const _url = `${newUrl.value}${resumenStore.data.code_url}`
 
   if (navigator.share) {
     navigator.share({
