@@ -100,5 +100,7 @@
   "logout": "Cerrar sesión",
   "addpublic": "Pública",
   "addprivate": "Privada",
-  "mysettings": "Mis Datos"
+  "mysettings": "Mis Datos",
+  "passwordtitle": "Restablece tu contraseña",
+  "reset-passwordtitle": "Restablece tu contraseña"
 }

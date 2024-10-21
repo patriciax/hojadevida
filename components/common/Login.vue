@@ -47,16 +47,18 @@ onMounted(() => {
               <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Ingrese la contraseña</label>
               <input id="password" v-model="dataForm.password" type="password" name="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5   " required="">
             </div>
-            <!-- <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between">
               <div class="flex items-start">
                 <div class="flex items-center h-5" />
               </div>
-              <a href="#" class="text-sm font-medium text-blue-600 hover:underline ">Olvidaste la contraseña?</a>
-            </div> -->
+              <nuxt-link to="/resetPassword" class="text-sm font-medium text-blue-600 hover:underline ">
+                ¿Olvidaste tu contraseña?
+              </nuxt-link>
+            </div>
             <button type="submit" class="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">
               Iniciar sesión
             </button>
-            <p class="text-sm text-center font-light text-gray-500 ">
+            <p class="text-sm text-start font-light text-gray-500 ">
               ¿Aún no tienes cuenta? <nuxt-link to="/register" class="font-medium text-blue-600 hover:underline ">
                 Regístrate
               </nuxt-link>
