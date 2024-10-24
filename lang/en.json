@@ -95,5 +95,7 @@
   "logout": "Logout",
   "addpublic": "Public",
   "addprivate": "Private",
-  "mysettings": "My profile"
+  "mysettings": "My profile",
+  "generar_ia": "Generate with AI",
+  "cancel": "Cancel"
 }

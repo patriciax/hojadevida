@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ArrowRightStartOnRectangleIcon, BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, CloudArrowDownIcon, Cog6ToothIcon, PrinterIcon, ShareIcon, TrophyIcon, UserIcon } from '@heroicons/vue/24/solid'
+import { ArrowRightStartOnRectangleIcon, BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, CloudArrowDownIcon, Cog6ToothIcon, PrinterIcon, ShareIcon, TrophyIcon, UserIcon, XMarkIcon } from '@heroicons/vue/24/solid'
 import type { p } from '@vite-pwa/assets-generator/dist/shared/assets-generator.5e51fd40.mjs'
 import { get } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import Nav from './Nav.vue'
+import Modal from './common/Modal.vue'
 import InputPhoneNumber from '@/components/common/InputPhoneNumber.vue'
 import { SectionNameList } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
@@ -23,6 +24,7 @@ const resumenStore = useResumenStore()
 const locationStore = LocationStore()
 const country = ref()
 const city = ref()
+const generateIA = ref(false)
 const {
   formSettings,
   uploadCV,
@@ -57,18 +59,6 @@ const config = {
   ],
 }
 
-// watch(
-//   () => config.selectedColor,
-//   (newColor) => {
-//     formSettings.value.activeColor = newColor
-
-//     localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify({
-//       ...formSettings.value,
-//       activeColor: newColor,
-//     }))
-//     changeColor(newColor)
-//   },
-// )
 watch(bgCv, (newColor) => {
   localStorage.setItem('bgCv', newColor)
   emit('color', newColor)
@@ -194,6 +184,29 @@ function logout() {
   loginStore.reset()
   localStorage.removeItem(`cvSettings-${i18n.locale.value}`)
   router.push({ path: '/login' })
+}
+// async function generateTextIa(text: string) {
+//   await resumenStore.getTextIA({
+//     profile: String(text),
+//   })
+// }
+
+const dataIA = ref({
+  profile: '',
+  textIA: '',
+})
+async function generateAboutIa(text: string) {
+  generateIA.value = true
+  await resumenStore.getTextIA({
+    profile: String(text),
+  })
+  if (resumenStore.isReady)
+    dataIA.value.profile = resumenStore.textIA
+}
+
+function getText() {
+  formSettings.value.aboutme = dataIA.value.profile
+  generateIA.value = false
 }
 </script>
 
@@ -645,9 +658,13 @@ function logout() {
               </div>
               <div class="form__group col-span-full">
                 <label
-                  class="form__label"
+                  class="form__label justify-between w-full flex items-center"
                   for="aboutme"
-                > {{ $t("about-me") }}</label>
+                >
+
+                  <span>{{ $t("about-me") }}</span>
+                  <span class="text-white py-0.5 cursor-pointer rounded-lg px-2 border bg-blue-400  " @click="generateAboutIa(formSettings.aboutme)">{{ $t("generar_ia") }}</span>
+                </label>
                 <textarea
                   id="aboutme"
                   v-model="formSettings.aboutme"
@@ -841,6 +858,44 @@ function logout() {
       </p>
       <!-- CTA -->
     </form>
+
+    <Modal v-if="generateIA" with-out-close @close="generateIA = false">
+      <section class="bg-white relative p-10 max-w-xl m-auto rounded-lg">
+        <button class="hiddem absolute right-3 top-3 focus:outline-none " @click="generateIA = false">
+          <XMarkIcon class="w-6 text-gray-700" />
+        </button>
+        <div class="mb-4 text-center">
+          <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
+            {{ $t('addnewpasssmodal') }}
+          </h2>
+        </div>
+        <div class="flex max-w-md m-auto flex-col lg:gap-2 gap-4 items-center justify-center rtl:space-x-reverse">
+          <section class="w-full flex gap-4 items-center " />
+          <button v-if="resumenStore.isLoadingIA" type="button" class="w-full text-center h-48 justify-center inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-black bg-transparent border border-gray-300 mb-2  transition ease-in-out duration-150 cursor-not-allowed">
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            </svg>
+            Generando...
+          </button>
+
+          <textarea
+            v-else
+            id="aboutme"
+            v-model=" dataIA.profile"
+            class="form__control"
+            name="aboutme"
+            cols="30"
+            rows="8"
+          />
+
+          <div class="flex gap-2 w-full lg:flex-row flex-col">
+            <button class="form__legend text-sm w-full " type="button" @click="generateIA = false" v-text="$t('cancel')" />
+            <button class="form__btn text-sm w-full " type="button" @click="getText" v-text="$t('addnewpasss')" />
+          </div>
+        </div>
+      </section>
+    </Modal>
   </div>
 </template>
 

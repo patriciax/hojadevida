@@ -33,6 +33,7 @@ const { isLoading, formSettings } = useCvState()
 
     <div class="font-selected" style="min-height: var(--height);">
       <div
+        id="elemento-a-exportar"
         tabindex="0"
         aria-label="CV preview"
         class="cv shadow-lg mt-6 lg:mt-24 bg-white relative"

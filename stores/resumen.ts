@@ -2,13 +2,14 @@ import { defineStore } from 'pinia'
 import { useNuxtApp } from '#app'
 
 interface State {
-  _status: 'loading' | 'ready' | 'error' | 'readyPass' | null
+  _status: 'loading' | 'ready' | 'error' | 'readyPass' | 'loadingIA' | null
   _error: any | null
   _data: any | null
   _formSettings: any | null
   _profile: any | null
   _isPassword: boolean
   _codeUrl: string | null
+  _textIA: string | null
 
 }
 
@@ -22,10 +23,12 @@ export default defineStore({
     _profile: null,
     _isPassword: false,
     _codeUrl: null,
+    _textIA: '',
 
   }),
   getters: {
     isLoading: state => state._status === 'loading',
+    isLoadingIA: state => state._status === 'loadingIA',
     isReady: state => state._status === 'ready',
     isError: state => state._status === 'error',
     isReadyPass: state => state._status === 'readyPass',
@@ -36,6 +39,7 @@ export default defineStore({
     formSettings: state => state._formSettings,
     isPassword: state => state._isPassword,
     codeUrl: state => state._codeUrl,
+    textIA: state => state._textIA,
 
   },
   actions: {
@@ -221,7 +225,34 @@ export default defineStore({
         this.changeStatus('error', error)
       }
     },
-    changeStatus(status: 'loading' | 'ready' | 'readyPass' | 'error', error: any = null) {
+    async getTextIA(body: any) {
+      try {
+        this.changeStatus('loadingIA')
+
+        const { $axios } = useNuxtApp()
+
+        const response = await $axios.post(`api/v1/edit-text`, body, {
+          headers: {
+            'Authorization': `Token ${sessionStorage.getItem('access')}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        if (response.status === 200) {
+          this._textIA = response.data.message
+
+          this.changeStatus('ready')
+        }
+        else {
+          this.changeStatus('error', response)
+        }
+
+        this.changeStatus('ready')
+      }
+      catch (error) {
+        this.changeStatus('error', error)
+      }
+    },
+    changeStatus(status: 'loading' | 'ready' | 'readyPass' | 'loadingIA' | 'error', error: any = null) {
       this._status = status
       if (status === 'error')
         this._error = error

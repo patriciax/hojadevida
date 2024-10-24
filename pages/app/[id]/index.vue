@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { LockClosedIcon, XMarkIcon } from '@heroicons/vue/24/solid'
 import { useRouter } from 'vue-router'
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas'
 import Input from '@/components/common/Input.vue'
 import Modal from '@/components/common/Modal.vue'
 import { useCvState } from '~/data/useCvState'
@@ -213,10 +215,36 @@ function changeFont() {
   const textContainer = document.querySelector('.font-selected')
   textContainer.style.fontFamily = resumenStore.formSettings?.font
 }
+async function downloadCvPdf() {
+  const element = document.getElementById('elemento-a-exportar')
+
+  html2canvas(element).then((canvas) => {
+    const imgData = canvas.toDataURL('image/png')
+
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+    })
+
+    const pdfWidth = pdf.internal.pageSize.getWidth()
+    const imgWidth = pdfWidth * 0.9 // Ajusta según sea necesario
+    const imgHeight = (canvas.height * imgWidth) / canvas.width
+    const xOffset = (pdfWidth - imgWidth) / 2
+    const yOffset = (pdf.internal.pageSize.getHeight() - imgHeight) / 2
+
+    pdf.addImage(imgData, 'PNG', xOffset, yOffset, imgWidth, imgHeight)
+    pdf.save('documento.pdf')
+  })
+}
 </script>
 
 <template>
   <main class="font-app main">
+    <!-- <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="downloadCvPdf">
+      Descargar PDF
+    </button> -->
+
     <Modal v-if="showPassword" with-out-close>
       <section class="bg-white relative p-10 max-w-xl m-auto rounded-lg">
         <div class="mb-6 text-center">
