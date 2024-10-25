@@ -252,6 +252,36 @@ export default defineStore({
         this.changeStatus('error', error)
       }
     },
+    async getTextIADescription(body: any) {
+      try {
+        this.changeStatus('loadingIA')
+
+        const { $axios } = useNuxtApp()
+
+        const response = await $axios.post(`api/v1/edit-writing`, body, {
+          headers: {
+            'Authorization': `Token ${sessionStorage.getItem('access')}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        if (response.status === 200) {
+          this._textIA = response.data.message
+
+          this.changeStatus('ready')
+        }
+        else {
+          this.changeStatus('error', response)
+        }
+
+        this.changeStatus('ready')
+      }
+      catch (error) {
+        this.changeStatus('error', error)
+      }
+    },
+    resetText() {
+      this._textIA = ''
+    },
     changeStatus(status: 'loading' | 'ready' | 'readyPass' | 'loadingIA' | 'error', error: any = null) {
       this._status = status
       if (status === 'error')

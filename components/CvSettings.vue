@@ -663,7 +663,7 @@ function getText() {
                 >
 
                   <span>{{ $t("about-me") }}</span>
-                  <span class="text-white py-0.5 cursor-pointer rounded-lg px-2 border bg-blue-400  " @click="generateAboutIa(formSettings.aboutme)">{{ $t("generar_ia") }}</span>
+                  <button type="button" :disabled="!formSettings.aboutme" :class=" !formSettings.aboutme ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5 rounded-lg px-2 border  " @click="generateAboutIa(formSettings.aboutme)">{{ $t("generar_ia") }}</button>
                 </label>
                 <textarea
                   id="aboutme"
@@ -866,7 +866,7 @@ function getText() {
         </button>
         <div class="mb-4 text-center">
           <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
-            {{ $t('addnewpasssmodal') }}
+            {{ $t('modalia') }}
           </h2>
         </div>
         <div class="flex max-w-md m-auto flex-col lg:gap-2 gap-4 items-center justify-center rtl:space-x-reverse">

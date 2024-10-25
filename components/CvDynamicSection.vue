@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { CheckIcon, TrashIcon } from '@heroicons/vue/24/solid'
+import Modal from './common/Modal.vue'
 import type { CvEvent, CvEventReference, SectionName } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
+// import useResumenStore from '@/stores/resumen'
 
 const { sectionName, entries = [] } = defineProps<{
   sectionName: SectionName
   entries: CvEvent[]
   reference: CvEventReference[]
 }>()
+// const resumenStore = useResumenStore()
+// const generateIA = ref(false)
+// const textia = ref('')
 const { addEntry, addEntryReference, removeEntry } = useCvState()
 function focusEditor(id: string) {
   const editorElem = document.getElementById(`${id}-editor`)
@@ -34,6 +39,22 @@ function calculateMaxDate() {
   const yyyy = today.getFullYear()
   maxDate.value = `${yyyy}-${mm}-${dd}`
 }
+
+// async function generateText(text: string, id: string) {
+//   generateIA.value = true
+//   await resumenStore.getTextIADescription({
+//     writing: String(text),
+//   })
+//   if (resumenStore.isReady)
+//     textia.value = resumenStore.textIA
+
+//   console.log(text, id)
+// }
+
+// function handledClose() {
+//   generateIA.value = false
+//   resumenStore.resetText()
+// }
 </script>
 
 <template>
@@ -302,19 +323,24 @@ function calculateMaxDate() {
               </div>
               <div class="form__group col-span-full">
                 <label
-                  class="form__label"
+                  class="form__label flex justify-between gap-1"
                   :for="`entrySummary-${entry.id}`"
                   @click="focusEditor(`entrySummary-${entry.id}`)"
                 >
-                  <template v-if="sectionName === 'work'">
-                    {{ $t("funcion") }}
-                  </template>
+                  <span>
+                    <template v-if="sectionName === 'work'">
+                      {{ $t("funcion") }}
+                    </template>
 
-                  <template v-else>
+                    <template v-else>
 
-                    {{ $t("summary")
-                    }}
-                  </template>
+                      {{ $t("summary")
+                      }}
+                    </template>
+                  </span>
+
+                  <button type="button" :disabled="!entry.summary" :class=" !entry.summary ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5  rounded-lg px-2 text-sm border   " @click="$emit('generateia', entry)">{{ $t("generar_ia") }}</button>
+
                 </label>
                 <CvTextEditor
                   :id="`entrySummary-${entry.id}`"
