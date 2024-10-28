@@ -105,5 +105,11 @@
   "reset-passwordtitle": "Restablece tu contraseña",
   "generar_ia": "Generar con IA",
   "cancel": "Cancelar",
-  "modalia": "Perfil sugerido por la IA"
+  "modalia": "sugerido por la IA",
+  "carta": "Carta de presentacion",
+  "profile-title": "Perfil",
+  "company-title": "Compañía",
+  "resumen": "Resumen",
+  "carta-description": "Complete los siguientes campos",
+  "cartacerrar": "Volver a hoja de vida"
 }

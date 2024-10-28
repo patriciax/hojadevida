@@ -259,6 +259,8 @@ function getText() {
       </button>
 
       <button
+        v-if="!resumenStore.isShowCarta"
+
         class="flex gap-2 text-gray-700 text-sm hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg"
 
         rel="noopener"
@@ -271,6 +273,7 @@ function getText() {
       </button>
     </Nav>
     <button
+      v-if="!resumenStore.isShowCarta"
       class="fixed bottom-0 h-12 w-12 z-10 hover:bg-gray-200 right-5 lg:right-10 mb-10 pr-1 rounded-full text-center items-center justify-center bg-primary hover:bg-primary-darker flex"
       :style="`background: ${resumenStore.formSettings?.activeColor}` || '#0000'"
 
@@ -546,7 +549,7 @@ function getText() {
                   v-model="formSettings.profileImageDataUri"
                 />
               </div>
-              <div class="form__group col-span-full">
+              <!-- <div class="form__group col-span-full">
                 <label
                   class="form__label"
                   for="job-pos"
@@ -558,6 +561,30 @@ function getText() {
                   type="text"
                 >
               </div>
+              <div class="form__group col-span-full">
+                <label
+                  class="form__label"
+                  for="job-pos"
+                > {{ $t("profile-title") }}</label>
+                <input
+                  id="profile-pos"
+                  v-model="formSettings.profile"
+                  class="form__control"
+                  type="text"
+                >
+              </div> -->
+              <!-- <div class="form__group col-span-full">
+                <label
+                  class="form__label"
+                  for="job-pos"
+                > {{ $t("company-title") }}</label>
+                <input
+                  id="profile-pos"
+                  v-model="formSettings.company"
+                  class="form__control"
+                  type="text"
+                >
+              </div> -->
               <div class="form__group">
                 <label
                   class="form__label"
@@ -656,7 +683,7 @@ function getText() {
                   type="tel"
                 > -->
               </div>
-              <div class="form__group col-span-full">
+              <div v-if="!resumenStore.isShowCarta" class="form__group col-span-full">
                 <label
                   class="form__label justify-between w-full flex items-center"
                   for="aboutme"
@@ -674,6 +701,24 @@ function getText() {
                   rows="10"
                 />
               </div>
+              <!-- <div v-else class="form__group col-span-full">
+                <label
+                  class="form__label justify-between w-full flex items-center"
+                  for="aboutme"
+                >
+
+                  <span>{{ $t("carta") }}</span>
+                  <button type="button" :disabled="!formSettings.aboutme" :class=" !formSettings.aboutme ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5 rounded-lg text-xs px-2 border  " @click="generateCarta">{{ $t("generar_ia") }}</button>
+                </label>
+                <textarea
+                  id="aboutme"
+                  v-model="formSettings.carta"
+                  class="form__control"
+                  name="aboutme"
+                  cols="30"
+                  rows="10"
+                />
+              </div> -->
             </div>
           </template>
         </expansion-panel>
@@ -681,7 +726,7 @@ function getText() {
       <!-- PERSONAL DETAILS -->
 
       <!-- SKILLS -->
-      <fieldset class="form__section grid gap-3 ">
+      <fieldset v-if="!resumenStore.isShowCarta" class="form__section grid gap-3 ">
         <expansion-panel :panel-name="$t('skills')">
           <template #icon>
             <ChartPieIcon class="icon-style" />
@@ -725,7 +770,7 @@ function getText() {
       <!-- SKILLS -->
 
       <!-- SOCIAL -->
-      <fieldset class="form__section grid gap-3 ">
+      <fieldset v-if="!resumenStore.isShowCarta" class="form__section grid gap-3 ">
         <expansion-panel :panel-name="$t('social')">
           <template #icon>
             <ChatBubbleOvalLeftIcon class="icon-style" />
@@ -840,12 +885,15 @@ function getText() {
       <!-- SOCIAL -->
 
       <!-- HISTORY SECTIONS -->
-      <CvSettingsHistorySection
-        v-for="(value, key) in SectionNameList"
-        :key="key"
-        :section="key"
-        :name="value"
-      />
+      <template v-if="!resumenStore.isShowCarta">
+        <CvSettingsHistorySection
+          v-for="(value, key) in SectionNameList"
+          :key="key"
+          :section="key"
+          :name="value"
+        />
+      </template>
+
       <!-- HISTORY SECTIONS -->
 
       <!-- CTA -->

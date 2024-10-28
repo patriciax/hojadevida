@@ -1,10 +1,11 @@
 <script setup>
-import { AdjustmentsVerticalIcon, ArrowRightIcon, ArrowRightStartOnRectangleIcon, Cog6ToothIcon, DocumentDuplicateIcon, LockClosedIcon, XMarkIcon } from '@heroicons/vue/24/solid'
+import { AdjustmentsVerticalIcon, ArrowRightIcon, ArrowRightStartOnRectangleIcon, Cog6ToothIcon, DocumentDuplicateIcon, DocumentTextIcon, LockClosedIcon, XMarkIcon } from '@heroicons/vue/24/solid'
 import { useRouter } from 'vue-router'
 import useLoginStore from '@/stores/auth'
 import useResumenStore from '@/stores/resumen'
 import Modal from '@/components/common/Modal.vue'
 import Input from '@/components/common/Input.vue'
+import { useCvState } from '~/data/useCvState'
 
 const loginStore = useLoginStore()
 const router = useRouter()
@@ -12,11 +13,29 @@ const resumenStore = useResumenStore()
 const publicCheck = ref()
 const privateCheck = ref()
 const showPassword = ref(false)
+const showCarta = ref(false)
+const i18n = useI18n()
+
+const { t, locale } = useI18n()
+
 const dataForm = ref({
   password: '',
   confirm_password: '',
 
 })
+
+const datacarta = ref({
+  profile: '',
+  jobTitle: '',
+  company: '',
+  general: '',
+})
+const errorcarta = ref({
+  jobTitle: '',
+  company: '',
+  profile: '',
+})
+
 const error = ref({
   password: '',
 })
@@ -59,6 +78,10 @@ async function sendPassword() {
     useNuxtApp().$toast.error('Error al agregar contraseña')
   }
 }
+const {
+  formSettings,
+
+} = useCvState()
 function openModalPassword() {
   showPassword.value = !showPassword.value
 }
@@ -113,9 +136,83 @@ function handleRadioChange(value) {
 
 onMounted(() => {
   setData()
+
   if (selectedOption.value === 'public')
     publicCheck.value = true
 })
+
+function handleCarta() {
+  showCarta.value = true
+  // if (showCarta.value) {
+  //   resumenStore.showCarta(false)
+  //   showCarta.value = false
+
+  //   return
+  // }
+  resumenStore.showCarta(showCarta.value)
+  datacarta.value.jobTitle = formSettings.value.jobTitle
+}
+
+function closeCarta() {
+  showCarta.value = false
+  resumenStore.showCarta(showCarta.value)
+}
+
+function handleInputcompany(value) {
+  errorcarta.value.general = ''
+  formSettings.value.company = value
+}
+function handleInputprofile(value) {
+  errorcarta.value.general = ''
+
+  formSettings.value.profile = value
+}
+function handleInputjob(value) {
+  errorcarta.value.general = ''
+
+  formSettings.value.jobTitle = value
+}
+async function sendCarta() {
+  formSettings.value.company = datacarta.value.company
+  formSettings.value.profile = datacarta.value.profile
+  formSettings.value.jobTitle = datacarta.value.jobTitle
+
+  if (datacarta.value.jobTitle === '' || datacarta.value.company === '' || datacarta.value.profile === '') {
+    errorcarta.value.general = 'Todos los campos son requeridos'
+    return
+  }
+
+  await resumenStore.getCarta({
+    company: datacarta.value.company,
+    job: datacarta.value.jobTitle,
+    profile: datacarta.value.profile,
+  })
+
+  if (resumenStore.isReady) {
+    useNuxtApp().$toast.success('¡Carta generada!')
+    showCarta.value = false
+  }
+
+  if (resumenStore.isError) {
+    if (resumenStore.error.company)
+      errorcarta.value.company = 'El campo del company debe tener al menos 5 caracteres'
+
+    if (resumenStore.error.job)
+      errorcarta.value.job = 'El campo del trabajo  debe tener al menos 5 caracteres'
+
+    if (resumenStore.error.profile)
+      errorcarta.value.profile = 'El campo del perfil debe tener al menos 5 caracteres'
+  }
+}
+
+watch(
+  () => formSettings.value,
+  (newValue, oldValue) => {
+    if (JSON.stringify(oldValue) !== JSON.stringify(formSettings.value))
+      localStorage.setItem(`cvSettingsMyData-${i18n.locale.value}`, JSON.stringify(oldValue))
+  },
+  { deep: true },
+)
 </script>
 
 <template>
@@ -130,6 +227,26 @@ onMounted(() => {
             >
               <Cog6ToothIcon class="w-4 h-4" />
               <p class="text-sm font-normal  " v-text="$t('addPassword')" />
+            </div>
+
+            <div
+              v-if="!resumenStore.isShowCarta"
+              :class="{ 'bg-blue-500 !text-white': resumenStore.isShowCarta }"
+              class="flex gap-2 cursor-pointer text-gray-700 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg"
+              @click="handleCarta"
+            >
+              <DocumentTextIcon class="w-4 h-4" />
+              <p class="text-sm font-normal  " v-text="$t('carta')" />
+            </div>
+            <div
+              v-else
+
+              :class="{ 'bg-blue-500 !text-white': resumenStore.isShowCarta }"
+              class="flex gap-2 cursor-pointer text-gray-700 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg"
+              @click="closeCarta"
+            >
+              <DocumentTextIcon class="w-4 h-4" />
+              <p class="text-sm font-normal  " v-text="$t('cartacerrar')" />
             </div>
           </div>
           <ul class="font-medium flex gap-3 rounded-lg  flex-row rtl:space-x-reverse md:mt-0 md:border-0 ">
@@ -217,6 +334,75 @@ onMounted(() => {
               <DocumentDuplicateIcon class="w-6  " />
             </button>
           </p>
+        </div>
+      </div>
+    </section>
+  </Modal>
+
+  <Modal v-if="showCarta" with-out-close @close="closeCarta">
+    <section class="bg-white relative p-10 max-w-xl m-auto rounded-lg">
+      <button class="hiddem absolute right-3 top-3 focus:outline-none " @click="closeCarta">
+        <XMarkIcon class="w-6 text-gray-700" />
+      </button>
+      <div class="mb-6 text-center">
+        <h2 class="text-xl mb-2 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
+          {{ $t('carta') }}
+        </h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400" v-text="$t('carta-description')" />
+      </div>
+      <div class="flex max-w-md m-auto flex-col lg:gap-3 gap-4 items-center justify-center rtl:space-x-reverse">
+        <div class="form__group col-span-full w-full">
+          <label
+            class="form__label"
+            for="job-pos"
+          > {{ $t("job-title") }}</label>
+          <input
+            v-model="datacarta.jobTitle"
+            class="form__control"
+            type="text"
+            @input="handleInputjob"
+          >
+          <p v-if="errorcarta.job" class="text-md bg-red-100 w-full  col-span-2 rounded-md text-center py-2 text-red-600 dark:text-red-500">
+            {{ errorcarta.job }}
+          </p>
+        </div>
+        <div class="form__group col-span-full w-full">
+          <label
+            class="form__label"
+            for="job-pos"
+          > {{ $t("profile-title") }}</label>
+          <input
+            v-model="datacarta.profile"
+            class="form__control"
+            type="text"
+            @input="handleInputprofile"
+          >
+          <p v-if="errorcarta.profile" class="text-xs  w-full  col-span-2 rounded-md font-light  text-red-600 dark:text-red-500">
+            {{ errorcarta.profile }}
+          </p>
+        </div>
+        <div class="form__group col-span-full w-full">
+          <label
+            class="form__label"
+            for="job-pos"
+          > {{ $t("company-title") }}</label>
+          <input
+            v-model="datacarta.company"
+            class="form__control"
+            type="text"
+            @input="handleInputcompany"
+          >
+          <p v-if="errorcarta.company" class="text-xs  w-full  col-span-2 rounded-md font-light  text-red-600 dark:text-red-500">
+            {{ errorcarta.company }}
+          </p>
+        </div>
+        <p v-if="errorcarta.general" class="text-sm  w-full  col-span-2 rounded-md font-light text-center bg-red-200 py-2  text-red-600 dark:text-red-500">
+          {{ errorcarta.general }}
+        </p>
+        <div class="flex gap-2 w-full lg:flex-row flex-col">
+          <button class="form__legend text-sm w-full " type="button" @click="closeCarta" v-text="$t('cancel')" />
+
+          <button class="form__btn text-sm w-full " type="button" @click="sendCarta" v-text="$t('addnewpasss')" />
         </div>
       </div>
     </section>

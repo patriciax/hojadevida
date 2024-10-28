@@ -11,6 +11,9 @@ export interface Cv {
   layout?: 'one-column' | 'two-column'
   profileImageDataUri?: string | null
   jobTitle: string
+  company: string
+  profile: string
+  carta: string
   name: string
   lastName: string
   email: string

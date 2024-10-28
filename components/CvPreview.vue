@@ -2,12 +2,14 @@
 import { defineComponent } from 'vue'
 import CvPreviewThreeColumn from './CvPreviewThreeColumn.vue'
 import { useCvState } from '~/data/useCvState'
+import useResumenStore from '@/stores/resumen'
 
 const props = defineProps<{
   color?: string
   loading?: boolean
 }>()
 const { isLoading, formSettings } = useCvState()
+const resumenStore = useResumenStore()
 </script>
 
 <template>
@@ -31,7 +33,7 @@ const { isLoading, formSettings } = useCvState()
   >
     <slot />
 
-    <div class="font-selected" style="min-height: var(--height);">
+    <div class="font-selected" style="min-height: var(--height)">
       <div
         id="elemento-a-exportar"
         tabindex="0"
@@ -44,6 +46,7 @@ const { isLoading, formSettings } = useCvState()
           formSettings.layout === 'two-column' && 'grid grid-cols-3 ',
           formSettings.layout === 'three-column' && 'grid grid-cols-2',
           formSettings.layout === 'four-column' && 'grid grid-cols-3 ',
+          { 'cv-carta': resumenStore.isShowCarta },
         ]"
       >
         <template v-if="formSettings.layout === 'one-column'">
@@ -95,6 +98,9 @@ p {
       display: none;
     }
   }
+}
+.cv-carta {
+  --height: auto !important;
 }
 
 .cv {

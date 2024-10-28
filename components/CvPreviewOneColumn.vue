@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import useResumenStore from '@/stores/resumen'
+
+const resumenStore = useResumenStore()
 </script>
 
 <template>
@@ -17,15 +20,17 @@
     <CvProfileImageViewer class="rounded ml-2" />
   </div>
 
-  <CvPreviewSkills />
+  <template v-if="!resumenStore.isShowCarta">
+    <CvPreviewSkills />
 
-  <CvPreviewExperience />
+    <CvPreviewExperience />
 
-  <CvPreviewEducation />
+    <CvPreviewEducation />
 
-  <CvPreviewProjects />
+    <CvPreviewProjects />
 
-  <CvPreviewReferences class="mt-4" />
+    <CvPreviewReferences class="mt-4" />
+  </template>
 </template>
 
 <style lang="postcss" scoped>

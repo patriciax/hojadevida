@@ -98,5 +98,10 @@
   "mysettings": "My profile",
   "generar_ia": "Generate with AI",
   "cancel": "Cancel",
-  "modalia": "Profile suggested by the AI"
+  "modalia": "Profile suggested by the AI",
+  "profile-title": "Profile",
+  "company-title": "Company",
+  "resumen": "Resume",
+  "carta-description": "Complete the following fields",
+  "cartacerrar": "Back"
 }

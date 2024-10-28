@@ -10,6 +10,8 @@ interface State {
   _isPassword: boolean
   _codeUrl: string | null
   _textIA: string | null
+  _isShowCarta: boolean
+  _carta: any | null
 
 }
 
@@ -24,6 +26,8 @@ export default defineStore({
     _isPassword: false,
     _codeUrl: null,
     _textIA: '',
+    _isShowCarta: false,
+    _carta: '',
 
   }),
   getters: {
@@ -40,6 +44,8 @@ export default defineStore({
     isPassword: state => state._isPassword,
     codeUrl: state => state._codeUrl,
     textIA: state => state._textIA,
+    isShowCarta: state => state._isShowCarta,
+    carta: state => state._carta,
 
   },
   actions: {
@@ -279,8 +285,39 @@ export default defineStore({
         this.changeStatus('error', error)
       }
     },
+    async getCarta(body: any) {
+      try {
+        this.changeStatus('loadingIA')
+
+        const { $axios } = useNuxtApp()
+
+        const response = await $axios.post(`api/v1/edit-letter`, body, {
+          headers: {
+            'Authorization': `Token ${sessionStorage.getItem('access')}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        if (response.status === 200) {
+          this._carta = response.data.message
+
+          this.changeStatus('ready')
+        }
+        else {
+          this.changeStatus('error', response)
+          console.log(response.data)
+        }
+
+        this.changeStatus('ready')
+      }
+      catch (error) {
+        this.changeStatus('error', error.response.data.messages.errors)
+      }
+    },
     resetText() {
       this._textIA = ''
+    },
+    showCarta(show: boolean) {
+      this._isShowCarta = show
     },
     changeStatus(status: 'loading' | 'ready' | 'readyPass' | 'loadingIA' | 'error', error: any = null) {
       this._status = status

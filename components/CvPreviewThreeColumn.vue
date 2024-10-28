@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { useCvState } from '~/data/useCvState'
+import useResumenStore from '@/stores/resumen'
 
 const props = defineProps<{
   color?: string
 }>()
+const resumenStore = useResumenStore()
 
 const { formSettings } = useCvState()
 </script>
@@ -21,16 +23,17 @@ const { formSettings } = useCvState()
     <CvProfileImageViewer class="border-white border-8 z-10 mb-4" />
 
     <CvPreviewContact />
+    <template v-if="!resumenStore.isShowCarta">
+      <div class="border-dashed border-b border-var-color py-3 mb-4" />
 
-    <div class="border-dashed border-b border-var-color py-3 mb-4" />
+      <CvPreviewSkills class="flex flex-col gap-6" />
+      <!-- <div class="border-dashed border-b border-var-color " /> -->
 
-    <CvPreviewSkills class="flex flex-col gap-6" />
-    <!-- <div class="border-dashed border-b border-var-color " /> -->
+      <CvPreviewReferences :color="props.color" />
 
-    <CvPreviewReferences :color="props.color" />
-
-    <!-- <div class="border-dashed border-b border-var-color py-4" /> -->
-    <CvPreviewSocial />
+      <!-- <div class="border-dashed border-b border-var-color py-4" /> -->
+      <CvPreviewSocial />
+    </template>
   </div>
 
   <div>
@@ -43,24 +46,25 @@ const { formSettings } = useCvState()
       <CvPreviewAbout />
       <div class="py-4" />
       <!-- <hr class="cv__bar"> -->
+      <template v-if="!resumenStore.isShowCarta">
+        <CvPreviewExperience />
+        <div class="py-4" />
 
-      <CvPreviewExperience />
-      <div class="py-4" />
-
-      <!-- <hr
+        <!-- <hr
         v-if="formSettings.displayEducation"
         class=""
       > -->
 
-      <CvPreviewEducation />
-      <div class="py-4" />
+        <CvPreviewEducation />
+        <div class="py-4" />
 
-      <!-- <hr
+        <!-- <hr
         v-if="formSettings.displayProjects"
         class="cv__bar"
       > -->
 
-      <CvPreviewProjects />
+        <CvPreviewProjects />
+      </template>
     </section>
   </div>
 </template>

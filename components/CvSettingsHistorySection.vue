@@ -119,7 +119,7 @@ function handledClose() {
         </button>
         <div class="mb-4 text-center">
           <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
-            {{ $t('modalia') }}
+            {{ $t('resumen') }} {{ $t('modalia') }}
           </h2>
         </div>
         <div class="flex max-w-md m-auto flex-col lg:gap-2 gap-4 items-center justify-center rtl:space-x-reverse">
