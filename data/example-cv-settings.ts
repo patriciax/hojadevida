@@ -3,6 +3,7 @@ import { type Cv, LEVELS } from '~/types/cvfy'
 export const cvSettingTemplate: Cv = {
   layout: 'two-column',
   profileImageDataUri: '/knope_campaign_rect.webp',
+  firma: '',
   jobTitle: 'Jefe de Seguridad',
   company: '',
   profile: '',
@@ -115,6 +116,7 @@ export const cvSettingTemplate: Cv = {
 export const cvSettingsEmptyTemplate: Cv = {
   layout: 'two-column',
   profileImageDataUri: null,
+  firma: null,
   jobTitle: '',
   company: '',
   profile: '',

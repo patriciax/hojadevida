@@ -10,6 +10,7 @@ export type Level = (typeof LEVELS)[number]
 export interface Cv {
   layout?: 'one-column' | 'two-column'
   profileImageDataUri?: string | null
+  firma?: string
   jobTitle: string
   company: string
   profile: string

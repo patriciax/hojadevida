@@ -27,7 +27,7 @@ const dataForm = ref({
 const datacarta = ref({
   profile: '',
   jobTitle: '',
-  company: '',
+  company: 'My Company Inc.',
   general: '',
 })
 const errorcarta = ref({
@@ -141,16 +141,25 @@ onMounted(() => {
     publicCheck.value = true
 })
 
-function handleCarta() {
-  showCarta.value = true
-  // if (showCarta.value) {
-  //   resumenStore.showCarta(false)
-  //   showCarta.value = false
-
-  //   return
-  // }
-  resumenStore.showCarta(showCarta.value)
+async function handleCarta() {
+  if (formSettings.value.profile || formSettings.value.jobTitle || formSettings.value.company) {
+    resumenStore.showCarta(true)
+    return
+  }
+  resumenStore.showCarta(true)
   datacarta.value.jobTitle = formSettings.value.jobTitle
+
+  await resumenStore.getCarta({
+    company: datacarta.value.company,
+    job: datacarta.value.jobTitle,
+    profile: formSettings.value.aboutme,
+  })
+
+  await resumenStore.addCvSettings(JSON.stringify({ formSettings: {
+    ...formSettings.value,
+    company: datacarta.value.company,
+    profile: resumenStore.carta,
+  } }))
 }
 
 function closeCarta() {
@@ -158,52 +167,44 @@ function closeCarta() {
   resumenStore.showCarta(showCarta.value)
 }
 
-function handleInputcompany(value) {
-  errorcarta.value.general = ''
-  formSettings.value.company = value
-}
-function handleInputprofile(value) {
-  errorcarta.value.general = ''
+// async function sendCarta() {
+//   formSettings.value.company = datacarta.value.company
+//   formSettings.value.profile = datacarta.value.profile
+//   formSettings.value.jobTitle = datacarta.value.jobTitle
 
-  formSettings.value.profile = value
-}
-function handleInputjob(value) {
-  errorcarta.value.general = ''
+//   if (datacarta.value.jobTitle === '' || datacarta.value.company === '' || datacarta.value.profile === '') {
+//     errorcarta.value.general = 'Todos los campos son requeridos'
+//     return
+//   }
 
-  formSettings.value.jobTitle = value
-}
-async function sendCarta() {
-  formSettings.value.company = datacarta.value.company
-  formSettings.value.profile = datacarta.value.profile
-  formSettings.value.jobTitle = datacarta.value.jobTitle
+//   await resumenStore.getCarta({
+//     company: datacarta.value.company,
+//     job: datacarta.value.jobTitle,
+//     profile: datacarta.value.profile,
+//   })
 
-  if (datacarta.value.jobTitle === '' || datacarta.value.company === '' || datacarta.value.profile === '') {
-    errorcarta.value.general = 'Todos los campos son requeridos'
-    return
-  }
+//   await resumenStore.addCvSettings(JSON.stringify({ formSettings: {
+//     ...formSettings.value,
+//     company: datacarta.value.company,
+//     profile: datacarta.value.profile,
+//   } }))
 
-  await resumenStore.getCarta({
-    company: datacarta.value.company,
-    job: datacarta.value.jobTitle,
-    profile: datacarta.value.profile,
-  })
+//   if (resumenStore.isReady) {
+//     useNuxtApp().$toast.success('¡Carta generada!')
+//     showCarta.value = false
+//   }
 
-  if (resumenStore.isReady) {
-    useNuxtApp().$toast.success('¡Carta generada!')
-    showCarta.value = false
-  }
+//   if (resumenStore.isError) {
+//     if (resumenStore.error.company)
+//       errorcarta.value.company = 'El campo del company debe tener al menos 5 caracteres'
 
-  if (resumenStore.isError) {
-    if (resumenStore.error.company)
-      errorcarta.value.company = 'El campo del company debe tener al menos 5 caracteres'
+//     if (resumenStore.error.job)
+//       errorcarta.value.job = 'El campo del trabajo  debe tener al menos 5 caracteres'
 
-    if (resumenStore.error.job)
-      errorcarta.value.job = 'El campo del trabajo  debe tener al menos 5 caracteres'
-
-    if (resumenStore.error.profile)
-      errorcarta.value.profile = 'El campo del perfil debe tener al menos 5 caracteres'
-  }
-}
+//     if (resumenStore.error.profile)
+//       errorcarta.value.profile = 'El campo del perfil debe tener al menos 5 caracteres'
+//   }
+// }
 
 watch(
   () => formSettings.value,
@@ -339,7 +340,7 @@ watch(
     </section>
   </Modal>
 
-  <Modal v-if="showCarta" with-out-close @close="closeCarta">
+  <!-- <Modal v-if="showCarta" with-out-close @close="closeCarta">
     <section class="bg-white relative p-10 max-w-xl m-auto rounded-lg">
       <button class="hiddem absolute right-3 top-3 focus:outline-none " @click="closeCarta">
         <XMarkIcon class="w-6 text-gray-700" />
@@ -351,7 +352,7 @@ watch(
         <p class="text-sm text-gray-500 dark:text-gray-400" v-text="$t('carta-description')" />
       </div>
       <div class="flex max-w-md m-auto flex-col lg:gap-3 gap-4 items-center justify-center rtl:space-x-reverse">
-        <div class="form__group col-span-full w-full">
+       <div class="form__group col-span-full w-full">
           <label
             class="form__label"
             for="job-pos"
@@ -406,5 +407,5 @@ watch(
         </div>
       </div>
     </section>
-  </Modal>
+  </Modal> -->
 </template>

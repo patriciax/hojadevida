@@ -34,7 +34,7 @@ const { formSettings } = useCvState()
   </div>
 
   <div class="col-span-2">
-    <div class=" bg-slate-50 p-10 mt-16 mb-[36px]">
+    <div class=" bg-slate-50 p-10  mb-[36px]" :class=" resumenStore.isShowCarta ? '' : 'mt-16'">
       <CvPreviewName />
       <CvPreviewTitle />
     </div>
@@ -43,6 +43,7 @@ const { formSettings } = useCvState()
       <CvPreviewAbout />
       <div class="py-4" />
       <!-- <hr class="cv__bar"> -->
+      <CvFirmaViewer />
 
       <template v-if="!resumenStore.isShowCarta">
         <CvPreviewExperience />

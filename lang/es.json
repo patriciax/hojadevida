@@ -87,7 +87,7 @@
   "layout-fonts": "Tipo de fuente",
   "selectFont": "Seleccionar",
   "domicilio": "Domicilio",
-  "country": "Pais",
+  "country": "País",
   "city": "Ciudad",
   "title_edu": "Nombre de la institución",
   "title_company": "Empresa",
@@ -106,10 +106,17 @@
   "generar_ia": "Generar con IA",
   "cancel": "Cancelar",
   "modalia": "sugerido por la IA",
-  "carta": "Carta de presentacion",
+  "carta": "Carta de presentación",
   "profile-title": "Perfil",
   "company-title": "Compañía",
   "resumen": "Resumen",
   "carta-description": "Complete los siguientes campos",
-  "cartacerrar": "Volver a hoja de vida"
+  "cartacerrar": "Volver a hoja de vida",
+  "upload-firma-image": "Agregar firma",
+  "saludos": "Saludos,",
+  "sres": "Señores",
+  "recursoshumanos": "Departamento de Recursos Humanos",
+  "estimados": "Estimados Señores:",
+  "footercarta": "Agradezco de antemano la oportunidad de presentar mi candidatura y quedo a su disposición para cualquier información adicional. Con gusto asistiría a una entrevista en la que podamos dialogar más a fondo sobre cómo puedo aportar al equipo de",
+  "atentamente": "Atentamente,"
 }

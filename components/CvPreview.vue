@@ -46,7 +46,6 @@ const resumenStore = useResumenStore()
           formSettings.layout === 'two-column' && 'grid grid-cols-3 ',
           formSettings.layout === 'three-column' && 'grid grid-cols-2',
           formSettings.layout === 'four-column' && 'grid grid-cols-3 ',
-          { 'cv-carta': resumenStore.isShowCarta },
         ]"
       >
         <template v-if="formSettings.layout === 'one-column'">

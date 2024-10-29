@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowRightStartOnRectangleIcon, BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, CloudArrowDownIcon, Cog6ToothIcon, PrinterIcon, ShareIcon, TrophyIcon, UserIcon, XMarkIcon } from '@heroicons/vue/24/solid'
+import { ArrowRightStartOnRectangleIcon, BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, CloudArrowDownIcon, Cog6ToothIcon, DocumentTextIcon, PrinterIcon, ShareIcon, TrophyIcon, UserIcon, XMarkIcon } from '@heroicons/vue/24/solid'
 import type { p } from '@vite-pwa/assets-generator/dist/shared/assets-generator.5e51fd40.mjs'
 import { get } from '@vueuse/core'
 import { useRouter } from 'vue-router'
@@ -207,6 +207,19 @@ async function generateAboutIa(text: string) {
 function getText() {
   formSettings.value.aboutme = dataIA.value.profile
   generateIA.value = false
+}
+
+async function sendCarta() {
+  await resumenStore.getCarta({
+    company: formSettings.value.company,
+    job: formSettings.value.jobTitle,
+    profile: formSettings.value.profile,
+  })
+
+  if (resumenStore.isReady) {
+    formSettings.value.profile = resumenStore.carta
+    useNuxtApp().$toast.success('¡Carta generada!')
+  }
 }
 </script>
 
@@ -549,7 +562,7 @@ function getText() {
                   v-model="formSettings.profileImageDataUri"
                 />
               </div>
-              <!-- <div class="form__group col-span-full">
+              <div class="form__group col-span-full">
                 <label
                   class="form__label"
                   for="job-pos"
@@ -561,7 +574,7 @@ function getText() {
                   type="text"
                 >
               </div>
-              <div class="form__group col-span-full">
+              <!--   <div class="form__group col-span-full">
                 <label
                   class="form__label"
                   for="job-pos"
@@ -897,6 +910,61 @@ function getText() {
       <!-- HISTORY SECTIONS -->
 
       <!-- CTA -->
+
+      <!-- carta de presentacion -->
+      <fieldset v-if="resumenStore.isShowCarta" class="form__section grid gap-3 ">
+        <expansion-panel :panel-name="$t('carta')">
+          <template #icon>
+            <DocumentTextIcon class="icon-style" />
+          </template>
+
+          <template #title>
+            <legend class="form__legend">
+              {{ $t("carta") }}
+            </legend>
+          </template>
+          <template #content>
+            <div>
+              <div class="form__group col-span-full w-full">
+                <Cvfirma
+                  v-model="formSettings.firma"
+                />
+              </div>
+              <div class="form__group col-span-full w-full mt-6">
+                <label
+                  class="form__label"
+                  for="job-pos"
+                > {{ $t("company-title") }}</label>
+                <input
+                  v-model="formSettings.company"
+                  class="form__control"
+                  type="text"
+                >
+              </div>
+              <div class="form__group col-span-full my-4">
+                <label
+                  class="form__label justify-between w-full flex items-center"
+                  for="aboutme2"
+                >
+
+                  <span>{{ $t("carta") }}</span>
+                  <button type="button" :disabled="resumenStore.isLoadingIA || !formSettings.profile " :class=" !formSettings.profile ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5 rounded-lg px-2 border  " @click="sendCarta">{{ $t("generar_ia") }}</button>
+                </label>
+                <textarea
+                  id="aboutme2"
+                  v-model="formSettings.profile"
+                  class="form__control"
+                  name="aboutme2"
+                  cols="30"
+                  rows="10"
+                />
+              </div>
+            </div>
+          </template>
+        </expansion-panel>
+      </fieldset>
+      <!-- SKILLS -->
+
       <p
         class="flex gap-2 ml-4 cursor-pointer lg:hidden  text-sm font-bold border-gray-300 px-2 py-1.5 rounded-lg"
         @click="logout"
