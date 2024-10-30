@@ -14,7 +14,7 @@ const resumenStore = useResumenStore()
       class="cv__section-title cv__section-title--main border-b flex items-center gap-2 pb-2.5"
       :class="formSettings.layout === 'one-column' && 'sr-only'"
     >
-      <div class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+      <div class="bg-change rounded-full  w-8 h-8 flex justify-center items-center">
         <UserIcon class="icon-style" />
       </div>
       {{ $t("about-me") }}
@@ -23,7 +23,7 @@ const resumenStore = useResumenStore()
       <!-- Avoids unnecessary spaces at the begging while still allowing break lines -->
       <span v-if="!resumenStore.isShowCarta" class="whitespace-pre-wrap">{{ formSettings.aboutme }}</span>
       <template v-else>
-        <h3 class="uppercase text-center text-md font-normal -mt-10 mb-5" v-text="$t('carta')" />
+        <h3 class="uppercase text-center text-lg font-normal -mt-10 mb-5" v-text="$t('carta')" />
         <p v-text="$t('sres')" />
         <span class="whitespace-pre-wrap font-bold" v-text="formSettings.company" />
         <p v-text="$t('recursoshumanos')" />

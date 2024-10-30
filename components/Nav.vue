@@ -142,24 +142,26 @@ onMounted(() => {
 })
 
 async function handleCarta() {
-  if (formSettings.value.profile || formSettings.value.jobTitle || formSettings.value.company) {
-    resumenStore.showCarta(true)
-    return
-  }
   resumenStore.showCarta(true)
-  datacarta.value.jobTitle = formSettings.value.jobTitle
 
-  await resumenStore.getCarta({
-    company: datacarta.value.company,
-    job: datacarta.value.jobTitle,
-    profile: formSettings.value.aboutme,
-  })
+  // if (formSettings.value.profile || formSettings.value.jobTitle || formSettings.value.company) {
+  //   resumenStore.showCarta(true)
+  //   return
+  // }
+  // resumenStore.showCarta(true)
+  // datacarta.value.jobTitle = formSettings.value.jobTitle
 
-  await resumenStore.addCvSettings(JSON.stringify({ formSettings: {
-    ...formSettings.value,
-    company: datacarta.value.company,
-    profile: resumenStore.carta,
-  } }))
+  // await resumenStore.getCarta({
+  //   company: datacarta.value.company,
+  //   job: datacarta.value.jobTitle,
+  //   profile: formSettings.value.aboutme,
+  // })
+
+  // await resumenStore.addCvSettings(JSON.stringify({ formSettings: {
+  //   ...formSettings.value,
+  //   company: datacarta.value.company,
+  //   profile: resumenStore.carta,
+  // } }))
 }
 
 function closeCarta() {
@@ -222,13 +224,15 @@ watch(
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between 2xl:ml-[500px]  lg:ml-[365px] p-4">
         <div id="navbar-default" class="flex justify-between  w-full">
           <div class="flex h-9 items-center gap-4 cursor-pointer text-gray-700 hover:text-gray-900">
-            <div
+            <button
+              :disabled="!resumenStore.plan"
+              :class="{ 'opacity-60 !cursor-not-allowed': !resumenStore.plan }"
               class="flex gap-2 cursor-pointer hover:bg-gray-200 text-gray-700 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg"
               @click="openModalPassword"
             >
               <Cog6ToothIcon class="w-4 h-4" />
               <p class="text-sm font-normal  " v-text="$t('addPassword')" />
-            </div>
+            </button>
 
             <div
               v-if="!resumenStore.isShowCarta"

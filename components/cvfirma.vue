@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { TrashIcon } from '@heroicons/vue/24/solid'
+
 const emit = defineEmits<{
   (event: 'update:modelValue', value: string | null | undefined): void
 }>()
@@ -95,27 +97,27 @@ function resizeImage(imgToResize: HTMLImageElement, resizingFactor = 0.25) {
 </script>
 
 <template>
-  <div class="flex mt-6">
+  <div class="flex mt-6 justify-center items-center">
     <label
       tabindex="0"
-      for="profile-image-uploader"
+      for="firm-image-uploader"
       class="form__btn basis-full"
-    >{{ isPhotoLoading ? "Loading..." : $t("upload-firma-image") }}
+    >{{ $t("upload-firma-image") }}
       <input
-        id="profile-image-uploader"
+        id="firm-image-uploader"
         type="file"
         accept="image/*"
-        name="uploadProfileImage"
+        name="uploadFirmImage"
         class="hidden"
         @change="uploadImage"
       >
     </label>
     <button
-      class="form__btn flex flex-col justify-center"
+      class="form__bt bg-white shadow-sm hover:bg-red-600 hover:text-white group border-gray-300 h-10 py-2 px-3 it flex flex-col justify-center rounded-md"
       type="button"
       @click="clearProfileImage"
     >
-      {{ $t("clear-profile-image") }}
+      <TrashIcon class="text-red-600 hover:text-white group-hover:text-white h-5 w-5" />
     </button>
   </div>
 </template>

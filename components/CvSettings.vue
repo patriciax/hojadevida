@@ -22,17 +22,13 @@ const router = useRouter()
 
 const resumenStore = useResumenStore()
 const locationStore = LocationStore()
-const country = ref()
-const city = ref()
 const generateIA = ref(false)
 const {
   formSettings,
-  uploadCV,
   clearForm,
   myForm,
   resetForm,
 } = useCvState()
-const routerId = ref()
 const countryCode = ref(null)
 const countryCodeName = ref(null)
 const isOpen = ref(false)
@@ -89,11 +85,13 @@ watch(
   { deep: true },
 )
 
-// const formSettingsHref = computed(() => {
-//   return `data:text/json;charset=utf-8,${encodeURIComponent(
-//     JSON.stringify({ formSettings: formSettings.value }),
-//   )}`
-// })
+watch (
+  () => resumenStore.isShowCarta,
+  (newValue) => {
+    if (newValue)
+      setProfile()
+  },
+)
 
 async function saveCV() {
   await resumenStore.addCvSettings(JSON.stringify({ formSettings: {
@@ -185,11 +183,6 @@ function logout() {
   localStorage.removeItem(`cvSettings-${i18n.locale.value}`)
   router.push({ path: '/login' })
 }
-// async function generateTextIa(text: string) {
-//   await resumenStore.getTextIA({
-//     profile: String(text),
-//   })
-// }
 
 const dataIA = ref({
   profile: '',
@@ -219,7 +212,20 @@ async function sendCarta() {
   if (resumenStore.isReady) {
     formSettings.value.profile = resumenStore.carta
     useNuxtApp().$toast.success('¡Carta generada!')
+    await resumenStore.addCvSettings(JSON.stringify({ formSettings: {
+      ...formSettings.value,
+      company: formSettings.value.company,
+      profile: formSettings.value.profile,
+    } }))
   }
+}
+
+function setProfile() {
+  if (!formSettings.value.profile)
+    formSettings.value.profile = formSettings.value.aboutme || ''
+
+  if (!formSettings.value.company)
+    formSettings.value.company = 'Compañia'
 }
 </script>
 
@@ -239,28 +245,8 @@ async function sendCarta() {
           {{ $t("download-cv-settings") }}
         </button>
       </LandingLogo>
-
-      <!-- <a
-        class="buy-me-a-coffee"
-        href="https://ko-fi.com/X8X4COWK0"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Buy me a coffee"
-      >
-        <img
-          class="buy-me-a-coffee__image"
-          src="https://cdn.ko-fi.com/cdn/kofi5.png?v=3"
-          width="118px"
-          height="30px"
-          alt="Buy me a coffee button"
-        >
-      </a> -->
     </div>
-    <!-- <h2 class="flex flex-wrap text-xl/normal pt-10 px-6 tracking-wide uppercase">
-      <span class="title__text">
-        {{ $t("cv-settings") }}
-      </span>
-    </h2> -->
+
     <Nav>
       <button
         type="button"
@@ -912,7 +898,7 @@ async function sendCarta() {
       <!-- CTA -->
 
       <!-- carta de presentacion -->
-      <fieldset v-if="resumenStore.isShowCarta" class="form__section grid gap-3 ">
+      <fieldset v-if="resumenStore.isShowCarta" class="form__section grid gap-3 " @click="setProfile">
         <expansion-panel :panel-name="$t('carta')">
           <template #icon>
             <DocumentTextIcon class="icon-style" />

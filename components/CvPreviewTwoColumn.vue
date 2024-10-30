@@ -29,8 +29,8 @@ const { formSettings } = useCvState()
       <CvPreviewSkills class="flex flex-col gap-6" />
       <!-- <div class="border-dashed border-b border-var-color " /> -->
       <CvPreviewReferences :color="props.color" />
-      <CvPreviewSocial :color="props.color" />
     </template>
+    <CvPreviewSocial :color="props.color" />
   </div>
 
   <div class="col-span-2">
@@ -43,7 +43,7 @@ const { formSettings } = useCvState()
       <CvPreviewAbout />
       <div class="py-4" />
       <!-- <hr class="cv__bar"> -->
-      <CvFirmaViewer />
+      <CvFirmaViewer v-if="resumenStore.isShowCarta" />
 
       <template v-if="!resumenStore.isShowCarta">
         <CvPreviewExperience />

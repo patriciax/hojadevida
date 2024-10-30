@@ -12,7 +12,7 @@ const { formSettings } = useCvState()
       :class="formSettings.layout === 'one-column' ? 'cv__section-title--main ' : 'sr-only'"
     >
       <span :class="{ 'flex gap-2': formSettings.layout === 'one-column' }">
-        <div v-if="formSettings.layout === 'one-column'" class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+        <div v-if="formSettings.layout === 'one-column'" class="bg-change rounded-full  w-8 h-8 flex justify-center items-center">
           <ChartBarIcon class="icon-style" />
         </div>
         {{ $t("skills") }}
@@ -32,7 +32,7 @@ const { formSettings } = useCvState()
       :with-tags="true"
     >
       <template #icon>
-        <div class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+        <div class="bg-change rounded-full  w-8 h-8 flex justify-center items-center">
           <ChartBarIcon class="icon-style" />
         </div>
       </template>
@@ -45,7 +45,7 @@ const { formSettings } = useCvState()
       :skills="formSettings.softSkills"
     >
       <template #icon>
-        <div class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+        <div class="bg-change rounded-full  w-8 h-8 flex justify-center items-center">
           <UserIcon class="icon-style" />
         </div>
       </template>
@@ -59,7 +59,7 @@ const { formSettings } = useCvState()
         class="capitalize"
         :class="formSettings.layout === 'one-column' ? 'two-dots inline flex-shrink-0' : 'cv__section-title flex gap-2'"
       >
-        <div v-if="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column'" class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+        <div v-if="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column'" class="bg-change rounded-full  w-8 h-8 flex justify-center items-center">
           <LanguageIcon class="icon-style" />
         </div>
         {{ $t("languages") }}
@@ -88,7 +88,7 @@ const { formSettings } = useCvState()
       :skills="formSettings.interests"
     >
       <template #icon>
-        <div class="bg-change rounded-full  w-6 h-6 flex justify-center items-center">
+        <div class="bg-change rounded-full  w-8 h-8 flex justify-center items-center">
           <StarIcon class="icon-style" />
         </div>
       </template>

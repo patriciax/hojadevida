@@ -19,7 +19,7 @@ const workSorted = computed(() => {
     class="cv__section cv__section--main w-full"
   >
     <h4 class="cv__section-title cv__section-title--main " :class="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column' ? 'border-b flex gap-2 pb-2.5' : ''">
-      <div :class="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column' ? 'h-6 w-6' : 'w-8 h-7 mr-2'" class="bg-change rounded-full   flex justify-center items-center">
+      <div :class="formSettings.layout === 'two-column' || formSettings.layout === 'three-column' || formSettings.layout === 'four-column' ? 'w-8 h-8' : 'w-8 h-7 mr-2'" class="bg-change rounded-full   flex justify-center items-center">
         <BriefcaseIcon class="icon-style" />
       </div>
       {{ $t("experience") }}

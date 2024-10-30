@@ -98,9 +98,6 @@ p {
     }
   }
 }
-.cv-carta {
-  --height: auto !important;
-}
 
 .cv {
   --height: 29.69cm;

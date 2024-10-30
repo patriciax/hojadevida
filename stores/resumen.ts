@@ -12,6 +12,7 @@ interface State {
   _textIA: string | null
   _isShowCarta: boolean
   _carta: any | null
+  _plan: boolean
 
 }
 
@@ -28,6 +29,7 @@ export default defineStore({
     _textIA: '',
     _isShowCarta: false,
     _carta: '',
+    _plan: false,
 
   }),
   getters: {
@@ -46,6 +48,7 @@ export default defineStore({
     textIA: state => state._textIA,
     isShowCarta: state => state._isShowCarta,
     carta: state => state._carta,
+    plan: state => state._plan,
 
   },
   actions: {
@@ -63,6 +66,7 @@ export default defineStore({
         })
         if (response.status === 200) {
           this._data = response.data
+          this._plan = response.data.plan
           this.changeStatus('ready')
         }
         else {
