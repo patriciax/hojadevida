@@ -63,6 +63,7 @@ async function sendPassword() {
       useNuxtApp().$toast.error('Error al publicar perfil')
 
     showPassword.value = false
+    resumenStore.showAccess(false)
 
     return
   }
@@ -72,6 +73,7 @@ async function sendPassword() {
   if (resumenStore.isReadyPass) {
     useNuxtApp().$toast.success('¡Contraseña agregada!')
     showPassword.value = false
+    resumenStore.showAccess(false)
     privateCheck.value = true
   }
   else {
@@ -83,7 +85,11 @@ const {
 
 } = useCvState()
 function openModalPassword() {
-  showPassword.value = !showPassword.value
+  // showPassword.value = !showPassword.value
+  if (resumenStore.openAccess)
+    resumenStore.showAccess(false)
+  else
+    resumenStore.showAccess(true)
 }
 function logout() {
   loginStore.reset()
@@ -271,9 +277,9 @@ watch(
     </nav>
   </section>
 
-  <Modal v-if="showPassword" with-out-close @close="showPassword = false">
+  <Modal v-if="resumenStore.openAccess" with-out-close @close="resumenStore.showAccess(false)">
     <section class="bg-white relative p-10 max-w-xl m-auto rounded-lg">
-      <button class="hiddem absolute right-3 top-3 focus:outline-none " @click="showPassword = false">
+      <button class="hiddem absolute right-3 top-3 focus:outline-none " @click="resumenStore.showAccess(false)">
         <XMarkIcon class="w-6 text-gray-700" />
       </button>
       <div class="mb-6 text-center">

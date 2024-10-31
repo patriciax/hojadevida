@@ -13,6 +13,7 @@ interface State {
   _isShowCarta: boolean
   _carta: any | null
   _plan: boolean
+  _openAccess: boolean
 
 }
 
@@ -30,6 +31,7 @@ export default defineStore({
     _isShowCarta: false,
     _carta: '',
     _plan: false,
+    _openAccess: false,
 
   }),
   getters: {
@@ -49,6 +51,7 @@ export default defineStore({
     isShowCarta: state => state._isShowCarta,
     carta: state => state._carta,
     plan: state => state._plan,
+    openAccess: state => state._openAccess,
 
   },
   actions: {
@@ -322,6 +325,9 @@ export default defineStore({
     },
     showCarta(show: boolean) {
       this._isShowCarta = show
+    },
+    showAccess(show: boolean) {
+      this._openAccess = show
     },
     changeStatus(status: 'loading' | 'ready' | 'readyPass' | 'loadingIA' | 'error', error: any = null) {
       this._status = status
