@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ArrowRightStartOnRectangleIcon, BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, CloudArrowDownIcon, Cog6ToothIcon, DocumentTextIcon, PrinterIcon, ShareIcon, TrophyIcon, UserIcon, XMarkIcon } from '@heroicons/vue/24/solid'
-import type { p } from '@vite-pwa/assets-generator/dist/shared/assets-generator.5e51fd40.mjs'
-import { get } from '@vueuse/core'
+import { ArrowDownIcon, ArrowDownTrayIcon, ArrowRightStartOnRectangleIcon, BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, CloudArrowDownIcon, Cog6ToothIcon, DocumentTextIcon, PrinterIcon, ShareIcon, TrophyIcon, UserIcon, XMarkIcon } from '@heroicons/vue/24/solid'
 import { useRouter } from 'vue-router'
+import html2pdf from 'html2pdf.js'
 import Nav from './Nav.vue'
 import Modal from './common/Modal.vue'
 import InputPhoneNumber from '@/components/common/InputPhoneNumber.vue'
@@ -261,6 +260,33 @@ function save() {
   else
     saveCV()
 }
+function exportToPDF() {
+  const element = document.getElementById('elemento-a-exportar')
+
+  if (!element) {
+    console.error('El elemento a exportar no se encontró.')
+    return
+  }
+
+  html2pdf()
+    .from(element)
+    .set({
+      margin: -1,
+      // pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+      filename: `hoja-de-vida-${resumenStore.data.name}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+    })
+    .save()
+    .then(() => {
+      useNuxtApp().$toast.success('Hoja de vida exportada correctamente')
+    })
+    .catch((error) => {
+      console.error('Error al exportar la hoja de vida:', error)
+      useNuxtApp().$toast.success('Error al exportar la hoja de vida')
+    })
+}
 </script>
 
 <template>
@@ -289,6 +315,14 @@ function save() {
       >
         <PrinterIcon class="w-4 h-4" />
         <span>{{ $t("download-cv-pdf") }}</span>
+      </button>
+      <button
+        type="button"
+        class="flex gap-2 text-gray-700 hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg text-sm"
+        @click="exportToPDF"
+      >
+        <ArrowDownTrayIcon class="w-4 h-4" />
+        <span>{{ $t("export-cv-pdf") }}</span>
       </button>
 
       <button

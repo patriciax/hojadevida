@@ -1,3 +1,6 @@
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas'
+import html2pdf from 'html2pdf.js'
 import { useCvState } from '~/data/useCvState'
 
 export default function usePrint() {
@@ -47,11 +50,33 @@ export default function usePrint() {
     window.print()
   }
 
+  async function downloadPdfDirectly() {
+    const element = document.getElementById('elemento-a-exportar')
+
+    if (!element)
+      return
+
+    // Captura el elemento como imagen usando html2canvas
+    html2canvas(element, {
+      useCORS: true,
+      scale: 2,
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL(formSettings.value.profileImageDataUri)
+      const pdf = new jsPDF('p', 'mm', 'a4')
+
+      // Añade la imagen al PDF
+      pdf.addImage(imgData, 'PNG', 10, 10, pdf.internal.pageSize.getWidth() - 20, (canvas.height * (pdf.internal.pageSize.getWidth() - 20)) / canvas.width)
+
+      // Guarda el PDF
+      pdf.save(`CV_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}.pdf`)
+    })
+  }
   function changeDocTitle() {
     document.title = `CV_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`
   }
 
   return {
     downloadPdf,
+    downloadPdfDirectly,
   }
 }
