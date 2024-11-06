@@ -1,6 +1,7 @@
 <script setup>
 import { AdjustmentsVerticalIcon, ArrowRightIcon, ArrowRightStartOnRectangleIcon, Cog6ToothIcon, DocumentDuplicateIcon, DocumentTextIcon, LockClosedIcon, XMarkIcon } from '@heroicons/vue/24/solid'
 import { useRouter } from 'vue-router'
+import Msg from './common/msg.vue'
 import useLoginStore from '@/stores/auth'
 import useResumenStore from '@/stores/resumen'
 import Modal from '@/components/common/Modal.vue'
@@ -230,16 +231,18 @@ watch(
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between 2xl:ml-[500px]  lg:ml-[365px] p-4">
         <div id="navbar-default" class="flex justify-between  w-full">
           <div class="flex h-9 items-center gap-4 cursor-pointer text-gray-700 hover:text-gray-900">
-            <button
-              :disabled="!resumenStore.plan"
-              :class="{ 'opacity-60 !cursor-not-allowed': !resumenStore.plan }"
-              class="flex gap-2 cursor-pointer hover:bg-gray-200 text-gray-700 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg"
-              @click="openModalPassword"
-            >
-              <Cog6ToothIcon class="w-4 h-4" />
-              <p class="text-sm font-normal  " v-text="$t('addPassword')" />
-            </button>
-
+            <div class="relative group">
+              <button
+                :disabled="!resumenStore.plan"
+                :class="{ 'opacity-60 !cursor-not-allowed': !resumenStore.plan }"
+                class="flex gap-2 cursor-pointer hover:bg-gray-200 text-gray-700 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg"
+                @click="openModalPassword"
+              >
+                <Cog6ToothIcon class="w-4 h-4" />
+                <p class="text-sm font-normal" v-text="$t('addPassword')" />
+              </button>
+              <Msg />
+            </div>
             <div
               v-if="!resumenStore.isShowCarta"
               :class="{ 'bg-blue-500 !text-white': resumenStore.isShowCarta }"

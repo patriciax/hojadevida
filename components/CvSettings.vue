@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ArrowDownIcon, ArrowDownTrayIcon, ArrowRightStartOnRectangleIcon, BeakerIcon, ChartPieIcon, ChatBubbleOvalLeftIcon, CloudArrowDownIcon, Cog6ToothIcon, DocumentTextIcon, PrinterIcon, ShareIcon, TrophyIcon, UserIcon, XMarkIcon } from '@heroicons/vue/24/solid'
 import { useRouter } from 'vue-router'
-import html2pdf from 'html2pdf.js'
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas'
 import Nav from './Nav.vue'
 import Modal from './common/Modal.vue'
+import Msg from './common/msg.vue'
 import InputPhoneNumber from '@/components/common/InputPhoneNumber.vue'
 import { SectionNameList } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
@@ -42,7 +44,7 @@ onMounted(async () => {
 
 const switchLocalePath = useSwitchLocalePath()
 const i18n = useI18n()
-const { downloadPdf } = usePrint()
+const { downloadPdf, downloadPdfDirectly } = usePrint()
 const bgCv = ref('white')
 const config = {
   layouts: ['one-column', 'two-column', 'three-column', 'four-column'],
@@ -260,33 +262,6 @@ function save() {
   else
     saveCV()
 }
-function exportToPDF() {
-  const element = document.getElementById('elemento-a-exportar')
-
-  if (!element) {
-    console.error('El elemento a exportar no se encontró.')
-    return
-  }
-
-  html2pdf()
-    .from(element)
-    .set({
-      margin: -1,
-      // pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
-      filename: `hoja-de-vida-${resumenStore.data.name}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-    })
-    .save()
-    .then(() => {
-      useNuxtApp().$toast.success('Hoja de vida exportada correctamente')
-    })
-    .catch((error) => {
-      console.error('Error al exportar la hoja de vida:', error)
-      useNuxtApp().$toast.success('Error al exportar la hoja de vida')
-    })
-}
 </script>
 
 <template>
@@ -294,7 +269,7 @@ function exportToPDF() {
     <div class="flex justify-center items-center title pt-2 px-6 bg-white  py-3">
       <LandingLogo @toggle-sidebar="isOpen = !isOpen">
         <button
-          class="flex gap-2 text-sm md:hidden text-gray-700 hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg"
+          class="lg:flex hidden gap-2 text-sm md:hidden text-gray-700 hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg"
 
           rel="noopener"
           @click="saveCV"
@@ -319,7 +294,7 @@ function exportToPDF() {
       <button
         type="button"
         class="flex gap-2 text-gray-700 hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg text-sm"
-        @click="exportToPDF"
+        @click="downloadPdfDirectly"
       >
         <ArrowDownTrayIcon class="w-4 h-4" />
         <span>{{ $t("export-cv-pdf") }}</span>
@@ -354,7 +329,7 @@ function exportToPDF() {
     </Nav>
     <button
       v-if="!resumenStore.isShowCarta"
-      class="fixed bottom-0 h-12 w-12 z-10 hover:bg-gray-200 right-5 lg:right-10 mb-10 pr-1 rounded-full text-center items-center justify-center bg-primary hover:bg-primary-darker flex"
+      class="fixed bottom-0 hidden lg:flex h-12 w-12 z-10 hover:bg-gray-200 right-5 lg:right-10 mb-10 pr-1 rounded-full text-center items-center justify-center bg-primary hover:bg-primary-darker"
       :style="`background: ${resumenStore.formSettings?.activeColor}` || '#0000'"
 
       type="button"
@@ -763,14 +738,14 @@ function exportToPDF() {
                   type="tel"
                 > -->
               </div>
-              <div v-if="!resumenStore.isShowCarta" class="form__group col-span-full">
+              <div v-if="!resumenStore.isShowCarta" class="form__group col-span-full relative group">
                 <label
                   class="form__label justify-between w-full flex items-center"
                   for="aboutme"
                 >
 
                   <span>{{ $t("about-me") }}</span>
-                  <button type="button" :disabled="!formSettings.aboutme" :class=" !formSettings.aboutme ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5 rounded-lg px-2 border  " @click="generateAboutIa(formSettings.aboutme)">{{ $t("generar_ia") }}</button>
+                  <button type="button" :disabled="!formSettings.aboutme || !resumenStore.plan" :class=" !formSettings.aboutme || !resumenStore.plan ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5 rounded-lg px-2 border  " @click="generateAboutIa(formSettings.aboutme)">{{ $t("generar_ia") }}</button>
                 </label>
                 <textarea
                   id="aboutme"
@@ -780,6 +755,9 @@ function exportToPDF() {
                   cols="30"
                   rows="10"
                 />
+                <!-- <Teleport to="body"> -->
+                <Msg section-template="ia" />
+                <!-- </Teleport> -->
               </div>
               <!-- <div v-else class="form__group col-span-full">
                 <label
@@ -1080,7 +1058,7 @@ function exportToPDF() {
       </section>
     </Modal>
 
-    <CommonMovilNav @carta="showCarta" @sharepass="showAccessModal" @save="save" />
+    <CommonMovilNav @carta="showCarta" @sharepass="showAccessModal" @save="save" @share="shared(props.id)" />
   </div>
 </template>
 

@@ -38,7 +38,7 @@ const resumenStore = useResumenStore()
         id="elemento-a-exportar"
         tabindex="0"
         aria-label="CV preview"
-        class="cv shadow-lg mt-6 lg:mt-24 bg-white relative"
+        class="cv shadow-lg mt-6  bg-white relative"
         :class="[
 
           { blur: isLoading || props.loading },
@@ -46,6 +46,7 @@ const resumenStore = useResumenStore()
           formSettings.layout === 'two-column' && 'grid grid-cols-3 ',
           formSettings.layout === 'three-column' && 'grid grid-cols-2',
           formSettings.layout === 'four-column' && 'grid grid-cols-3 ',
+          $route.path === '/' && 'lg:mt-24',
         ]"
       >
         <template v-if="formSettings.layout === 'one-column'">

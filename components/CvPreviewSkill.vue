@@ -39,3 +39,11 @@ const { formSettings } = useCvState()
     </ul>
   </section>
 </template>
+
+<style  scoped>
+@media print {
+  .cv__tag{
+    color: #1b1b1b!important;
+  }
+}
+</style>

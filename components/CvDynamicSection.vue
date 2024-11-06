@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { CheckIcon, TrashIcon } from '@heroicons/vue/24/solid'
 import Modal from './common/Modal.vue'
+import Msg from './common/msg.vue'
 import type { CvEvent, CvEventReference, SectionName } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
-// import useResumenStore from '@/stores/resumen'
+import useResumenStore from '@/stores/resumen'
 
 const { sectionName, entries = [] } = defineProps<{
   sectionName: SectionName
   entries: CvEvent[]
   reference: CvEventReference[]
 }>()
-// const resumenStore = useResumenStore()
+const resumenStore = useResumenStore()
 // const generateIA = ref(false)
 // const textia = ref('')
 const { addEntry, addEntryReference, removeEntry } = useCvState()
@@ -321,7 +322,7 @@ function calculateMaxDate() {
                   :max="sectionName === 'education' ? maxDate : undefined"
                 >
               </div>
-              <div class="form__group col-span-full">
+              <div class="form__group col-span-full relative group">
                 <label
                   class="form__label flex justify-between gap-1"
                   :for="`entrySummary-${entry.id}`"
@@ -339,7 +340,7 @@ function calculateMaxDate() {
                     </template>
                   </span>
 
-                  <button type="button" :disabled="!entry.summary" :class=" !entry.summary ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5  rounded-lg px-2 text-sm border   " @click="$emit('generateia', entry)">{{ $t("generar_ia") }}</button>
+                  <button type="button" :disabled="!entry.summary || !resumenStore.plan" :class=" !entry.summary || !resumenStore.plan ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5  rounded-lg px-2 text-sm border   " @click="$emit('generateia', entry)">{{ $t("generar_ia") }}</button>
 
                 </label>
                 <CvTextEditor
@@ -348,6 +349,7 @@ function calculateMaxDate() {
                   class="form__control"
                   :read-only="false"
                 />
+                <Msg section-template="ia" />
               </div>
             </div>
           </template>
