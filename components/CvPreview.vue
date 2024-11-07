@@ -36,6 +36,7 @@ const resumenStore = useResumenStore()
     <div class="font-selected" style="min-height: var(--height)">
       <div
         id="elemento-a-exportar"
+
         tabindex="0"
         aria-label="CV preview"
         class="cv shadow-lg mt-6  bg-white relative"
@@ -202,5 +203,9 @@ p {
   nav {
     display: none;
   }
+  .cv__tag{
+    background: none!important;
+  }
+
 }
 </style>

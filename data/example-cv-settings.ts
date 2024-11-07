@@ -45,6 +45,8 @@ export const cvSettingTemplate: Cv = {
   website: 'www.carlosseguridad.com',
   instagram: '',
   facebook: 'carloslopezseguridad',
+  tiktok: '',
+  youtube: '',
   education: [
     {
       id: '1',

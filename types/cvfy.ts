@@ -35,6 +35,8 @@ export interface Cv {
   github: string
   instagram: string
   facebook: string
+  tiktok: string
+  youtube: string
   website: string
   education: CvEvent[]
   work: CvEvent[]
