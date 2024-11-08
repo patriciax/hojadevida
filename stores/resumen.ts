@@ -178,7 +178,6 @@ export default defineStore({
           this._formSettings = response.data[0].formSettings
           this._codeUrl = response.data[0].code_url
           this._isPassword = response.data[0].profiles[0].is_password
-
           this.changeStatus('ready')
         }
         else {

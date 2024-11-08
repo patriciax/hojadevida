@@ -32,7 +32,7 @@ const resumenStore = useResumenStore()
       <CvPreviewReferences :color="props.color" />
 
       <!-- <div class="border-dashed border-b border-var-color py-4" /> -->
-      <CvPreviewSocial />
+      <CvPreviewSocial :color="props.color" />
     </template>
   </div>
 

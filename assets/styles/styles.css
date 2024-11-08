@@ -99,9 +99,10 @@
 }
 }
 @media print {
-  nav {
+  nav,.menu-share {
     display: none;
   }
+  
 }
 
 .form__group .m-phone-number-input  {

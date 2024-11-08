@@ -27,10 +27,7 @@ import { ArrowDownIcon, ArrowDownLeftIcon, ArrowDownTrayIcon, Cog6ToothIcon, Doc
           <span class="sr-only">New item</span>
         </button>
       </div> -->
-      <div id="tooltip-new" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-        Create new item
-        <div class="tooltip-arrow" data-popper-arrow />
-      </div>
+
       <button data-tooltip-target="tooltip-settings" type="button" class="text-gray-600 inline-flex flex-col items-center justify-center px-5 hover:text-blue-600  group" @click="$emit('share')">
         <ShareIcon class="w-5 h-5 " />
 

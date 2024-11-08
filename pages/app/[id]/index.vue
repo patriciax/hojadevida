@@ -278,7 +278,7 @@ const formSettingsHref = computed(() => {
 </script>
 
 <template>
-  <div class="group fixed z-50 bottom-0 right-0 p-2  flex items-end justify-end w-24 h-24 ">
+  <div class="group menu-share  fixed z-50 bottom-0 right-0 p-2  flex items-end justify-end w-24 h-24 ">
     <!-- main -->
     <div class="text-white shadow-xl flex items-center justify-center p-3 rounded-full bg-blue-600 z-50 absolute  ">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 group-hover:rotate-90 transition  transition-all duration-[0.6s]">
