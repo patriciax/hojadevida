@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { AcademicCapIcon, BriefcaseIcon, FolderIcon, LightBulbIcon, XMarkIcon } from '@heroicons/vue/24/solid'
+import { AcademicCapIcon, BriefcaseIcon, FolderIcon, LightBulbIcon, LinkIcon, XMarkIcon } from '@heroicons/vue/24/solid'
 import Modal from './common/Modal.vue'
 import { useCvState } from '~/data/useCvState'
 import type { OptionalSection, SectionName, SectionNameList } from '~/types/cvfy'
@@ -65,6 +65,7 @@ function handledClose() {
         <AcademicCapIcon v-if="section === 'education'" class="icon-style" />
         <LightBulbIcon v-if="section === 'projects'" class="icon-style" />
         <FolderIcon v-if="section === 'references'" class="icon-style" />
+        <LinkIcon v-if="section === 'soportes'" class="icon-style" />
       </template>
       <template #title>
         <legend class="form__legend">
@@ -90,6 +91,23 @@ function handledClose() {
           <CvDynamicSection
             :section-name="section"
             :reference="formSettings.references"
+          />
+        </div>
+      </template>
+      <template
+        v-else-if="section === 'soportes'"
+        #content
+      >
+        <div>
+          <CvDisplayCheckbox
+            v-if="section !== 'worka' && section !== 'soportes'"
+            class="mb-10"
+            :display-section="formSettings[displaySection]"
+            :section-name="name"
+          />
+          <CvDynamicSection
+            :section-name="section"
+            :soportess="formSettings.soportes"
           />
         </div>
       </template>

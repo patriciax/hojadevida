@@ -42,11 +42,13 @@ export interface Cv {
   work: CvEvent[]
   projects: CvEvent[]
   references: CvEventReference[]
+  soportes: CvEventSoportes[]
   displaySocial: boolean
   displayEducation: boolean
   displayProjects: boolean
   displayWork: boolean
   displayReferences: boolean
+  displaySoportes: boolean
   activeColor: string
   font: string
   country: object
@@ -71,7 +73,17 @@ export interface CvEventReference {
   company: string
 }
 
-export type OptionalSection = 'displaySocial' | 'displayEducation' | 'displayProjects' | 'displayWork' | 'displayReferences'
+export interface CvEventSoportes {
+  id: string
+  nameref: string
+  cargo: string
+  current: boolean
+  tel: string
+  email: string
+  company: string
+}
+
+export type OptionalSection = 'displaySocial' | 'displayEducation' | 'displayProjects' | 'displayWork' | 'displayReferences' | 'displaySoportes'
 
 export type SkillType =
   'jobSkills' |
@@ -95,5 +107,6 @@ export const SectionNameList = {
   education: 'education',
   projects: 'projects',
   references: 'references',
+  soportes: 'soportes',
 } as const
 export type SectionName = keyof typeof SectionNameList

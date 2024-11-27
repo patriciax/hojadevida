@@ -2,6 +2,7 @@
 import { useCvState } from '~/data/useCvState'
 import useLoginStore from '@/stores/auth'
 import useResumenStore from '@/stores/resumen'
+import Adjuntos from '~/components/common/adjuntos.vue'
 
 const resumenStore = useResumenStore()
 const i18n = useI18n()
@@ -143,6 +144,8 @@ const color = ref('')
 " :color="color"
     />
   </main>
+
+  <Adjuntos v-if="resumenStore.showModal" @close="resumenStore.closeModalAdjuntos" />
 </template>
 
 <style lang="postcss">

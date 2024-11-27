@@ -2,7 +2,7 @@
 import { CheckIcon, TrashIcon } from '@heroicons/vue/24/solid'
 import Modal from './common/Modal.vue'
 import Msg from './common/msg.vue'
-import type { CvEvent, CvEventReference, SectionName } from '~/types/cvfy'
+import type { CvEvent, CvEventReference, CvEventSoportes, SectionName } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
 import useResumenStore from '@/stores/resumen'
 
@@ -10,11 +10,12 @@ const { sectionName, entries = [] } = defineProps<{
   sectionName: SectionName
   entries: CvEvent[]
   reference: CvEventReference[]
+  soportess: CvEventSoportes[]
 }>()
 const resumenStore = useResumenStore()
 // const generateIA = ref(false)
 // const textia = ref('')
-const { addEntry, addEntryReference, removeEntry } = useCvState()
+const { addEntry, addEntryReference, addEntrySoportes, removeEntry } = useCvState()
 function focusEditor(id: string) {
   const editorElem = document.getElementById(`${id}-editor`)
   if (editorElem)
@@ -56,6 +57,14 @@ function calculateMaxDate() {
 //   generateIA.value = false
 //   resumenStore.resetText()
 // }
+
+function formatDate(date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0') // Sumar 1 al mes porque getMonth() es cero-indexado
+  const day = String(date.getDate()).padStart(2, '0')
+
+  return `${year}-${month}-${day}`
+}
 </script>
 
 <template>
@@ -72,6 +81,14 @@ function calculateMaxDate() {
       {{ $t("add") }} {{ $t(sectionName) }}
     </button>
     <button
+      v-else-if="sectionName === 'soportes'"
+      class="form__btn col-span-full"
+      type="button"
+      @click="addEntrySoportes({ sectionName })"
+    >
+      {{ $t("add") }} {{ $t(sectionName) }}
+    </button>
+    <button
       v-else
       class="form__btn col-span-full"
       type="button"
@@ -79,6 +96,7 @@ function calculateMaxDate() {
     >
       {{ $t("add") }} {{ $t(sectionName) }}
     </button>
+
     <ul v-if="sectionName === 'references'" class="col-span-full">
       <li
         v-for="entry in reference"
@@ -195,6 +213,74 @@ function calculateMaxDate() {
         </expansion-panel>
       </li>
     </ul>
+    <ul v-else-if="sectionName === 'soportes'" class="col-span-full">
+      <li
+        v-for="entry in soportess"
+        :key="entry.id"
+      >
+        <expansion-panel
+          :panel-name="`${entry.nameref}`"
+          class="mb-3 gap-10"
+        >
+          <template #title>
+            <h3 class="form__legend form__legend--small dynamic-section__title">
+              <span v-if="entry.nameref">
+                {{ entry.nameref }}
+              </span>
+              <span v-else class="text-gray-600">Añade información</span>
+            </h3>
+          </template>
+          <template #action-button>
+            <button
+              :aria-label="`Remove ${entry.nameref} ${$t(sectionName)} from CV`"
+              type="button"
+              class="form__btn form__btn--delete btn-transparent mr-3 group"
+              @click.stop="removeEntry({ sectionName, entry })"
+            >
+              <!-- <svg class="form__icon">
+                <use href="@/assets/sprite.svg#trash" />
+              </svg> -->
+              <TrashIcon class="text-red-600 group-hover:text-white h-5 w-5" />
+            </button>
+          </template>
+          <template #content>
+            <div class="dynamic-section">
+              <div class="form__group col-span-full">
+                <label
+                  class="form__label"
+                  :for="`entryTitle--${entry.id}`"
+                >
+
+                  {{ $t("title") }}
+                </label>
+                <input
+                  :id="`entryTitle--${entry.id}`"
+                  v-model="entry.nameref"
+                  class="form__control"
+                  type="text"
+                >
+              </div>
+              <div class="form__group col-span-full">
+                <label
+                  class="form__label"
+                  :for="`entryLocation-${entry.id}`"
+                >
+
+                  Enlace
+
+                </label>
+                <input
+                  :id="`entryLocation-${entry.id}`"
+                  v-model="entry.cargo"
+                  class="form__control"
+                  type="text"
+                >
+              </div>
+            </div>
+          </template>
+        </expansion-panel>
+      </li>
+    </ul>
     <ul v-else class="col-span-full">
       <li
         v-for="entry in entries"
@@ -291,6 +377,7 @@ function calculateMaxDate() {
                   v-model="entry.from"
                   class="form__control"
                   type="date"
+                  :max="maxDate"
                 >
               </div>
               <div class="form__group col-span-full">
@@ -319,10 +406,10 @@ function calculateMaxDate() {
                   v-model="entry.to"
                   class="form__control"
                   type="date"
-                  :max="sectionName === 'education' ? maxDate : undefined"
+                  :max="maxDate"
                 >
               </div>
-              <div class="form__group col-span-full relative group">
+              <div class="form__group col-span-full relative">
                 <label
                   class="form__label flex justify-between gap-1"
                   :for="`entrySummary-${entry.id}`"
@@ -340,7 +427,10 @@ function calculateMaxDate() {
                     </template>
                   </span>
 
-                  <button type="button" :disabled="!entry.summary || !resumenStore.plan" :class=" !entry.summary || !resumenStore.plan ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5  rounded-lg px-2 text-sm border   " @click="$emit('generateia', entry)">{{ $t("generar_ia") }}</button>
+                  <section class="group">
+                    <button type="button" :disabled="!entry.summary || !resumenStore.plan" :class=" !entry.summary || !resumenStore.plan ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5  rounded-lg px-2 text-sm border   " @click="$emit('generateia', entry)">{{ $t("generar_ia") }}</button>
+                    <Msg section-template="ia" />
+                  </section>
 
                 </label>
                 <CvTextEditor
@@ -349,7 +439,6 @@ function calculateMaxDate() {
                   class="form__control"
                   :read-only="false"
                 />
-                <Msg section-template="ia" />
               </div>
             </div>
           </template>

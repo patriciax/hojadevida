@@ -77,7 +77,7 @@ const phoneNumberHref = computed(() => {
         </svg>
         <div>
           <span tabindex="0">{{ formSettings.location }}</span> <br>
-          <span v-if="formSettings.city || formSettings.country" tabindex="0"> {{ formSettings.country.name }} <span v-if="formSettings.city" v-text="','" />  {{ formSettings.city.name }}
+          <span v-if="formSettings.city || formSettings.country" tabindex="0"> {{ formSettings.country.name }} <span v-if="formSettings.city.name" v-text="','" />  {{ formSettings.city.name }}
           </span>
         </div>
       </div>

@@ -16,6 +16,7 @@ interface State {
   _carta: any | null
   _plan: boolean
   _openAccess: boolean
+  _showModal: boolean
 
 }
 
@@ -34,6 +35,7 @@ export default defineStore({
     _carta: '',
     _plan: false,
     _openAccess: false,
+    _showModal: false,
 
   }),
   getters: {
@@ -54,6 +56,7 @@ export default defineStore({
     carta: state => state._carta,
     plan: state => state._plan,
     openAccess: state => state._openAccess,
+    showModal: state => state._showModal,
 
   },
   actions: {
@@ -352,6 +355,12 @@ export default defineStore({
         pdf.addImage(imgData, 'PNG', xOffset, yOffset, imgWidth, imgHeight)
         pdf.save('documento.pdf')
       })
+    },
+    showModalAdjuntos() {
+      this._showModal = true
+    },
+    closeModalAdjuntos() {
+      this._showModal = false
     },
     changeStatus(status: 'loading' | 'ready' | 'readyPass' | 'loadingIA' | 'error', error: any = null) {
       this._status = status

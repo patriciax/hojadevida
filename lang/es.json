@@ -123,5 +123,8 @@
   "acceso": "Acesso",
   "carta_xs": "Carta",
   "descragr": "Descargar",
-  "share": "Compartir"
+  "share": "Compartir",
+  "print": "Imprimir",
+  "downloadjson": "Descargar JSON",
+  "veradjuntos": "Ver Adjuntos"
 }

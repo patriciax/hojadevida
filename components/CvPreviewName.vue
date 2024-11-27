@@ -14,6 +14,8 @@ function formatDate(date: Date) {
   }
   return date.toLocaleDateString(locale.value === 'es' ? 'es-ES' : 'en-US', options)
 }
+
+const showModal = ref(false)
 </script>
 
 <template>
@@ -26,4 +28,8 @@ function formatDate(date: Date) {
   <h2 class="text-gray-900 text-4xl/normal uppercase font-extrabold tracking-wide">
     {{ formSettings.name }} {{ formSettings.lastName }}
   </h2>
+
+  <button v-if="formSettings.adjuntos" :style="`background: ${formSettings.activeColor} `" class="movil-share absolute top-5 right-5  inline-flex flex-col items-center text-[15px] font-semibold justify-center px-5 text-white rounded-full py-2 group" @click="resumenStore.showModalAdjuntos()">
+    {{ $t('Ver soportes') }}
+  </button>
 </template>

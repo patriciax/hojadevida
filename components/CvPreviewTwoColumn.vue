@@ -12,15 +12,15 @@ const { formSettings } = useCvState()
 
 <template>
   <div
-    class="flex relative flex-col overflow-hidden gap-4 p-8 py-7 col-span-1 "
+    class="flex relative flex-col overflow-hidden gap-4 p-8 py-7 col-span-1 color-print"
 
     :class="[
       formSettings.profileImageDataUri ? 'py-7' : 'py-8',
       props.color === 'black' ? 'bg-[#343434] text-white' : 'bg-[#f9f9f9] text-black',
     ]"
   >
-    <div class="absolute  bg-traslate-cv transform  rotate-[48deg]   w-[15rem] h-[35rem]" />
-    <CvProfileImageViewer class="border-white border-8 z-10 mb-4" />
+    <div class="absolute z-0  bg-traslate-cv transform  rotate-[48deg]   w-[15rem] h-[35rem]" />
+    <CvProfileImageViewer class="border-white border-8 z-50 mb-4 relative" />
 
     <CvPreviewContact />
 

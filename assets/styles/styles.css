@@ -99,10 +99,12 @@
 }
 }
 @media print {
-  nav,.menu-share {
+  nav,.menu-share ,.movil-share{
     display: none;
   }
-  
+  .color-print{
+    color: #000 !important;
+  }
 }
 
 .form__group .m-phone-number-input  {

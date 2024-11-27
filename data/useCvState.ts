@@ -9,6 +9,7 @@ import {
   type Cv,
   type CvEvent,
   type CvEventReference,
+  type CvEventSoportes,
   type DefaultSkill,
   type LanguagesSkill,
   type SectionName,
@@ -147,6 +148,18 @@ export function useCvState() {
       email: '',
     } as CvEventReference)
   }
+  function addEntrySoportes(e: { sectionName: 'soportes' }) {
+    state.formSettings[e.sectionName].unshift({
+      id: crypto.randomUUID(),
+      nameref: '',
+      cargo: '',
+      current: false,
+      company: '',
+      tel: '',
+      email: '',
+
+    } as CvEventSoportes)
+  }
 
   function removeEntry(e: { sectionName: SectionName, entry: CvEvent }) {
     state.formSettings[e.sectionName] = state.formSettings[
@@ -208,6 +221,7 @@ export function useCvState() {
       | 'displayLanguages'
       | 'displayWork'
       | 'displayReferences'
+      | 'displaySoportes'
     state.formSettings[propName] = e.status
   }
 
@@ -235,5 +249,6 @@ export function useCvState() {
     clearForm,
     changeDisplaySection,
     addEntryReference,
+    addEntrySoportes,
   }
 }

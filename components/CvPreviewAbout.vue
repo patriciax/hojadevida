@@ -10,7 +10,7 @@ const resumenStore = useResumenStore()
 <template>
   <section class="cv__section cv__section--main">
     <h4
-      v-if="!resumenStore.isShowCarta"
+      v-if="!resumenStore.isShowCarta && formSettings.layout !== 'one-column'"
       class="cv__section-title cv__section-title--main border-b flex items-center gap-2 pb-2.5"
       :class="formSettings.layout === 'one-column' && 'sr-only'"
     >

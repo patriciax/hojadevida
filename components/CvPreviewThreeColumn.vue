@@ -12,7 +12,7 @@ const { formSettings } = useCvState()
 
 <template>
   <div
-    class="flex relative flex-col overflow-hidden gap-4 p-8 py-7 col-span-1 "
+    class="flex relative flex-col overflow-hidden gap-4 color-print p-8 py-7 col-span-1 "
 
     :class="[
       formSettings.profileImageDataUri ? 'py-7' : 'py-8',

@@ -14,7 +14,7 @@ const { formSettings } = useCvState()
   <div class="flex flex-col font-landing text-sm text-gray-600">
     <p v-text="`${formSettings.name} ${formSettings.lastName}`" />
     <p v-text="formSettings.jobTitle" />
-    <a :href="`mailto:${formSettings.email}`" class="font-landing text-sm  " v-text="formSettings.email" />
-    <a :href="`tel:${formSettings.phoneNumber}`" class="font-landing text-sm  mt-0.5" v-text="`+${formSettings.phoneNumber}`" />
+    <a v-if="formSettings.email" :href="`mailto:${formSettings.email}`" class="font-landing text-sm  " v-text="formSettings.email" />
+    <a v-if="formSettings.phoneNumber" :href="`tel:${formSettings.phoneNumber}`" class="font-landing text-sm  mt-0.5" v-text="`+ ${formSettings.countryCode ? formSettings.countryCode : '57'} ${formSettings.phoneNumber}`" />
   </div>
 </template>

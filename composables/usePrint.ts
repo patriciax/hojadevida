@@ -57,7 +57,7 @@ export default function usePrint() {
       return
 
     // Usar html2canvas con CORS habilitado
-    html2canvas(element, { useCORS: true }).then((canvas) => {
+    html2canvas(element, { useCORS: true, scale: 2 }).then((canvas) => {
       const imgData = canvas.toDataURL('image/png')
 
       const pdf = new jsPDF({
@@ -87,14 +87,14 @@ export default function usePrint() {
       }
 
       // Guardar el PDF
-      pdf.save(`CV_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`)
+      pdf.save(`HOJA_DE_VIDA_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`)
     }).catch((error) => {
       console.error('Error al capturar el elemento:', error)
     })
   }
 
   function changeDocTitle() {
-    document.title = `CV_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`
+    document.title = `HOJA_DE_VIDA_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`
   }
 
   return {
