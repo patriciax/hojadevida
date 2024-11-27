@@ -29,7 +29,7 @@ const showModal = ref(false)
     {{ formSettings.name }} {{ formSettings.lastName }}
   </h2>
 
-  <button v-if="formSettings.adjuntos" :style="`background: ${formSettings.activeColor} `" class="movil-share absolute top-5 right-5  inline-flex flex-col items-center text-[15px] font-semibold justify-center px-5 text-white rounded-full py-2 group" @click="resumenStore.showModalAdjuntos()">
+  <button v-if="formSettings.soportes.length" :style="`background: ${formSettings.activeColor} `" class="movil-share absolute top-5 right-5  inline-flex flex-col items-center text-[15px] font-semibold justify-center px-5 text-white rounded-full py-2 group" @click="resumenStore.showModalAdjuntos()">
     {{ $t('Ver soportes') }}
   </button>
 </template>
