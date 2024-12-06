@@ -14,6 +14,7 @@ const dataForm = ref({
   email: '',
   password: '',
   confirm_password: '',
+  code: '',
 })
 
 onMounted(() => {
@@ -28,25 +29,36 @@ async function changePassword() {
   }
   loading.value = true
   try {
+    dataForm.value.code = codeTemp.value
     const { $axios } = useNuxtApp()
     const response = await $axios.post('password/change', dataForm.value, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
+
     if (response.status === 200) {
+      if (response.data.message === 'Código de recuperación expirado') {
+        useNuxtApp().$toast.error(`${response.data.message} ` + `, Intenta de nuevo`)
+        currentstep.value = 1
+        codeTemp.value = ''
+        return
+      }
       useNuxtApp().$toast.success('¡Contraseña cambiada exitosamente!')
 
       setTimeout(() => {
         router.push({ path: '/login' })
       }, 1000)
     }
+    else if (response.message === 'Código de recuperación expirado') {
+      useNuxtApp().$toast.error(response.data.message)
+    }
     else {
       useNuxtApp().$toast.error('Error al cambiar contraseña.')
     }
   }
   catch (error) {
-    useNuxtApp().$toast.error('Error al cambiar contraseña.')
+    useNuxtApp().$toast.error(error.response.data.messages.errors.password)
   }
   finally {
     loading.value = false
