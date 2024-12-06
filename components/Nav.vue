@@ -215,14 +215,14 @@ function closeCarta() {
 //   }
 // }
 
-watch(
-  () => formSettings.value,
-  (newValue, oldValue) => {
-    if (JSON.stringify(oldValue) !== JSON.stringify(formSettings.value))
-      localStorage.setItem(`cvSettingsMyData-${i18n.locale.value}`, JSON.stringify(oldValue))
-  },
-  { deep: true },
-)
+// watch(
+//   () => formSettings.value,
+//   (newValue, oldValue) => {
+//     if (JSON.stringify(oldValue) !== JSON.stringify(formSettings.value))
+//       localStorage.setItem(`cvSettingsMyData-${i18n.locale.value}`, JSON.stringify(oldValue))
+//   },
+//   { deep: true },
+// )
 </script>
 
 <template>

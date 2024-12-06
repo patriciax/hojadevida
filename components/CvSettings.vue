@@ -35,14 +35,6 @@ const countryCode = ref(null)
 const countryCodeName = ref(null)
 const isOpen = ref(false)
 
-onMounted(async () => {
-  await locationStore.getCountry()
-  if (resumenStore.formSettings?.country) {
-    if (Object.keys(resumenStore.formSettings?.country).length > 0)
-      await locationStore.getCity(formSettings.value.country.id)
-  }
-})
-
 const switchLocalePath = useSwitchLocalePath()
 const i18n = useI18n()
 const { downloadPdf, downloadPdfDirectly } = usePrint()
@@ -56,6 +48,13 @@ const config = {
 
   ],
 }
+onMounted(async () => {
+  await locationStore.getCountry()
+  if (resumenStore.formSettings?.country) {
+    if (Object.keys(resumenStore.formSettings?.country).length > 0)
+      await locationStore.getCity(formSettings.value.country.id)
+  }
+})
 
 watch(bgCv, (newColor) => {
   localStorage.setItem('bgCv', newColor)
@@ -69,6 +68,8 @@ watch(bgCv, (newColor) => {
 watch(
   () => formSettings.value,
   (newValue, oldValue) => {
+    localStorage.setItem(`cvSettingsMyData-${i18n.locale.value}`, JSON.stringify(resumenStore.formSettings))
+
     localStorage.setItem(`cvSettings-${i18n.locale.value}`, JSON.stringify(newValue))
     if (newValue.activeColor !== oldValue.activeColor) {
       const newColor = config.selectedColor
@@ -78,14 +79,17 @@ watch(
   },
   { deep: true },
 )
-watch(
-  () => formSettings.value,
-  (newValue, oldValue) => {
-    if (JSON.stringify(oldValue) !== JSON.stringify(formSettings.value))
-      localStorage.setItem(`cvSettingsMyData-${i18n.locale.value}`, JSON.stringify(oldValue))
-  },
-  { deep: true },
-)
+
+// const isLoading = ref(false)
+// watch(
+//   () => formSettings.value,
+//   (newValue, oldValue) => {
+//     if (!isLoading.value && JSON.stringify(oldValue) !== JSON.stringify(formSettings.value))
+//       localStorage.setItem(`cvSettingsMyData-${i18n.locale.value}`, JSON.stringify(oldValue))
+//     isLoading.value = false
+//   },
+//   { deep: true },
+// )
 
 watch (
   () => resumenStore.isShowCarta,

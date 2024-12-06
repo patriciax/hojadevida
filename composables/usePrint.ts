@@ -51,6 +51,10 @@ export default function usePrint() {
 
   async function downloadPdfDirectly(): void {
     changeDocTitle()
+    const movilShareElements = document.querySelectorAll('.movil-share')
+    movilShareElements.forEach((el) => {
+      el.style.display = 'none'
+    })
 
     const element = document.getElementById('elemento-a-exportar')
     if (!element)

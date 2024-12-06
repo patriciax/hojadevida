@@ -191,19 +191,21 @@ export function useCvState() {
   }
 
   function clearForm(): void {
-    state.formSettings = cvSettingsEmptyTemplate
+    state.formSettings = { ...cvSettingsEmptyTemplate }
     // localStorage.removeItem(`cvSettings-${i18n.locale.value}`)
   }
-  function myForm() {
+  function myForm(): void {
     const locale = `cvSettingsMyData-${i18n.locale.value}`
     const storedSettings = localStorage.getItem(locale)
 
     if (storedSettings) {
       const cvSettingsObj = JSON.parse(storedSettings)
-      state.formSettings = { ...cvSettingsEmptyTemplate, ...cvSettingsObj }
-      patchId(state.formSettings)
+      // Solo actualiza formSettings si hay datos almacenados
+      state.formSettings = cvSettingsObj // No combinar con cvSettingsEmptyTemplate
+      // patchId(state.formSettings)
     }
     else {
+      // Si no hay datos almacenados, establece el template por defecto
       state.formSettings = { ...cvSettingTemplate }
     }
   }
