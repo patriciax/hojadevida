@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { AcademicCapIcon, BriefcaseIcon, FolderIcon, LightBulbIcon, LinkIcon, XMarkIcon } from '@heroicons/vue/24/solid'
 import Modal from './common/Modal.vue'
+import Msg from './common/msg.vue'
 import { useCvState } from '~/data/useCvState'
 import type { OptionalSection, SectionName, SectionNameList } from '~/types/cvfy'
 import useResumenStore from '@/stores/resumen'
@@ -58,8 +59,8 @@ function handledClose() {
 </script>
 
 <template>
-  <fieldset class="form__section grid gap-3">
-    <expansion-panel :panel-name="$t(name)">
+  <fieldset class="form__section grid gap-3 " :class="{ 'group relative': section === 'soportes' && !resumenStore.plan }">
+    <expansion-panel :panel-name="$t(name)" :disabled="section === 'soportes' && !resumenStore.plan">
       <template #icon>
         <BriefcaseIcon v-if="section === 'work'" class="icon-style" />
         <AcademicCapIcon v-if="section === 'education'" class="icon-style" />
@@ -127,6 +128,8 @@ function handledClose() {
         </div>
       </template>
     </expansion-panel>
+
+    <Msg />
   </fieldset>
 
   <Teleport to="body">

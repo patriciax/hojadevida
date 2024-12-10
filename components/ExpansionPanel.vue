@@ -8,6 +8,10 @@ export default defineComponent({
       type: String,
       default: () => '',
     },
+    disabled: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   data() {
     return {
@@ -16,6 +20,8 @@ export default defineComponent({
   },
   methods: {
     togglePanel() {
+      if (this.disabled)
+        return
       this.isOpen = !this.isOpen
     },
     enter(element: Element) {
@@ -48,13 +54,14 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="expansion-panel">
+  <div class="expansion-panel ">
     <div
+
       class="expansion-panel__header"
       @click.prevent="togglePanel"
     >
       <div class="expansion-panel__title">
-        <div class="flex gap-2 items-center">
+        <div class="flex gap-2 items-center" :class="disabled ? 'text-gray-500' : ''">
           <slot name="icon" />
           <slot name="title">
             Título
@@ -69,6 +76,7 @@ export default defineComponent({
           @click.stop="togglePanel"
         >
           <svg
+
             class="expansion-panel__arrow" :class="[
               { 'expansion-panel__arrow--open': isOpen },
             ]"

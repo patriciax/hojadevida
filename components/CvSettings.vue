@@ -334,13 +334,16 @@ function save() {
     </Nav>
     <button
       v-if="!resumenStore.isShowCarta"
-      class="fixed bottom-0 hidden lg:flex h-12 w-12 z-10 hover:bg-gray-200 right-5 lg:right-10 mb-10 pr-1 rounded-full text-center items-center justify-center bg-primary hover:bg-primary-darker"
+      class="fixed bottom-0 hidden group lg:flex h-12 w-12 z-10 hover:bg-gray-200 right-5 lg:right-10 mb-10 pr-1 rounded-full text-center items-center justify-center bg-primary hover:bg-primary-darker"
       :style="`background: ${resumenStore.formSettings?.activeColor}` || '#0000'"
-
+      :disabled="!resumenStore.plan"
       type="button"
+      :class="!resumenStore.plan ? 'no-share' : ''"
       @click="shared(props.id)"
     >
       <ShareIcon class="w-6 h-6 text-white" />
+
+      <Msg section-template="ia" />
     </button>
     <form
       :class="`form ${isOpen ? 'block' : 'hidden lg:block'}`"
@@ -1139,5 +1142,12 @@ function save() {
 .icon-style {
   @apply w-4 h-4 text-gray-800;
 
+}
+
+.no-share{
+  background: rgb(192 192 192)!important;
+
+}
+.no-share svg{
 }
 </style>

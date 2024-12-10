@@ -91,12 +91,19 @@ function validateFields() {
   if (!dataForm.value.date_of_birth)
     error.value.date = 'Campo requerido'
 }
+
+async function validatedni() {
+  await loginStore.validationDNI(dataForm.value.dni)
+  if (loginStore.isErrorDni)
+    error.value.dni = 'DNI ya registrado'
+}
 async function register() {
   validateFields()
 
   if (hasErrors.value)
     return
 
+  validatedni()
   await loginStore.register(dataForm.value)
 
   if (loginStore.isReady) {

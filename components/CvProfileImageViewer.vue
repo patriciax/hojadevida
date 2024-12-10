@@ -20,6 +20,11 @@ watch (() => formSettings.value.profileImageDataUri, () => {
     alt="Your profile image"
   >
   <img
+    v-else-if="!formSettings.profileImageDataUri"
+    class="object-cover h-[212px]  max-w-[212px] max-h-[212px] rounded-full aspect-square"
+    src="/assets/img/user.svg" alt="logo"
+  >
+  <img
     v-else
     class="object-cover h-[212px]  max-w-[212px] max-h-[212px] rounded-full aspect-square"
     :src="formSettings.profileImageDataUri"

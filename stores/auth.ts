@@ -3,7 +3,7 @@ import { useStorage } from '@vueuse/core'
 import { useNuxtApp } from '#app'
 
 interface State {
-  _status: 'loading' | 'ready' | 'error' | null
+  _status: 'loading' | 'ready' | 'error' | 'readydni' | 'errordni' | null
   _error: any | null
   _token: string | null
   _authenticated: boolean
@@ -22,7 +22,9 @@ export default defineStore({
   getters: {
     isLoading: state => state._status === 'loading',
     isReady: state => state._status === 'ready',
+    isReadyDni: state => state._status === 'readydni',
     isError: state => state._status === 'error',
+    isErrorDni: state => state._status === 'errordni',
     error: state => state._error,
     token: state => state._token,
     authenticated: state => state._authenticated,
@@ -125,6 +127,28 @@ export default defineStore({
         this.changeStatus('error', error.response.data.messages.errors)
       }
     },
+    async validationDNI(body: any) {
+      this.changeStatus('loading') // Cambia a loading al inicio
+
+      try {
+        const { $axios } = useNuxtApp()
+
+        const response = await $axios.post('validation/dni', {
+          dni: body,
+        })
+        console.log(response)
+
+        if (response.status === 200 || response.status === 201)
+          this.changeStatus('readydni') // Cambia a readydni si la validación es exitosa
+        else if (response.status === 409)
+          this.changeStatus('errordni') // Cambia a errordni si hay un conflicto
+        else
+          this.changeStatus('errordni') // Manejo por defecto
+      }
+      catch (error: any) {
+        this.changeStatus('errordni', error.response.data.messages.errors) // Cambia a errordni en caso de error
+      }
+    },
     reset() {
       this._token = null
       this._authenticated = false
@@ -132,7 +156,7 @@ export default defineStore({
       sessionStorage.removeItem('access_expiration')
       navigateTo('/login')
     },
-    changeStatus(status: 'loading' | 'ready' | 'error', error: any = null) {
+    changeStatus(status: 'loading' | 'ready' | 'readydni' | 'errordni' | 'error', error: any = null) {
       this._status = status
       if (status === 'error')
         this._error = error
