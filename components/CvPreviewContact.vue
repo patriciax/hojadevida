@@ -14,7 +14,7 @@ const phoneNumberHref = computed(() => {
 
 <template>
   <section
-    class="cv__section"
+    class="cv__section font-light-carta"
     :class="formSettings.layout === 'one-column' && 'mt-0'"
   >
     <h4
@@ -84,3 +84,12 @@ const phoneNumberHref = computed(() => {
     </div>
   </section>
 </template>
+
+<style>
+@media print {
+  .font-light-carta{
+    font-size: 12px;
+  }
+
+}
+</style>

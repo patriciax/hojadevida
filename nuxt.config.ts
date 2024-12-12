@@ -9,7 +9,7 @@ export default defineNuxtConfig({
       // eslint-disable-next-line node/prefer-global/process
       process.env.NODE_ENV === 'dev'
         ? 'http://localhost:3000'
-        : 'https://www.hojadevida.digital',
+        : 'http://app.hojadevida.digital',
   },
 
   imports: {

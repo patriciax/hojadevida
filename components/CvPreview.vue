@@ -200,6 +200,10 @@ p {
 }
 
 @media print {
+  body,html{
+    margin: 0;
+    padding: 0;
+  }
   nav {
     display: none;
   }

@@ -166,6 +166,7 @@ watch(() => dataForm.value.email, (newEmail) => {
           <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
             {{ $t("regsiterIn") }}
           </h1>
+          <span>Completa el formulario de registro con tus datos</span>
           <form class="gap-y-4 flex flex-col lg:grid grid-cols-2 gap-3" @submit.prevent="register">
             <div>
               <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Nombre*</label>

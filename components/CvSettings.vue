@@ -150,7 +150,7 @@ function darkenColor(color: string, amount = 0.4): string {
   ].join('')}`
 }
 
-const newUrl = ref('https://bucolic-souffle-ead4bd.netlify.app/app/')
+const newUrl = ref('http://app.hojadevida.digital/cv/')
 // https://bucolic-souffle-ead4bd.netlify.app/resume/
 async function copyLink() {
   const url = `${newUrl.value}${resumenStore.data.id}`
@@ -296,14 +296,14 @@ function save() {
         <PrinterIcon class="w-4 h-4" />
         <span>{{ $t("download-cv-pdf") }}</span>
       </button>
-      <button
+      <!-- <button
         type="button"
         class="flex gap-2 text-gray-700 hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg text-sm"
         @click="downloadPdfDirectly"
       >
         <ArrowDownTrayIcon class="w-4 h-4" />
         <span>{{ $t("export-cv-pdf") }}</span>
-      </button>
+      </button> -->
 
       <button
         v-if="!resumenStore.isShowCarta"
@@ -343,7 +343,7 @@ function save() {
     >
       <ShareIcon class="w-6 h-6 text-white" />
 
-      <Msg section-template="ia" />
+      <Msg v-if="!resumenStore.plan" section-template="ia" />
     </button>
     <form
       :class="`form ${isOpen ? 'block' : 'hidden lg:block'}`"
@@ -1033,14 +1033,14 @@ function save() {
                   type="text"
                 >
               </div>
-              <div class="form__group col-span-full my-4">
+              <div class="form__group col-span-full my-4 group relative">
                 <label
                   class="form__label justify-between w-full flex items-center"
                   for="aboutme2"
                 >
 
                   <span>{{ $t("carta") }}</span>
-                  <button type="button" :disabled="resumenStore.isLoadingIA || !formSettings.profile " :class=" !formSettings.profile ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5 rounded-lg px-2 border  " @click="sendCarta">{{ $t("generar_ia") }}</button>
+                  <button type="button" :disabled="resumenStore.isLoadingIA || !formSettings.profile || !resumenStore.plan " :class=" !formSettings.profile || !resumenStore.plan ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5 rounded-lg px-2 border  " @click="sendCarta">{{ $t("generar_ia") }}</button>
                 </label>
                 <textarea
                   id="aboutme2"
@@ -1050,6 +1050,7 @@ function save() {
                   cols="30"
                   rows="10"
                 />
+                <Msg v-if="!resumenStore.plan" section-template="ia" />
               </div>
             </div>
           </template>

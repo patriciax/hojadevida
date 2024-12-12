@@ -99,10 +99,10 @@ function logout() {
 }
 
 // const newId = ref(resumenStore.data.id)
-const newUrl = ref(`https://bucolic-souffle-ead4bd.netlify.app/app/${resumenStore.data?.code_url}`)
+const newUrl = ref(`http://app.hojadevida.digital/cv/${resumenStore.data?.code_url}`)
 async function copyLink() {
   const url = `${newUrl.value}`
-  await navigator.clipboard.writeText(`https://bucolic-souffle-ead4bd.netlify.app/app/${resumenStore.data?.code_url}`)
+  await navigator.clipboard.writeText(`http://app.hojadevida.digital/cv/${resumenStore.data?.code_url}`)
 
   useNuxtApp().$toast.success('¡Link copiado al portapapeles!')
 }
@@ -342,7 +342,7 @@ function closeCarta() {
 
         <div class="w-full relative">
           <p class="bg-gray-50 border border-gray-300 text-gray-500 rounded-lg focus:ring-primary-600 focus:border-primary-600 font-normal block w-full p-2.5 text-xs  ">
-            {{ `https://bucolic-souffle-ead4bd.netlify.app/app/${resumenStore.data?.code_url
+            {{ `http://app.hojadevida.digital/cv/${resumenStore.data?.code_url
             }` }}
             <button type="button" class="absolute right-3 top-2 text-gray-600 hover:text-gray-600" @click="copyLink">
               <DocumentDuplicateIcon class="w-6  " />

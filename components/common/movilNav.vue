@@ -1,11 +1,20 @@
 <script setup>
 import { ArrowDownIcon, ArrowDownLeftIcon, ArrowDownTrayIcon, Cog6ToothIcon, DocumentTextIcon, ShareIcon } from '@heroicons/vue/24/solid'
+import { useCvState } from '~/data/useCvState'
+import useResumenStore from '@/stores/resumen'
+
+const $emit = defineEmits(['close'])
+
+const {
+  formSettings,
+} = useCvState()
+const resumenStore = useResumenStore()
 </script>
 
 <template>
   <div class="lg:hidden block fixed z-50 w-full h-16  -translate-x-1/2 bg-white rounded-t-md bottom-0 left-1/2 shadow-xl">
     <div class="grid h-full max-w-lg grid-cols-4 mx-auto">
-      <button data-tooltip-target="tooltip-home" type="button" class="text-gray-500 inline-flex flex-col items-center justify-center px-5 rounded-s-full hover:text-blue-600  group" @click="$emit('sharepass')">
+      <button :class="{ 'opacity-60 !cursor-not-allowed': !resumenStore.plan }" :disabled="!resumenStore.plan" data-tooltip-target="tooltip-home" type="button" class="text-gray-500 inline-flex flex-col items-center justify-center px-5 rounded-s-full hover:text-blue-600  group" @click="$emit('sharepass')">
         <Cog6ToothIcon class="w-6 h-6 " />
         <p class="text-xs mt-0.5">
           {{ $t('acceso') }}
@@ -14,8 +23,11 @@ import { ArrowDownIcon, ArrowDownLeftIcon, ArrowDownTrayIcon, Cog6ToothIcon, Doc
 
       <button data-tooltip-target="tooltip-wallet" type="button" class="inline-flex flex-col items-center justify-center px-5 hover:text-blue-600  group text-gray-500" @click="$emit('carta')">
         <DocumentTextIcon class="w-6 h-6" />
-        <p class="text-xs mt-1">
+        <p v-if="!resumenStore.isShowCarta" class="text-xs mt-1">
           {{ $t('carta_xs') }}
+        </p>
+        <p v-else class="text-xs mt-1">
+          Hoja de vida
         </p>
       </button>
 
@@ -28,7 +40,7 @@ import { ArrowDownIcon, ArrowDownLeftIcon, ArrowDownTrayIcon, Cog6ToothIcon, Doc
         </button>
       </div> -->
 
-      <button data-tooltip-target="tooltip-settings" type="button" class="text-gray-600 inline-flex flex-col items-center justify-center px-5 hover:text-blue-600  group" @click="$emit('share')">
+      <button :class="{ 'opacity-60 !cursor-not-allowed': !resumenStore.plan }" :disabled="!resumenStore.plan" data-tooltip-target="tooltip-settings" type="button" class="text-gray-600 inline-flex flex-col items-center justify-center px-5 hover:text-blue-600  group" @click="$emit('share')">
         <ShareIcon class="w-5 h-5 " />
 
         <p class="text-xs mt-1">

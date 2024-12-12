@@ -240,7 +240,7 @@ function changeFont() {
 //     pdf.save('documento.pdf')
 //   })
 // }
-const newUrl = ref('https://bucolic-souffle-ead4bd.netlify.app/app/')
+const newUrl = ref('http://app.hojadevida.digital/cv/')
 
 async function copyLink() {
   const url = `${newUrl.value}${resumenStore.codeUrl}`

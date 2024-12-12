@@ -34,7 +34,7 @@ const { formSettings } = useCvState()
   </div>
 
   <div class="col-span-2">
-    <div class=" bg-slate-50 p-10  mb-[36px]" :class=" resumenStore.isShowCarta ? '' : 'mt-16'">
+    <div class=" bg-slate-50 p-10 print-carta mb-[36px]" :class=" resumenStore.isShowCarta ? '' : 'mt-16'">
       <CvPreviewName />
       <CvPreviewTitle />
     </div>
@@ -111,5 +111,11 @@ const { formSettings } = useCvState()
   }
   --tw-translate-x: -4.5rem;
   background: var(--primary);
+}
+@media print {
+  .print-carta{
+    margin: 2px !important;
+  }
+
 }
 </style>
