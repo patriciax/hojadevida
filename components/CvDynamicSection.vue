@@ -22,13 +22,8 @@ function focusEditor(id: string) {
     editorElem.focus()
 }
 
-const entry = ref({
-  current: false,
-  to: '',
-  id: 1,
-})
-
 const maxDate = ref('')
+const error = ref('')
 
 onMounted(() => {
   calculateMaxDate()
@@ -41,7 +36,55 @@ function calculateMaxDate() {
   const yyyy = today.getFullYear()
   maxDate.value = `${yyyy}-${mm}-${dd}`
 }
+function validateDateTo(date, entry) {
+  const currentYear = new Date().getFullYear()
+  const inputDate = new Date(date)
 
+  // Verificar si la fecha es válida
+  if (isNaN(inputDate)) {
+    console.log('Fecha no válida')
+    return
+  }
+
+  const inputYear = inputDate.getFullYear()
+
+  if (inputYear > currentYear) {
+    console.log(`El año no puede ser mayor que ${currentYear}.`)
+
+    // Ajustar la fecha al año actual
+    const adjustedDate = `${currentYear}-${String(inputDate.getMonth() + 1).padStart(2, '0')}-${String(inputDate.getDate()).padStart(2, '0')}`
+    console.log(`Fecha ajustada: ${adjustedDate}`)
+
+    // Actualiza la propiedad del objeto entry directamente
+    entry.to = adjustedDate // Asegúrate de que 'to' sea una propiedad en tu objeto entry
+  }
+  else {
+    console.log('Fecha válida:', date)
+  }
+}
+function validateDateFrom(date, entry) {
+  const currentYear = new Date().getFullYear()
+  const inputDate = new Date(date)
+
+  if (isNaN(inputDate)) {
+    console.log('Fecha no válida')
+    return
+  }
+
+  const inputYear = inputDate.getFullYear()
+
+  if (inputYear > currentYear) {
+    console.log(`El año no puede ser mayor que ${currentYear}.`)
+
+    const adjustedDate = `${currentYear}-${String(inputDate.getMonth() + 1).padStart(2, '0')}-${String(inputDate.getDate()).padStart(2, '0')}`
+    console.log(`Fecha ajustada: ${adjustedDate}`)
+
+    entry.from = adjustedDate
+  }
+  else {
+    console.log('Fecha válida:', date)
+  }
+}
 // async function generateText(text: string, id: string) {
 //   generateIA.value = true
 //   await resumenStore.getTextIADescription({
@@ -378,7 +421,9 @@ function formatDate(date) {
                   class="form__control"
                   type="date"
                   :max="maxDate"
+                  @input="validateDateFrom(entry.from, entry)"
                 >
+                <span v-if="error" class="error text-red-600 text-sm mt-1">{{ error }}</span>
               </div>
               <div class="form__group col-span-full">
                 <label
@@ -407,6 +452,7 @@ function formatDate(date) {
                   class="form__control"
                   type="date"
                   :max="maxDate"
+                  @input="validateDateTo(entry.to, entry)"
                 >
               </div>
               <div class="form__group col-span-full relative">

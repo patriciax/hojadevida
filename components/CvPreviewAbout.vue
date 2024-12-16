@@ -23,7 +23,7 @@ const resumenStore = useResumenStore()
       <!-- Avoids unnecessary spaces at the begging while still allowing break lines -->
       <span v-if="!resumenStore.isShowCarta" class="whitespace-pre-wrap">{{ formSettings.aboutme }}</span>
       <template v-else>
-        <h3 class="uppercase text-center text-lg font-normal -mt-10 mb-5 print-carta" v-text="$t('carta')" />
+        <h3 :class="{ 'mt-10': formSettings.layout === 'one-column' }" class="uppercase text-center text-lg -mt-10 mb-5 print-carta font-bold" v-text="$t('carta')" />
         <p v-text="$t('sres')" />
         <span class="whitespace-pre-wrap font-bold" v-text="formSettings.company" />
         <p v-text="$t('recursoshumanos')" />

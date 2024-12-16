@@ -39,50 +39,6 @@ export function useCvState() {
     localStorage.setItem(locale, JSON.stringify(state.formSettings))
     state.isLoading = false
   }
-  // async function setUpCvSettings(): Promise<void> {
-  //   const locale = `cvSettings-${i18n.locale.value}`
-
-  //   // Verifica si hay datos en resumenStore.formSettings
-  //   if (resumenStore.formSettings && Object.keys(resumenStore.formSettings).length > 0) {
-  //     state.formSettings = {
-  //       ...cvSettingsEmptyTemplate,
-  //       ...resumenStore.formSettings,
-  //     }
-  //     localStorage.setItem(locale, JSON.stringify(state.formSettings))
-  //   }
-  //   else {
-  //     const cvSettings = localStorage.getItem(locale)
-  //     if (cvSettings == null) {
-  //       state.formSettings = {
-  //         ...cvSettingTemplate,
-  //       }
-  //     }
-  //     else {
-  //       const cvSettingsObj = JSON.parse(cvSettings)
-  //       state.formSettings = { ...cvSettingsEmptyTemplate, ...cvSettingsObj }
-  //       patchId(state.formSettings)
-  //     }
-  //   }
-
-  //   state.isLoading = false
-  // }
-  // function setUpCvSettings(): void {
-  //   const locale = `cvSettings-${i18n.locale.value}`
-  //   const cvSettings = localStorage.getItem(locale)
-
-  //   if (cvSettings == null) {
-  //     state.formSettings = {
-  //       ...cvSettingTemplate,
-  //     }
-  //   }
-  //   else {
-  //     const cvSettingsObj = JSON.parse(cvSettings)
-  //     state.formSettings = { ...cvSettingsEmptyTemplate, ...cvSettingsObj }
-  //     patchId(state.formSettings)
-  //   }
-  //   localStorage.setItem(locale, JSON.stringify(state.formSettings))
-  //   state.isLoading = false
-  // }
 
   function addSkill<T extends LanguagesSkill | DefaultSkill>(e: T): void {
     if (e.skillType === 'languages') {
@@ -200,12 +156,10 @@ export function useCvState() {
 
     if (storedSettings) {
       const cvSettingsObj = JSON.parse(storedSettings)
-      // Solo actualiza formSettings si hay datos almacenados
-      state.formSettings = cvSettingsObj // No combinar con cvSettingsEmptyTemplate
+      state.formSettings = { ...cvSettingsEmptyTemplate, ...cvSettingsObj }
       // patchId(state.formSettings)
     }
     else {
-      // Si no hay datos almacenados, establece el template por defecto
       state.formSettings = { ...cvSettingTemplate }
     }
   }
