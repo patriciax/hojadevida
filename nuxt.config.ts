@@ -3,6 +3,7 @@ import en from './lang/en.json'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  ssr: true,
 
   site: {
     url:
