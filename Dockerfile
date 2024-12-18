@@ -9,7 +9,7 @@ RUN npm install
 # Copy the rest of the project files to the container
 COPY . .
 # Build the Vue.js application to the production mode to dist folder
-RUN npm run generate
+RUN npm run build
 
 # Use the lightweight Nginx image from the previous stage for the nginx container
 FROM nginx:stable-alpine as production-stage
