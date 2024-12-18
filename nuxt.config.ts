@@ -3,7 +3,6 @@ import en from './lang/en.json'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  ssr: false,
 
   site: {
     url:
@@ -18,7 +17,7 @@ export default defineNuxtConfig({
   },
 
   app: {
-    baseURL: '/cv/',
+    // baseURL: '/resume/',
     // Global page headers (https://go.nuxtjs.dev/config-head)
     head: {
       meta: [
