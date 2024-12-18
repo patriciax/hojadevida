@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app-hojadevida
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`app.hojadevida.digital`) && PathPrefix(`/`)"
+      - "traefik.http.routers.app.middlewares=app-stripprefix"
+      - "traefik.http.middlewares.app-stripprefix.stripprefix.prefixes=/"
+      - "traefik.http.routers.app.tls=true"
+      - "traefik.http.routers.app.tls.certresolver=resolver"
+      - "traefik.http.middlewares.app.addprefix.prefix=/"
+
+networks:
+  default:
+      name: carnet
+      external: true
