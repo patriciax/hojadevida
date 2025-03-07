@@ -105,6 +105,10 @@
   .color-print{
     color: #000 !important;
   }
+
+  .cv__section-title .bg-change, .cv__icon-wrapper a:nth-child(1),.cv__icon,.cv__event svg {
+    display: none;
+  }
 }
 
 .form__group .m-phone-number-input  {

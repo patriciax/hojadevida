@@ -333,7 +333,7 @@ const formSettingsHref = computed(() => {
     <CvPreview :loading="resumenStore.isPassword" :color="bgCv" />
   </main>
 
-  <MovilNavShare @sharepass="downloadPdfDirectly" @save="downloadPdf" @share="shared" />
+  <MovilNavShare @soportes="resumenStore.showModalAdjuntos" @sharepass="downloadPdfDirectly" @save="downloadPdf" @share="shared" />
 
   <Adjuntos v-if="resumenStore.showModal" @close="resumenStore.closeModalAdjuntos" />
 </template>

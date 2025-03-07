@@ -296,6 +296,7 @@ function save() {
         <PrinterIcon class="w-4 h-4" />
         <span>{{ $t("download-cv-pdf") }}</span>
       </button>
+
       <!-- <button
         type="button"
         class="flex gap-2 text-gray-700 hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg text-sm"
@@ -318,6 +319,7 @@ function save() {
         </svg>
         {{ $t("download-cv-settings") }}
       </button>
+
       <button
         v-else
 

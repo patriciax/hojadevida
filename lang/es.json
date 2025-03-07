@@ -126,5 +126,12 @@
   "share": "Compartir",
   "print": "Imprimir",
   "downloadjson": "Descargar JSON",
-  "veradjuntos": "Ver Adjuntos"
+  "veradjuntos": "Ver Adjuntos",
+  "soportes": "Soportes",
+  "pro": "Cambia a Pro",
+  "plans-description": "Selecciona un plan",
+  "features": "Características",
+  "plans-free": " Plan Básico",
+  "free": " GRATIS",
+  "getstartedFree": "Continuar"
 }
