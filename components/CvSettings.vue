@@ -297,14 +297,14 @@ function save() {
         <span>{{ $t("download-cv-pdf") }}</span>
       </button>
 
-      <!-- <button
+      <button
         type="button"
         class="flex gap-2 text-gray-700 hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg text-sm"
         @click="downloadPdfDirectly"
       >
         <ArrowDownTrayIcon class="w-4 h-4" />
         <span>{{ $t("export-cv-pdf") }}</span>
-      </button> -->
+      </button>
 
       <button
         v-if="!resumenStore.isShowCarta"
@@ -757,7 +757,7 @@ function save() {
                   <span>{{ $t("about-me") }}</span>
                   <section class=" group">
                     <button type="button" :disabled="!formSettings.aboutme || !resumenStore.plan" :class=" !formSettings.aboutme || !resumenStore.plan ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white  py-0.5 rounded-lg px-2 border  " @click="generateAboutIa(formSettings.aboutme)">{{ $t("generar_ia") }}</button>
-                    <Msg section-template="ia" />
+                    <Msg v-if="!resumenStore.plan" section-template="ia" />
 
                   </section>
                 </label>

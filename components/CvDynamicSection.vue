@@ -475,7 +475,7 @@ function formatDate(date) {
 
                   <section class="group">
                     <button type="button" :disabled="!entry.summary || !resumenStore.plan" :class=" !entry.summary || !resumenStore.plan ? 'cursor-not-allowed  bg-gray-500' : 'bg-[#ff0059] cursor-pointer'" class="text-white py-0.5  rounded-lg px-2 text-sm border   " @click="$emit('generateia', entry)">{{ $t("generar_ia") }}</button>
-                    <Msg section-template="ia" />
+                    <Msg v-if="!resumenStore.plan" section-template="ia" />
                   </section>
 
                 </label>

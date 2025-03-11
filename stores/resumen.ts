@@ -180,6 +180,7 @@ export default defineStore({
           this._profile = response.data
           this._formSettings = response.data[0].formSettings
           this._codeUrl = response.data[0].code_url
+          this._plan = response.data[0].plan
           this._isPassword = response.data[0].profiles[0].is_password
           this.changeStatus('ready')
         }

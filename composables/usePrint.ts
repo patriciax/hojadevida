@@ -1,6 +1,7 @@
 import { jsPDF } from 'jspdf'
 import html2canvas from 'html2canvas'
 import { useCvState } from '~/data/useCvState'
+import 'jspdf-autotable'
 
 export default function usePrint() {
   const { formSettings } = useCvState()
@@ -49,7 +50,59 @@ export default function usePrint() {
     window.print()
   }
 
-  async function downloadPdfDirectly(): void {
+  // async function downloadPdfDirectly(): void {
+  //   changeDocTitle()
+  //   const movilShareElements = document.querySelectorAll('.movil-share')
+  //   movilShareElements.forEach((el) => {
+  //     el.style.display = 'none'
+  //   })
+
+  //   const element = document.getElementById('elemento-a-exportar')
+  //   if (!element)
+  //     return
+
+  //   // Usar html2canvas con CORS habilitado
+  //   html2canvas(element, { useCORS: true, scale: 2 }).then((canvas) => {
+  //     const imgData = canvas.toDataURL('image/png')
+
+  //     const pdf = new jsPDF({
+  //       orientation: 'portrait',
+  //       unit: 'mm',
+  //       format: 'a4',
+  //     })
+
+  //     const pdfWidth = pdf.internal.pageSize.getWidth()
+  //     const imgWidth = pdfWidth * 0.9 // Ajusta según sea necesario
+  //     const imgHeight = (canvas.height * imgWidth) / canvas.width
+
+  //     // Calcular las posiciones iniciales
+  //     let position = 0
+  //     let heightLeft = imgHeight // Altura restante de la imagen
+
+  //     // Añadir la primera página con la imagen
+  //     pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+  //     heightLeft -= pdf.internal.pageSize.getHeight() // Restar la altura de la página
+
+  //     // Si la imagen es más alta que la página, añade nuevas páginas
+  //     while (heightLeft > 0) {
+  //       position = heightLeft - imgHeight // Nueva posición para la siguiente página
+  //       pdf.addPage() // Añadir nueva página
+  //       pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight) // Añadir imagen en la nueva página
+  //       heightLeft -= pdf.internal.pageSize.getHeight() // Restar altura de la página
+  //     }
+
+  //     // Guardar el PDF
+  //     pdf.save(`HOJA_DE_VIDA_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`)
+  //   }).catch((error) => {
+  //     console.error('Error al capturar el elemento:', error)
+  //   })
+  // }
+
+  function changeDocTitle() {
+    document.title = `HOJA_DE_VIDA_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`
+  }
+
+  async function downloadPdfDirectly(): Promise<void> {
     changeDocTitle()
     const movilShareElements = document.querySelectorAll('.movil-share')
     movilShareElements.forEach((el) => {
@@ -60,47 +113,42 @@ export default function usePrint() {
     if (!element)
       return
 
-    // Usar html2canvas con CORS habilitado
-    html2canvas(element, { useCORS: true, scale: 2 }).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png')
+    // Agregar clases temporales para el PDF
+    element.classList.add('pdf-export-mode')
 
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-      })
-
-      const pdfWidth = pdf.internal.pageSize.getWidth()
-      const imgWidth = pdfWidth * 0.9 // Ajusta según sea necesario
-      const imgHeight = (canvas.height * imgWidth) / canvas.width
-
-      // Calcular las posiciones iniciales
-      let position = 0
-      let heightLeft = imgHeight // Altura restante de la imagen
-
-      // Añadir la primera página con la imagen
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
-      heightLeft -= pdf.internal.pageSize.getHeight() // Restar la altura de la página
-
-      // Si la imagen es más alta que la página, añade nuevas páginas
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight // Nueva posición para la siguiente página
-        pdf.addPage() // Añadir nueva página
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight) // Añadir imagen en la nueva página
-        heightLeft -= pdf.internal.pageSize.getHeight() // Restar altura de la página
-      }
-
-      // Guardar el PDF
-      pdf.save(`HOJA_DE_VIDA_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`)
-    }).catch((error) => {
-      console.error('Error al capturar el elemento:', error)
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
     })
-  }
 
-  function changeDocTitle() {
-    document.title = `HOJA_DE_VIDA_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`
+    try {
+      await pdf.html(element, {
+        margin: [15, 5, 15, 5],
+        autoPaging: 'text',
+        width: 190,
+        windowWidth: 1200, // Aumentar para mejor renderizado
+        html2canvas: {
+          scale: 0.5, // Mejor relación calidad/tamaño
+          letterRendering: true,
+          useCORS: true,
+        },
+        callback: (pdf) => {
+          pdf.save(`HOJA_DE_VIDA_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`)
+          element.classList.remove('pdf-export-mode') // Restaurar estilos
+        },
+      })
+    }
+    catch (error) {
+      console.error('Error al generar PDF:', error)
+      useNuxtApp().$toast.error('Error al generar el PDF')
+    }
+    finally {
+      movilShareElements.forEach((el) => {
+        el.style.display = ''
+      })
+    }
   }
-
   return {
     downloadPdf,
     downloadPdfDirectly,

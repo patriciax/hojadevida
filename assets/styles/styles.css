@@ -164,3 +164,42 @@ border: none;
   @apply w-4 h-4;
 
 }
+
+/* Añade esto para mejor compatibilidad con PDF */
+.pdf-export-mode {
+  width: 190mm !important; /* Ancho A4 */
+  min-height: 297mm !important;
+  padding: 15mm !important;
+  background: white !important;
+  box-shadow: none !important;
+  
+  * {
+    color: #000 !important;
+    page-break-inside: avoid !important;
+    max-width: 100% !important;
+  }
+
+  /* Ajustes para elementos específicos */
+  .flex-col, .grid {
+    gap: 8px !important;
+  }
+  
+  .section-item {
+    margin-bottom: 12px !important;
+  }
+  
+  h2 {
+    font-size: 1.4rem !important;
+    margin: 10px 0 !important;
+  }
+  
+  p {
+    line-height: 1.4 !important;
+    margin: 6px 0 !important;
+  }
+}
+
+@page {
+  size: A4 portrait;
+  margin: 15mm;
+}

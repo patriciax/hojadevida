@@ -129,7 +129,7 @@ function handledClose() {
       </template>
     </expansion-panel>
 
-    <Msg />
+    <Msg v-if="!resumenStore.plan" />
   </fieldset>
 
   <Teleport to="body">

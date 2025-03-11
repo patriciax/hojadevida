@@ -242,7 +242,7 @@ function closeCarta() {
                 <Cog6ToothIcon class="w-4 h-4" />
                 <p class="text-sm font-normal" v-text="$t('addPassword')" />
               </button>
-              <Msg />
+              <Msg v-if="!resumenStore.plan" />
             </div>
             <div
               v-if="!resumenStore.isShowCarta"
@@ -264,6 +264,7 @@ function closeCarta() {
               <p class="text-sm font-normal  " v-text="$t('cartacerrar')" />
             </div>
             <button
+              v-if="!resumenStore.plan"
               type="button"
               class="flex gap-2 text-gray-700 hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg text-sm"
               @click="showPlansModal = !showPlansModal"
@@ -300,14 +301,6 @@ function closeCarta() {
         </h2>
       </div>
       <div class="flex max-w-md m-auto flex-col lg:gap-2 gap-4 items-center justify-center rtl:space-x-reverse">
-        <!-- <input ref="passwordInput" type="password" class="form__control h-10 -mb-1 " @focus="true"> -->
-        <!-- <Input
-            id="password"
-            v-model="password"
-            name="password"
-            type="password"
-            class="md:w-1/2 w-full"
-          /> -->
         <section class="w-full flex gap-4 items-center mb-2">
           <div v-for="item in data" :key="item.id" class="flex items-center">
             <input
@@ -321,16 +314,6 @@ function closeCarta() {
             <label :for="`default-radio-${item.id}`" class="ms-2 text-sm cursor-pointer font-medium text-gray-900">
               {{ item.label }}
             </label>
-            <!-- <div class="flex items-center  ">
-            <input id="default-radio-1" :checked="{ true: resumenStore.isPassword }" type="radio" value="public" name="default-radio" class="w-4 h-4 text-blue-600 cursor-pointer  border-gray-300  " @change="changePrivate">
-            <label for="default-radio-1" class="ms-2 text-sm cursor-pointer font-medium text-gray-900 "> {{ $t('addpublic') }} </label>
-          </div>
-          <div class="flex items-center">
-            <input id="default-radio-2" :checked="privateCheck" type="radio" value="private" name="default-radio" class="w-4 h-4 text-blue-600  border-gray-300 cursor-pointer  " @change="changePublic">
-            <label for="default-radio-2" class="ms-2 text-sm cursor-pointer font-medium text-gray-900 ">
-              {{ $t('addprivate') }}
-            </label>
-          </div> -->
           </div>
         </section>
         <div class="grid grid-cols-2 gap-2" :class="{ 'opacity-50': publicCheck }">
@@ -361,75 +344,6 @@ function closeCarta() {
       </div>
     </section>
   </Modal>
-
-  <!-- <Modal v-if="showCarta" with-out-close @close="closeCarta">
-    <section class="bg-white relative p-10 max-w-xl m-auto rounded-lg">
-      <button class="hiddem absolute right-3 top-3 focus:outline-none " @click="closeCarta">
-        <XMarkIcon class="w-6 text-gray-700" />
-      </button>
-      <div class="mb-6 text-center">
-        <h2 class="text-xl mb-2 font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
-          {{ $t('carta') }}
-        </h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400" v-text="$t('carta-description')" />
-      </div>
-      <div class="flex max-w-md m-auto flex-col lg:gap-3 gap-4 items-center justify-center rtl:space-x-reverse">
-       <div class="form__group col-span-full w-full">
-          <label
-            class="form__label"
-            for="job-pos"
-          > {{ $t("job-title") }}</label>
-          <input
-            v-model="datacarta.jobTitle"
-            class="form__control"
-            type="text"
-            @input="handleInputjob"
-          >
-          <p v-if="errorcarta.job" class="text-md bg-red-100 w-full  col-span-2 rounded-md text-center py-2 text-red-600 dark:text-red-500">
-            {{ errorcarta.job }}
-          </p>
-        </div>
-        <div class="form__group col-span-full w-full">
-          <label
-            class="form__label"
-            for="job-pos"
-          > {{ $t("profile-title") }}</label>
-          <input
-            v-model="datacarta.profile"
-            class="form__control"
-            type="text"
-            @input="handleInputprofile"
-          >
-          <p v-if="errorcarta.profile" class="text-xs  w-full  col-span-2 rounded-md font-light  text-red-600 dark:text-red-500">
-            {{ errorcarta.profile }}
-          </p>
-        </div>
-        <div class="form__group col-span-full w-full">
-          <label
-            class="form__label"
-            for="job-pos"
-          > {{ $t("company-title") }}</label>
-          <input
-            v-model="datacarta.company"
-            class="form__control"
-            type="text"
-            @input="handleInputcompany"
-          >
-          <p v-if="errorcarta.company" class="text-xs  w-full  col-span-2 rounded-md font-light  text-red-600 dark:text-red-500">
-            {{ errorcarta.company }}
-          </p>
-        </div>
-        <p v-if="errorcarta.general" class="text-sm  w-full  col-span-2 rounded-md font-light text-center bg-red-200 py-2  text-red-600 dark:text-red-500">
-          {{ errorcarta.general }}
-        </p>
-        <div class="flex gap-2 w-full lg:flex-row flex-col">
-          <button class="form__legend text-sm w-full " type="button" @click="closeCarta" v-text="$t('cancel')" />
-
-          <button class="form__btn text-sm w-full " type="button" @click="sendCarta" v-text="$t('addnewpasss')" />
-        </div>
-      </div>
-    </section>
-  </Modal> -->
 
   <Teleport to="body">
     <PlansModal v-if="showPlansModal" @close="showPlansModal = false" />

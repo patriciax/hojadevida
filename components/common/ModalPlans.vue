@@ -135,8 +135,8 @@ import paypal from './Paypal.vue'
           </div>
           <div>
             <a
-              href="/"
-              class="inline-flex items-center justify-center w-full h-12 px-6 mb-4 font-medium tracking-wide text-gray-600 transition border-gray-300 duration-200 border rounded shadow-md hover:bg-gray-400 focus:shadow-outline focus:outline-none"
+              class="inline-flex cursor-pointer items-center justify-center w-full h-12 px-6 mb-4 font-medium tracking-wide text-gray-600 transition border-gray-300 duration-200 border rounded shadow-md hover:bg-gray-400 focus:shadow-outline focus:outline-none"
+              @click="$emit('close')"
             >
               {{ $t('getstartedFree') }}
             </a>
