@@ -103,47 +103,70 @@ export default function usePrint() {
   }
 
   async function downloadPdfDirectly(): Promise<void> {
+    // Cambiar el título del documento
     changeDocTitle()
+
+    // Ocultar elementos no deseados durante la exportación
     const movilShareElements = document.querySelectorAll('.movil-share')
     movilShareElements.forEach((el) => {
       el.style.display = 'none'
     })
 
     const element = document.getElementById('elemento-a-exportar')
-    if (!element)
+    if (!element) {
+      console.error('El elemento no existe en el DOM')
       return
-
-    // Agregar clases temporales para el PDF
-    element.classList.add('pdf-export-mode')
-
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4',
-    })
+    }
 
     try {
-      await pdf.html(element, {
-        margin: [15, 5, 15, 5],
-        autoPaging: 'text',
-        width: 190,
-        windowWidth: 1200, // Aumentar para mejor renderizado
-        html2canvas: {
-          scale: 0.5, // Mejor relación calidad/tamaño
-          letterRendering: true,
-          useCORS: true,
-        },
-        callback: (pdf) => {
-          pdf.save(`HOJA_DE_VIDA_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`)
-          element.classList.remove('pdf-export-mode') // Restaurar estilos
-        },
+      // Capturar el contenido del elemento con html2canvas
+      const canvas = await html2canvas(element, {
+        scale: 2, // Aumenta la escala para mejor calidad
+        useCORS: true, // Habilitar CORS si hay recursos externos
+        logging: true, // Habilitar logs para depuración
       })
+
+      // Convertir la captura a una imagen en base64
+      const imgData = canvas.toDataURL('image/png')
+
+      // Crear un nuevo documento PDF
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+      })
+
+      // Medidas del PDF
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const pdfHeight = pdf.internal.pageSize.getHeight()
+
+      // Dimensiones de la imagen capturada
+      const imgWidth = pdfWidth // Ajustar al ancho del PDF
+      const imgHeight = (canvas.height * imgWidth) / canvas.width
+
+      let position = 0
+      let heightLeft = imgHeight
+
+      // Añadir la primera página con la imagen capturada
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+      heightLeft -= pdfHeight
+
+      // Si la imagen es más alta que el tamaño de una página, añadir nuevas páginas
+      while (heightLeft > 0) {
+        position -= pdfHeight
+        pdf.addPage()
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+        heightLeft -= pdfHeight
+      }
+
+      // Guardar el archivo PDF
+      pdf.save(`HOJA_DE_VIDA_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`)
     }
     catch (error) {
       console.error('Error al generar PDF:', error)
-      useNuxtApp().$toast.error('Error al generar el PDF')
     }
     finally {
+      // Restaurar los estilos originales después de generar el PDF
       movilShareElements.forEach((el) => {
         el.style.display = ''
       })
