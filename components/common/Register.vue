@@ -107,7 +107,7 @@ async function register() {
   await loginStore.register(dataForm.value)
 
   if (loginStore.isReady) {
-    useNuxtApp().$toast.success('¡Registro exitoso!')
+    useNuxtApp().$toast.success('¡Registro exitoso!, ya puedes ingresar y crear tu Hoja de vida')
     // setTimeout(() => {
     // await nextTick()
 

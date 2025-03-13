@@ -1,19 +1,29 @@
 <script setup>
-import { ArrowDownIcon, ArrowDownLeftIcon, ArrowDownTrayIcon, Cog6ToothIcon, DocumentTextIcon, ShareIcon } from '@heroicons/vue/24/solid'
+import { ArrowDownIcon, ArrowDownLeftIcon, ArrowDownTrayIcon, ArrowRightStartOnRectangleIcon, Cog6ToothIcon, DocumentTextIcon, ShareIcon } from '@heroicons/vue/24/solid'
+import { useRouter } from 'vue-router'
 import { useCvState } from '~/data/useCvState'
 import useResumenStore from '@/stores/resumen'
+import useLoginStore from '@/stores/auth'
 
 const $emit = defineEmits(['close'])
+const loginStore = useLoginStore()
+const router = useRouter()
 
 const {
   formSettings,
 } = useCvState()
 const resumenStore = useResumenStore()
+
+function logout() {
+  loginStore.reset()
+  localStorage.removeItem(`cvSettings-${i18n.locale.value}`)
+  router.push({ path: '/login' })
+}
 </script>
 
 <template>
   <div class="lg:hidden block fixed z-50 w-full h-16  -translate-x-1/2 bg-white rounded-t-md bottom-0 left-1/2 shadow-xl">
-    <div class="grid h-full max-w-lg grid-cols-4 mx-auto">
+    <div class="grid h-full max-w-lg grid-cols-5 mx-auto">
       <button :class="{ 'opacity-60 !cursor-not-allowed': !resumenStore.plan }" :disabled="!resumenStore.plan" data-tooltip-target="tooltip-home" type="button" class="text-gray-500 inline-flex flex-col items-center justify-center px-5 rounded-s-full hover:text-blue-600  group" @click="$emit('sharepass')">
         <Cog6ToothIcon class="w-6 h-6 " />
         <p class="text-xs mt-0.5">
@@ -54,6 +64,12 @@ const resumenStore = useResumenStore()
         </svg>
         <p class="text-xs mt-0.5">
           {{ $t('download-cv-settings') }}
+        </p>
+      </button>
+      <button data-tooltip-target="tooltip-profile" type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-e-full hover:text-blue-600  group text-gray-600" @click="logout">
+        <ArrowRightStartOnRectangleIcon class="w-6 h-6" />
+        <p class="text-xs mt-0.5">
+          Salir
         </p>
       </button>
     </div>

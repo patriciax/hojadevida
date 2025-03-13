@@ -111,6 +111,24 @@ export default function usePrint() {
     movilShareElements.forEach((el) => {
       el.style.display = 'none'
     })
+    const stylesToHide = [
+      '.cv__section-title .bg-change',
+      '.cv__icon-wrapper a:nth-child(1)',
+      '.cv__icon',
+      '.cv__event svg',
+      '.font-selected',
+    ]
+
+    stylesToHide.forEach((selector) => {
+      const elements = document.querySelectorAll(`#elemento-a-exportar ${selector}`)
+      elements.forEach((el) => {
+        // Cambiar el estilo de la fuente a Arial
+        el.style.fontFamily = 'Arial, sans-serif'
+        // Si deseas ocultar otros elementos, puedes hacerlo aquí
+        if (selector !== '.font-selected')
+          el.style.display = 'none' // Oculta otros elementos, excepto aquellos con .font-selected
+      })
+    })
 
     const element = document.getElementById('elemento-a-exportar')
     if (!element) {
@@ -169,6 +187,13 @@ export default function usePrint() {
       // Restaurar los estilos originales después de generar el PDF
       movilShareElements.forEach((el) => {
         el.style.display = ''
+      })
+
+      stylesToHide.forEach((selector) => {
+        const elements = document.querySelectorAll(`#elemento-a-exportar ${selector}`)
+        elements.forEach((el) => {
+          el.style.display = ''
+        })
       })
     }
   }
