@@ -32,7 +32,6 @@ const resumenStore = useResumenStore()
     "
   >
     <slot />
-
     <div class="font-selected" style="min-height: var(--height)">
       <div
         id="elemento-a-exportar"

@@ -15,7 +15,7 @@ const { formSettings } = useCvState()
     class="flex relative flex-col overflow-hidden gap-4 p-8 py-7 col-span-1 color-print"
     :class="[
       formSettings.profileImageDataUri ? 'py-7' : 'py-8',
-      $parent.isExporting ? 'no-colors' : props.color === 'black' ? 'bg-[#343434] text-white' : 'bg-[#f9f9f9] text-black',
+      resumenStore.isDownload ? 'no-colors' : props.color === 'black' ? 'bg-[#343434] text-white' : 'bg-[#f9f9f9] text-black',
     ]"
   >
     <!-- <div
@@ -88,8 +88,7 @@ const { formSettings } = useCvState()
   }
 
   :deep(&__tag) {
-    @apply px-2 py-1 rounded text-white text-xs/normal;
-    background-color: var(--primary);
+    @apply px-2 py-1 rounded text-xs/normal;
   }
 
   &__bar {

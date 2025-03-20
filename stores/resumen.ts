@@ -17,6 +17,7 @@ interface State {
   _plan: boolean
   _openAccess: boolean
   _showModal: boolean
+  _isDownload: boolean
 
 }
 
@@ -36,6 +37,7 @@ export default defineStore({
     _plan: false,
     _openAccess: false,
     _showModal: false,
+    _isDownload: false,
 
   }),
   getters: {
@@ -57,6 +59,7 @@ export default defineStore({
     plan: state => state._plan,
     openAccess: state => state._openAccess,
     showModal: state => state._showModal,
+    isDownload: state => state._isDownload,
 
   },
   actions: {
@@ -363,6 +366,10 @@ export default defineStore({
     closeModalAdjuntos() {
       this._showModal = false
     },
+    isDowloadpdf(data: any) {
+      this._isDownload = data
+    },
+
     changeStatus(status: 'loading' | 'ready' | 'readyPass' | 'loadingIA' | 'error', error: any = null) {
       this._status = status
       if (status === 'error')
