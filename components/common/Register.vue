@@ -108,11 +108,11 @@ async function register() {
 
   if (loginStore.isReady) {
     useNuxtApp().$toast.success('¡Registro exitoso!, ya puedes ingresar y crear tu Hoja de vida')
-    // setTimeout(() => {
+    setTimeout(() => {
     // await nextTick()
 
-    router.push({ path: '/login' })
-    // }, 2000)
+      router.push({ path: '/login' })
+    }, 1000)
   }
 
   if (loginStore.isError) {

@@ -73,7 +73,7 @@ export default defineNuxtConfig({
       'postcss-nested': {},
     },
   },
-  plugins: ['~/plugins/axios.ts'],
+  plugins: ['~/plugins/axios.ts', '~/plugins/paypal.client.ts'],
 
   i18n: {
     strategy: 'prefix_and_default',
