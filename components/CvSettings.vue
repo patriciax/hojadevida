@@ -7,6 +7,7 @@ import Nav from './Nav.vue'
 import Modal from './common/Modal.vue'
 import Msg from './common/msg.vue'
 import LandingLogo from './landing/LandingLogo.vue'
+import PlansModal from './common/ModalPlans.vue'
 import InputPhoneNumber from '@/components/common/InputPhoneNumber.vue'
 import { SectionNameList } from '~/types/cvfy'
 import { useCvState } from '~/data/useCvState'
@@ -34,7 +35,9 @@ const {
 const countryCode = ref(null)
 const countryCodeName = ref(null)
 const isOpen = ref(false)
-
+const showPlansModal = ref(false)
+const showSuccess = ref(false)
+const showError = ref(false)
 const switchLocalePath = useSwitchLocalePath()
 const i18n = useI18n()
 const { downloadPdf, downloadPdfDirectly } = usePrint()
@@ -290,6 +293,15 @@ async function downloadPdfDirectlys() {
           </svg>
           {{ $t("download-cv-settings") }}
         </button> -->
+        <button
+          v-if="!resumenStore.plan"
+          type="button"
+          class="flex gap-2 text-gray-700 hover:bg-gray-200 justify-center items-center border border-gray-300 px-2 py-1.5 rounded-lg text-[10px]"
+          @click="showPlansModal = !showPlansModal"
+        >
+          <svg class="KNAong" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.91 4.91a1.91 1.91 0 0 1-1.044 1.701c.942 2.366 1.928 3.53 2.795 3.622.982.104 1.88-.323 2.76-1.377a.977.977 0 0 1 .072-.078 1.91 1.91 0 1 1 1.468.873l-1.423 5.42c-.297 1.13-1.363 1.922-2.586 1.922H8.066c-1.223 0-2.29-.792-2.586-1.922L4.063 9.675a1.91 1.91 0 1 1 1.46-.898c.03.028.059.06.086.093.837 1.048 1.727 1.471 2.748 1.363.908-.096 1.888-1.253 2.793-3.614a1.91 1.91 0 1 1 2.76-1.71ZM6.561 19.008h10.875c.518 0 .938.448.938 1s-.42 1-.938 1H6.563c-.517 0-.937-.448-.937-1s.42-1 .937-1Z" fill="currentColor" /></svg>
+          <span>{{ $t("pro") }}</span>
+        </button>
       </LandingLogo>
     </div>
 
@@ -1115,6 +1127,10 @@ async function downloadPdfDirectlys() {
     </Modal>
 
     <CommonMovilNav @carta="showCarta" @sharepass="showAccessModal" @save="save" @share="shared(props.id)" />
+
+    <Teleport to="body">
+      <PlansModal v-if="showPlansModal" xs @close="showPlansModal = false" @success="showSuccess = true" @error="showError = true" />
+    </Teleport>
   </div>
 </template>
 

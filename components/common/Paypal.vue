@@ -66,22 +66,20 @@ function initPayPalButton() {
           // successPayment.value = true
           console.log('✅ Pago exitoso:', transaction)
           await usePaypalStore.registerPayment(plan)
-          useNuxtApp().$toast.success('¡Pago exitoso!')
-
-          window.location.reload()
-          emit('close')
+          // useNuxtApp().$toast.success('¡Pago exitoso!')
+          emit('success')
         }
         else {
           // errorPayment.value = true
           console.log('❌ Pago fallido:', transaction)
-          useNuxtApp().$toast.error('Error al realizar el pago, intenta de nuevo')
-          emit('close')
+          // useNuxtApp().$toast.error('Error al realizar el pago, intenta de nuevo')
+          emit('error')
         }
       })
     },
     onError(err) {
       console.error('Error en PayPal:', err)
-      emit('close')
+      emit('error')
     },
   }).render(`#${buttonContainerId}`)
 }

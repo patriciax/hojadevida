@@ -2,40 +2,37 @@
 import { XMarkIcon } from '@heroicons/vue/24/solid'
 import Modal from './Modal.vue'
 import paypal from './Paypal.vue'
+
+const props = defineProps({
+  xs: {
+    type: Boolean,
+    required: false,
+  },
+})
+
+const emit = defineEmits(['close', 'success', 'error'])
+
+function handleClose() {
+  emit('close')
+  emit('success')
+}
+
+function handleError() {
+  emit('close')
+  emit('error')
+}
 </script>
 
 <template>
-  <Modal with-out-close @close="$emit('close')">
+  <Modal with-out-close @close="handleClose">
     <div class="max-h-[95vh]  overflow-hidden bg-white border border-gray-200 rounded-xl shadow-2xl top-0 left-0 z-50 items-center justify-center w-full px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-lg md:px-24 lg:px-8 lg:py-10">
       <div class="max-w-xl  md:mx-auto sm:text-center lg:max-w-2xl  relative">
-        <button class="hiddem absolute -right-32 -top-30 focus:outline-none " @click="$emit('close')">
+        <button class="hiddem absolute lg:-right-32 lg:-top-5 -top-10 right-0 focus:outline-none " @click="$emit('close')">
           <XMarkIcon class="w-6 text-gray-700" />
         </button>
-        <!-- <div>
-        <p class="inline-block px-3 py-px mb-4 text-xs font-semibold tracking-wider text-teal-900 uppercase rounded-full bg-teal-accent-400">
-          Brand new
-        </p>
-      </div> -->
-        <!-- <h2 class="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
-          <span class="relative inline-block">
-            <svg viewBox="0 0 52 24" fill="currentColor" class="absolute top-0 left-0 z-0 hidden w-32 -mt-8 -ml-20 text-blue-gray-100 lg:w-32 lg:-ml-28 lg:-mt-10 sm:block">
-              <defs>
-                <pattern id="ace59d72-08d5-4850-b9e4-d9d0b86c0525" x="0" y="0" width=".135" height=".30">
-                  <circle cx="1" cy="1" r=".7" />
-                </pattern>
-              </defs>
-              <rect fill="url(#ace59d72-08d5-4850-b9e4-d9d0b86c0525)" width="52" height="24" />
-            </svg>
-            <span class="relative">Planes Hoja de Vida Digital
-            </span>
-          </span>
-        </h2>
-        <p class="text-base text-gray-700 md:text-lg">
-          {{ $t('plans-description') }}
-        </p> -->
       </div>
       <div class="grid max-w-md gap-10 -mt-2 row-gap-5 sm:row-gap-10 lg:max-w-screen-md lg:grid-cols-2 sm:mx-auto">
-        <div class="flex flex-col justify-between p-5 bg-white border rounded-lg shadow-sm border-gray-500">
+        <div :class="props.xs ? 'hidden lg:block' : ''" class="flex flex-col justify-between p-5 bg-white border rounded-lg shadow-sm border-gray-500">
           <div class="mb-6">
             <div class="flex items-center justify-between pb-4 mb-4 border-gray-400 border-b">
               <div>
@@ -46,12 +43,7 @@ import paypal from './Paypal.vue'
                   {{ $t('free') }}
                 </p>
               </div>
-              <div class="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-blue-gray-50">
-                <!-- <svg class="w-10 h-10 text-gray-600" viewBox="0 0 24 24" stroke-linecap="round" stroke-width="2">
-                  <path d="M12,7L12,7 c-1.657,0-3-1.343-3-3v0c0-1.657,1.343-3,3-3h0c1.657,0,3,1.343,3,3v0C15,5.657,13.657,7,12,7z" fill="none" stroke="currentColor" />
-                  <path d="M15,23H9v-5H7v-6 c0-1.105,0.895-2,2-2h6c1.105,0,2,0.895,2,2v6h-2V23z" fill="none" stroke="currentColor" />
-                </svg> -->
-              </div>
+              <div class="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-blue-gray-50" />
             </div>
             <div>
               <p class="mb-2 font-bold tracking-wide">
@@ -236,7 +228,7 @@ import paypal from './Paypal.vue'
             </div>
           </div>
           <div class="relative">
-            <paypal @close="$emit('close')" />
+            <paypal @close="$emit('close')" @success="handleClose" @error="handleError" />
             <p class="text-sm text-gray-600">
               Recomendado para profesionales que buscan destacarse en el mercado laboral.
             </p>

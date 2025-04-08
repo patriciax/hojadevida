@@ -1,5 +1,5 @@
 <script setup>
-import { AdjustmentsVerticalIcon, ArrowRightIcon, ArrowRightStartOnRectangleIcon, Cog6ToothIcon, DocumentDuplicateIcon, DocumentTextIcon, LockClosedIcon, XMarkIcon } from '@heroicons/vue/24/solid'
+import { ArrowRightStartOnRectangleIcon, Cog6ToothIcon, DocumentDuplicateIcon, DocumentTextIcon, XMarkIcon } from '@heroicons/vue/24/solid'
 import { useRouter } from 'vue-router'
 import Msg from './common/msg.vue'
 import PlansModal from './common/ModalPlans.vue'
@@ -19,7 +19,8 @@ const showCarta = ref(false)
 const i18n = useI18n()
 const showPlansModal = ref(false)
 const { t, locale } = useI18n()
-
+const showSuccess = ref(false)
+const showError = ref(false)
 const dataForm = ref({
   password: '',
   confirm_password: '',
@@ -224,6 +225,15 @@ function closeCarta() {
 //   },
 //   { deep: true },
 // )
+
+function handleContinue() {
+  showSuccess.value = false
+  window.location.reload()
+}
+function handleError() {
+  showError.value = false
+  window.location.reload()
+}
 </script>
 
 <template>
@@ -346,7 +356,53 @@ function closeCarta() {
   </Modal>
 
   <Teleport to="body">
-    <PlansModal v-if="showPlansModal" @close="showPlansModal = false" />
+    <PlansModal v-if="showPlansModal" @close="showPlansModal = false" @success="showSuccess = true" @error="showError = true" />
+  </Teleport>
+
+  <Teleport to="body">
+    <Modal v-if="showSuccess" with-out-close @close="showSuccess = false">
+      <section class="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center">
+        <div class="absolute inset-0 -m-4 bg-black bg-opacity-50" />
+        <section class="sm:w-475 relative w-full rounded-lg p-4">
+          <section>
+            <div class="max-h-[95vh] text-center  overflow-hidden bg-white border border-gray-200 rounded-xl shadow-2xl top-0 left-0 z-50 items-center justify-center w-full px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-lg md:px-24 lg:px-8 lg:py-10">
+              <svg xmlns="http://www.w3.org/2000/svg" class="text-[#059669] mx-auto h-11 rounded-full bg-[#D1FAE5] w-11" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 13l4 4L19 7" />
+              </svg>
+              <span class="text-2xl font-medium">Pago con éxito</span>
+              <p class="text-center my-7">
+                Gracias por adquirir el <b>Plan Profesional</b>. Ahora tienes acceso a todas las herramientas para destacar con tu CV y carta de presentación.
+              </p>
+              <button class="p-3 bg-[#4F46E5] rounded-lg w-full text-white" @click="handleContinue">
+                Continuar
+              </button>
+            </div>
+          </section>
+        </section>
+      </section>
+    </Modal>
+
+    <section v-if="showError">
+      <section class="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center">
+        <div class="absolute inset-0 -m-4 bg-black bg-opacity-50" />
+        <section class="sm:w-475 relative w-full rounded-lg p-4">
+          <section>
+            <div class="max-h-[95vh] text-center  overflow-hidden bg-white border border-gray-200 rounded-xl shadow-2xl top-0 left-0 z-50 items-center justify-center w-full px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-lg md:px-24 lg:px-8 lg:py-10">
+              <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 48 48" class="text-[#96051d] mx-auto h-11 rounded-full bg-[#D1FAE5] w-11">
+                <circle cx="24" cy="24" r="20" fill="#fc9c9c" /><path fill="#324561" d="M31,32c-0.256,0-0.512-0.098-0.707-0.293l-14-14c-0.391-0.391-0.391-1.023,0-1.414	s1.023-0.391,1.414,0l14,14c0.391,0.391,0.391,1.023,0,1.414C31.512,31.902,31.256,32,31,32z" /><path fill="#324561" d="M17,32c-0.256,0-0.512-0.098-0.707-0.293c-0.391-0.391-0.391-1.023,0-1.414l14-14	c0.391-0.391,1.023-0.391,1.414,0s0.391,1.023,0,1.414l-14,14C17.512,31.902,17.256,32,17,32z" />
+              </svg>
+              <span class="text-2xl font-medium">Pago Fallido</span>
+              <p class="text-center my-4">
+                Lo sentimos, tu pago ha fallado. Por favor, intenta nuevamente.
+              </p>
+              <button class="p-3 bg-[#4F46E5] rounded-lg w-full text-white" @click="handleError">
+                Salir
+              </button>
+            </div>
+          </section>
+        </section>
+      </section>
+    </section>
   </Teleport>
 </template>
 
