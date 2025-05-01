@@ -131,6 +131,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       appUrl: 'https://api.hojadevida.digital/',
+      paypalClientId: 'AVAZmjDIgZJmy994sXkIlU6mySapEEvHrKT9dJ-SohCjrZe0XknVuZkQ-AS1X-LKKxnXN7_RP36hTOjP',
     },
   },
 

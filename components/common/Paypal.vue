@@ -1,15 +1,16 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import UsePaypalStore from '@/stores/paypal'
+import { useRuntimeConfig } from '#app'
 
 const emit = defineEmits(['success', 'error', 'loading', 'close'])
+const config = useRuntimeConfig()
 const usePaypalStore = UsePaypalStore()
-const clientId = 'AVAZmjDIgZJmy994sXkIlU6mySapEEvHrKT9dJ-SohCjrZe0XknVuZkQ-AS1X-LKKxnXN7_RP36hTOjP'
+const clientId = config.public.paypalClientId
 
 const isLoading = ref(true)
 const buttonContainerId = 'paypal-button-container'
 
-// Cargar el SDK de PayPal
 function loadPayPalScript(src) {
   return new Promise((resolve, reject) => {
     if (document.querySelector(`script[src="${src}"]`))
@@ -24,7 +25,6 @@ function loadPayPalScript(src) {
   })
 }
 
-// Inicializar el botón de PayPal
 function initPayPalButton() {
   const paypal = window.paypal
   if (!paypal) {
@@ -106,18 +106,5 @@ onMounted(async () => {
       Cargando PayPal...
     </div>
     <div v-show="!isLoading" :id="buttonContainerId" />
-    <!--
-    <button
-      :disabled="isLoadingPaypal"
-      class="group relative h-12 w-full mb-4 rounded bg-blue-600 px-5 py-2 text-center text-sm font-medium text-white shadow-md  "
-    >
-      <div v-if="isLoading" class="flex justify-center">
-        Cargando PayPal...
-      </div>
-      <template v-else>
-        <div :id="buttonContainerId" class="absolute -mt-2 w-full opacity-0" />
-        Elegir plan
-      </template>
-    </button> -->
   </div>
 </template>
