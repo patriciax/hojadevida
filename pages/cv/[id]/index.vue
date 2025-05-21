@@ -218,28 +218,7 @@ function changeFont() {
   const textContainer = document.querySelector('.font-selected')
   textContainer.style.fontFamily = resumenStore.formSettings?.font
 }
-// async function downloadCvPdf() {
-//   const element = document.getElementById('elemento-a-exportar')
-//   console.log('ecport')
-//   html2canvas(element).then((canvas) => {
-//     const imgData = canvas.toDataURL('image/png')
 
-//     const pdf = new jsPDF({
-//       orientation: 'portrait',
-//       unit: 'mm',
-//       format: 'a4',
-//     })
-
-//     const pdfWidth = pdf.internal.pageSize.getWidth()
-//     const imgWidth = pdfWidth * 0.9 // Ajusta según sea necesario
-//     const imgHeight = (canvas.height * imgWidth) / canvas.width
-//     const xOffset = (pdfWidth - imgWidth) / 2
-//     const yOffset = (pdf.internal.pageSize.getHeight() - imgHeight) / 2
-
-//     pdf.addImage(imgData, 'PNG', xOffset, yOffset, imgWidth, imgHeight)
-//     pdf.save('documento.pdf')
-//   })
-// }
 const newUrl = ref('http://app.hojadevida.digital/cv/')
 
 async function copyLink() {

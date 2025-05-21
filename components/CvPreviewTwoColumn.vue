@@ -18,14 +18,6 @@ const { formSettings } = useCvState()
       resumenStore.isDownload ? 'no-colors' : props.color === 'black' ? 'bg-[#343434] text-white' : 'bg-[#f9f9f9] text-black',
     ]"
   >
-    <!-- <div
-    class="flex relative flex-col overflow-hidden gap-4 p-8 py-7 col-span-1 color-print"
-
-    :class="[
-      formSettings.profileImageDataUri ? 'py-7' : 'py-8',
-      props.color === 'black' ? 'bg-[#343434] text-white' : 'bg-[#f9f9f9] text-black',
-    ]"
-  > -->
     <div class="absolute z-0  bg-traslate-cv transform  rotate-[48deg]   w-[15rem] h-[35rem]" />
     <CvProfileImageViewer class="border-white border-8 z-50 mb-4 relative" />
 
@@ -34,7 +26,6 @@ const { formSettings } = useCvState()
     <template v-if="!resumenStore.isShowCarta">
       <div class="border-dashed border-b border-var-color " />
       <CvPreviewSkills class="flex flex-col gap-6" />
-      <!-- <div class="border-dashed border-b border-var-color " /> -->
       <CvPreviewReferences :color="props.color" />
     </template>
     <CvPreviewSocial :color="props.color" />
@@ -49,25 +40,13 @@ const { formSettings } = useCvState()
     <section class="px-10 py-4">
       <CvPreviewAbout />
       <div class="py-4" />
-      <!-- <hr class="cv__bar"> -->
       <CvFirmaViewer v-if="resumenStore.isShowCarta" />
 
       <template v-if="!resumenStore.isShowCarta">
         <CvPreviewExperience />
         <div class="py-4" />
-
-        <!-- <hr
-        v-if="formSettings.displayEducation"
-        class=""
-      > -->
-
         <CvPreviewEducation />
         <div class="py-4" />
-
-        <!-- <hr
-        v-if="formSettings.displayProjects"
-        class="cv__bar"
-      > -->
 
         <CvPreviewProjects />
       </template>

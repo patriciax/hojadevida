@@ -101,6 +101,21 @@ export default function usePrint() {
   function changeDocTitle() {
     document.title = `HOJA_DE_VIDA_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`
   }
+
+  async function waitForImagesToLoad(container: HTMLElement): Promise<void> {
+    const images = container.querySelectorAll('img')
+    const promises = Array.from(images).map((img) => {
+      if (img.complete && img.naturalWidth !== 0)
+        return Promise.resolve()
+
+      return new Promise<void>((resolve, reject) => {
+        img.onload = () => resolve()
+        img.onerror = () => reject(new Error(`Error loading image: ${img.src}`))
+      })
+    })
+    await Promise.all(promises)
+  }
+
   async function downloadPdfDirectly(): Promise<void> {
     // Cambiar el título del documento
     changeDocTitle()
@@ -132,6 +147,7 @@ export default function usePrint() {
       console.error('El elemento no existe en el DOM')
       return
     }
+    await waitForImagesToLoad(element)
 
     try {
       const canvas = await html2canvas(element, {
@@ -204,100 +220,6 @@ export default function usePrint() {
     }
   }
 
-  // async function downloadPdfDirectly(): Promise<void> {
-  //   // Cambiar el título del documento
-  //   changeDocTitle()
-
-  //   // Ocultar elementos no deseados durante la exportación
-  //   const movilShareElements = document.querySelectorAll('.movil-share')
-  //   movilShareElements.forEach((el) => {
-  //     el.style.display = 'none'
-  //   })
-  //   const stylesToHide = [
-  //     '.cv__section-title .bg-change',
-  //     '.cv__icon-wrapper a:nth-child(1)',
-  //     '.cv__icon',
-  //     '.cv__event svg',
-  //     '.font-selected',
-  //   ]
-
-  //   stylesToHide.forEach((selector) => {
-  //     const elements = document.querySelectorAll(`#elemento-a-exportar ${selector}`)
-  //     elements.forEach((el) => {
-  //       el.style.fontFamily = 'Arial, sans-serif'
-  //       if (selector !== '.font-selected')
-  //         el.style.display = 'none'
-  //     })
-  //   })
-
-  //   const element = document.getElementById('elemento-a-exportar')
-  //   if (!element) {
-  //     console.error('El elemento no existe en el DOM')
-  //     return
-  //   }
-
-  //   try {
-  //     const canvas = await html2canvas(element, {
-  //       scale: 2,
-  //       useCORS: true,
-  //       logging: true,
-  //     })
-
-  //     const imgData = canvas.toDataURL('image/png')
-
-  //     const pdf = new jsPDF({
-  //       orientation: 'portrait',
-  //       unit: 'mm',
-  //       format: 'a4',
-  //     })
-
-  //     const pdfWidth = pdf.internal.pageSize.getWidth()
-  //     const pdfHeight = pdf.internal.pageSize.getHeight()
-
-  //     const marginLeft = 10 // Margen izquierdo en mm
-  //     const marginRight = 10 // Margen derecho en mm
-  //     const marginTop = 0 // Margen superior en mm
-  //     const marginBottom = 0 // Margen inferior en mm
-
-  //     const imgWidth = pdfWidth - (marginLeft + marginRight) // Ajusta el ancho de la imagen
-  //     const imgHeight = (canvas.height * imgWidth) / canvas.width // Ajusta el alto de la imagen
-
-  //     let position = marginTop // Posición inicial ajustada por el margen superior
-  //     let heightLeft = imgHeight
-
-  //     pdf.addImage(imgData, 'JPEG', marginLeft, position, imgWidth, imgHeight)
-  //     heightLeft -= pdfHeight - (marginTop + marginBottom) // Ajusta la altura restante
-  //     const padding = 10
-  //     while (heightLeft > 0) {
-  //       position = marginTop + padding
-  //       // position -= pdfHeight - (marginTop + marginBottom) // Ajusta la posición para la siguiente página
-  //       pdf.addPage()
-  //       pdf.addImage(imgData, 'JPEG', marginLeft, position, imgWidth, imgHeight)
-  //       // heightLeft -= pdfHeight - (marginTop + marginBottom)
-  //       heightLeft -= pdfHeight - (marginTop + marginBottom + padding)
-  //     }
-  //     pdf.save(`HOJA_DE_VIDA_${formSettings.value.name}_${formSettings.value.lastName}_${i18n.locale.value}`)
-
-  //     // localStorage.removeItem('print')
-  //   }
-  //   catch (error) {
-  //     console.error('Error al generar PDF:', error)
-  //     // localStorage.removeItem('print')
-  //   }
-  //   finally {
-  //     // localStorage.removeItem('print')
-  //     movilShareElements.forEach((el) => {
-  //       el.style.display = ''
-  //     })
-
-  //     stylesToHide.forEach((selector) => {
-  //       const elements = document.querySelectorAll(`#elemento-a-exportar ${selector}`)
-  //       elements.forEach((el) => {
-  //         el.style.display = ''
-  //       })
-  //     })
-  //   }
-  // }
   return {
     downloadPdf,
     downloadPdfDirectly,
