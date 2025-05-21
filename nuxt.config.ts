@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { defineNuxtConfig } from 'nuxt/config'
 import en from './lang/en.json'
 
@@ -6,7 +7,7 @@ export default defineNuxtConfig({
 
   site: {
     url:
-      // eslint-disable-next-line node/prefer-global/process
+
       process.env.NODE_ENV === 'dev'
         ? 'http://localhost:3000'
         : 'http://app.hojadevida.digital',
@@ -131,7 +132,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       appUrl: 'https://api.hojadevida.digital/',
-      paypalClientId: 'AVAZmjDIgZJmy994sXkIlU6mySapEEvHrKT9dJ-SohCjrZe0XknVuZkQ-AS1X-LKKxnXN7_RP36hTOjP',
+      paypalClientId: process.env.NUXT_paypalClientId,
     },
   },
 

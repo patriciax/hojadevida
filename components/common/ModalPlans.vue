@@ -25,7 +25,7 @@ function handleError() {
 
 <template>
   <Modal with-out-close @close="handleClose">
-    <div class="max-h-[95vh]  overflow-hidden bg-white border border-gray-200 rounded-xl shadow-2xl top-0 left-0 z-50 items-center justify-center w-full px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-lg md:px-24 lg:px-8 lg:py-10">
+    <div class="max-h-[95vh] overflow-auto  xl:overflow-hidden bg-white border border-gray-200 rounded-xl shadow-2xl top-0 left-0 z-50 items-center justify-center w-full px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-lg md:px-24 lg:px-8 lg:py-10">
       <div class="max-w-xl  md:mx-auto sm:text-center lg:max-w-2xl  relative">
         <button class="hiddem absolute lg:-right-32 lg:-top-5 -top-10 right-0 focus:outline-none " @click="$emit('close')">
           <XMarkIcon class="w-6 text-gray-700" />
